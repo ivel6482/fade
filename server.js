@@ -2,6 +2,9 @@ const express = require('express')
 const morgan = require('morgan')
 require('dotenv').config()
 const connectDB = require('./config/db')
+const passport = require('passport')
+const BearerStrategy = require('passport-http-bearer').Strategy
+const User = require('./models/User')
 
 const barbershopRoutes = require('./routes/barbershops')
 
@@ -11,6 +14,16 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 connectDB()
+
+passport.use(
+	new BearerStrategy(function (token, done) {
+		User.findOne({ token }, function (err, user) {
+			if (err) done(err)
+			if (!user) done(null, false)
+			return done(null, user, { scope: all })
+		})
+	})
+)
 
 if (process.env.PORT === 'development') {
 	app.use(morgan('dev'))
