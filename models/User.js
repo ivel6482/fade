@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: [true, 'Please enter a password.'],
-			select: false,
+			select: false, // Does not return the password by default, if we want it please use .select('+password') when querying.
 		},
 		profilePicture: {
 			type: String,
