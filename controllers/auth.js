@@ -37,7 +37,8 @@ exports.login = async (req, res) => {
 	// get email and password from information sent
 	const { email, password } = req.body
 	// find the user with that email
-	const user = await User.findOne({ email })
+	const user = await User.findOne({ email }).select('+password') // Since the password is omitted when querying for users by default, we need to use the .select() method to indicate that we want the password as well to be returned.
+
 	// Compare the sent password with the hashed password **See: ./models/User.js:42**
 	const isMatch = await user.matchPassword(password) // matchPassword is a method in the UserSchema that is accessible in the returned user from the query
 
@@ -61,5 +62,7 @@ exports.getLoggedInUser = async (req, res) => {
 		} else {
 			res.status(404).json({ message: 'User not found' })
 		}
-	} catch (error) {}
+	} catch (error) {
+		console.error(error)
+	}
 }

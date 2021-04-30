@@ -40,6 +40,7 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.methods.matchPassword = async function (enteredPassword) {
+	// if the password field has a select of false it will not be able to access the password using this.password, if we want to return the password we should do it in a query and using the .select() method to prevent the password being sent **Like this: const user = await User.findById(id).select('+password')
 	return await bcrypt.compare(enteredPassword, this.password)
 }
 
