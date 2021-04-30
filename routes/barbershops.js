@@ -5,7 +5,6 @@ const {
 	createBarbershop,
 } = require('../controllers/barbershops')
 
-router.get('/', getAllBarbershops)
-router.post('/', createBarbershop)
+router.route('/').get(getAllBarbershops).post(createBarbershop)
 
 module.exports = router

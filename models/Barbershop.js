@@ -7,6 +7,11 @@ const BarbershopSchema = new mongoose.Schema(
 			required: [true, 'Please enter a barbershop name.'],
 			trim: true,
 		},
+		address: {
+			type: String,
+			required: [true, 'Please enter a barbershop address'],
+			trim: true,
+		},
 	},
 	{ timestamps: true }
 )
