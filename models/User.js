@@ -23,8 +23,15 @@ const UserSchema = new mongoose.Schema(
 			required: [true, 'Please enter a password.'],
 			select: false, // Does not return the password by default, if we want it please use .select('+password') when querying.
 		},
-		profilePicture: {
+		avatar: {
 			type: String,
+			default:
+				'https://res.cloudinary.com/drlwtqzgt/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1619727940/samples/animals/cat.jpg',
+			required: true,
+		},
+		cloudinaryId: {
+			type: String,
+			required: true,
 		},
 	},
 	{ timestamps: true }

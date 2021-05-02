@@ -1,4 +1,5 @@
 const Barbershop = require('../models/Barbershop')
+const cloudinary = require('../utils/cloudinary')
 
 const getAllBarbershops = async (req, res) => {
 	try {
@@ -25,10 +26,14 @@ const getAllBarbershops = async (req, res) => {
 
 const createBarbershop = async (req, res) => {
 	try {
-		const { name } = req.body
+		const { name, address, picture } = req.body
+		const result = await cloudinary.uploader.upload(req.file.path)
 
 		const barbershop = {
 			name,
+			address,
+			picture: result.secure_url,
+			cloudinaryId: result.public_id,
 		}
 
 		const created = await Barbershop.create(barbershop)

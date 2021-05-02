@@ -1,10 +1,11 @@
 const User = require('../models/User')
 const { generateToken } = require('../utils/generateToken')
+const cloudinary = require('../utils/cloudinary')
 
 exports.signup = async (req, res) => {
 	try {
 		// get the user information sent from the form
-		const { firstName, lastName, email, password, profilePicture } = req.body
+		const { firstName, lastName, email, password, avatar } = req.body
 		// see if the user already exists
 		const userExists = await User.findOne({ email })
 
@@ -13,12 +14,15 @@ exports.signup = async (req, res) => {
 			return res.status(400).json({ message: 'User already exists' })
 		}
 
+		const result = await cloudinary.uploader.upload(req.file.path)
+
 		const userToAdd = {
 			firstName,
 			lastName,
 			email,
 			password,
-			profilePicture,
+			avatar: result.secure_url,
+			cloudinaryId: result.public_id,
 		}
 
 		// create new user if it doesn't exists
