@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema(
 		},
 		email: {
 			type: String,
+			unique: true,
 			required: [true, 'Please enter your email address.'],
 			trim: true,
 		},
@@ -27,12 +28,25 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			default:
 				'https://res.cloudinary.com/drlwtqzgt/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1619727940/samples/animals/cat.jpg',
-			required: true,
+			required: [true, 'Please provide an image url for the avatar.'],
 		},
 		cloudinaryId: {
 			type: String,
-			required: true,
+			required: [true, 'Please provide a cloudinaryId.'],
 		},
+		role: {
+			type: String,
+			required: [true, 'Please provide a valid user role, instead got {VALUE}'],
+			enum: ['admin', 'mod', 'owner', 'barber', 'costumer'],
+		},
+		favoriteBarbershops: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: 'Barbershop',
+		},
+		// appointments: {
+		// 	type: mongoose.Schema.Types.ObjectId,
+		// 	ref: 'Appointment',
+		// },
 	},
 	{ timestamps: true }
 )
