@@ -32,12 +32,13 @@ const UserSchema = new mongoose.Schema(
 		},
 		cloudinaryId: {
 			type: String,
-			required: [true, 'Please provide a cloudinaryId.'],
+			// required: [true, 'Please provide a cloudinaryId.'],
 		},
 		role: {
 			type: String,
 			required: [true, 'Please provide a valid user role, instead got {VALUE}'],
 			enum: ['admin', 'mod', 'owner', 'barber', 'costumer'],
+			default: 'costumer',
 		},
 		favoriteBarbershops: {
 			type: [mongoose.Schema.Types.ObjectId],

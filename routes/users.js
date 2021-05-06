@@ -1,7 +1,21 @@
 const express = require('express')
 const router = express.Router()
-const { getUserProfile } = require('../controllers/users')
+const {
+	deleteUser,
+	getUser,
+	getUsers,
+	updateUserDetails,
+	updateUserAvatar,
+} = require('../controllers/users')
+const upload = require('../utils/multer')
 
-router.route('/profile').get(getUserProfile)
+router.route('/').get(getUsers)
+
+router
+	.route('/:id')
+	.get(getUser)
+	.put(updateUserDetails)
+	.put(upload.single('avatar'), updateUserAvatar)
+	.delete(deleteUser)
 
 module.exports = router

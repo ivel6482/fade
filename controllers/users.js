@@ -5,8 +5,8 @@ exports.getUsers = async (req, res) => {
 	try {
 		const users = await User.find()
 		const count = await User.countDocuments()
-		if (users && count) {
-			res.status(200).json({ users, count })
+		if (users) {
+			res.status(200).json({ count, users })
 		} else {
 			res.status(404).json({ message: 'No users found' })
 		}
@@ -20,30 +20,6 @@ exports.getUser = async (req, res) => {
 	try {
 		const user = await User.findById(id)
 		if (user) {
-			res.status(200).json({
-				user,
-			})
-		} else {
-			res.status(404).json({ message: 'User not found.' })
-		}
-	} catch (error) {
-		console.error(error)
-	}
-}
-
-// ===================================================================
-// = TODO: How to handle update request with Cloudinary.
-// ===================================================================
-
-exports.updateUser = async (req, res) => {
-	const { id } = req.params
-	try {
-		const user = await User.findByIdAndUpdate(id, req.body, {
-			new: true,
-			runValidators: true,
-		})
-
-		if (user) {
 			res.status(200).json(user)
 		} else {
 			res.status(404).json({ message: 'User not found.' })
@@ -53,7 +29,46 @@ exports.updateUser = async (req, res) => {
 	}
 }
 
+exports.updateUserDetails = async (req, res) => {
+	const { id } = req.params
+	const { firstName, lastName } = req.body
+
+	try {
+		const user = await User.findById(id)
+
+		if (user) {
+			const updatedData = {
+				firstName: firstName || user.firstName,
+				lastName: lastName || user.lastName,
+				avatar: user.avatar,
+				cloudinaryId: user.cloudinaryId,
+				email: user.email,
+			}
+
+			const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
+				new: true,
+				runValidators: true,
+			})
+
+			res.status(200).json(updatedUser)
+		} else {
+			res.status(404).json({ message: 'User not found.' })
+		}
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+exports.updateUserAvatar = async (req, res) => {
+	const { id } = req.params
+
+	const user = await User.findById(id)
+
+	res.json(user)
+}
+
 exports.deleteUser = async (req, res) => {
+	const { id } = req.params
 	try {
 		const user = await User.findById(id)
 
