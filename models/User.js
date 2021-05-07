@@ -30,9 +30,9 @@ const UserSchema = new mongoose.Schema(
 				'https://res.cloudinary.com/drlwtqzgt/image/upload/samples/animals/cat.jpg',
 			required: [true, 'Please provide an image url for the avatar.'],
 		},
+		// There should not be a cloudinaryId by default because we don't want to delete it or modify the picture.
 		cloudinaryId: {
 			type: String,
-			// required: [true, 'Please provide a cloudinaryId.'],
 		},
 		role: {
 			type: String,

@@ -73,8 +73,18 @@ exports.deleteUser = async (req, res) => {
 		const user = await User.findById(id)
 
 		if (user) {
+			if (!user.cloudinaryId) {
+				// ===================================================================
+				// = Handle deleting a user with the default image.
+				// = This does not talk to cloudinary.
+				// ===================================================================
+				await User.remove(user)
+				res.status(200).json({
+					message: `${user.firstName} ${user.lastName} has been removed.`,
+				})
+			}
 			await cloudinary.uploader.destroy(user.cloudinaryId)
-			await user.remove(user)
+			await User.remove(user)
 			res.status(200).json({
 				message: `${user.firstName} ${user.lastName} has been removed.`,
 			})
