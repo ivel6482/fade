@@ -79,19 +79,18 @@ exports.updateUserAvatar = async (req, res) => {
 				res.status(200).json(updatedUser)
 			}
 
-			// await cloudinary.uploader.destroy(user.public_id)
-			// const result = await cloudinary.uploader.upload(req.file.path)
-			// const data = {
-			// 	avatar: result.secure_url,
-			// 	cloudinaryId: result.public_id,
-			// }
-			// const updatedUser = User.findByIdAndUpdate(id, data, {
-			// 	new: true,
-			// 	runValidators: true,
-			// })
+			await cloudinary.uploader.destroy(user.cloudinaryId)
+			const result = await cloudinary.uploader.upload(req.file.path)
+			const data = {
+				avatar: result.secure_url,
+				cloudinaryId: result.public_id,
+			}
+			const updatedUser = await User.findByIdAndUpdate(id, data, {
+				new: true,
+				runValidators: true,
+			})
 
-			// res.json(updatedUser)
-			res.json('custom avatar')
+			res.json(updatedUser)
 		} else {
 			res.status(404).json({ message: 'User not found' })
 		}
