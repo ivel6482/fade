@@ -60,11 +60,45 @@ exports.updateUserDetails = async (req, res) => {
 }
 
 exports.updateUserAvatar = async (req, res) => {
-	const { id } = req.params
+	try {
+		const { id } = req.params
+		const user = await User.findById(id)
 
-	const user = await User.findById(id)
+		if (user) {
+			if (!user.cloudinaryId) {
+				const result = await cloudinary.uploader.upload(req.file.path)
+				const data = {
+					avatar: result.secure_url,
+					cloudinaryId: result.public_id,
+				}
+				const updatedUser = await User.findByIdAndUpdate(id, data, {
+					new: true,
+					runValidators: true,
+				})
 
-	res.json(user)
+				res.status(200).json(updatedUser)
+			}
+
+			// await cloudinary.uploader.destroy(user.public_id)
+			// const result = await cloudinary.uploader.upload(req.file.path)
+			// const data = {
+			// 	avatar: result.secure_url,
+			// 	cloudinaryId: result.public_id,
+			// }
+			// const updatedUser = User.findByIdAndUpdate(id, data, {
+			// 	new: true,
+			// 	runValidators: true,
+			// })
+
+			// res.json(updatedUser)
+			res.json('custom avatar')
+		} else {
+			res.status(404).json({ message: 'User not found' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
 }
 
 exports.deleteUser = async (req, res) => {
@@ -83,6 +117,9 @@ exports.deleteUser = async (req, res) => {
 					message: `${user.firstName} ${user.lastName} has been removed.`,
 				})
 			}
+			// ===================================================================
+			// = Handle deleting users that have set an avatar.
+			// ===================================================================
 			await cloudinary.uploader.destroy(user.cloudinaryId)
 			await User.remove(user)
 			res.status(200).json({

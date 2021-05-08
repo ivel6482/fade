@@ -11,11 +11,8 @@ const upload = require('../utils/multer')
 
 router.route('/').get(getUsers)
 
-router
-	.route('/:id')
-	.get(getUser)
-	.put(updateUserDetails)
-	.put(upload.single('avatar'), updateUserAvatar)
-	.delete(deleteUser)
+router.route('/:id').get(getUser).put(updateUserDetails).delete(deleteUser)
+
+router.route('/:id/avatar').put(upload.single('avatar'), updateUserAvatar)
 
 module.exports = router
