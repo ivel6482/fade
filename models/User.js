@@ -18,11 +18,13 @@ const UserSchema = new mongoose.Schema(
 			unique: true,
 			required: [true, 'Please enter your email address.'],
 			trim: true,
+			match: /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/,
 		},
 		password: {
 			type: String,
 			required: [true, 'Please enter a password.'],
 			select: false, // Does not return the password by default, if we want it please use .select('+password') when querying.
+			match: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/, // Minimum eight characters, at least one upper case English letter, one lower case English letter, one number and one special character
 		},
 		avatar: {
 			type: String,

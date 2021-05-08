@@ -7,24 +7,70 @@ const BarbershopSchema = new mongoose.Schema(
 			required: [true, 'Please enter a barbershop name.'],
 			trim: true,
 		},
-		address: {
-			type: String,
-			required: [true, 'Please enter a barbershop address'],
-			trim: true,
+		location: {
+			address: {
+				type: String,
+				required: [true, 'Please enter a barbershop address'],
+				trim: true,
+			},
+			lon: {
+				type: String,
+			},
+			lat: {
+				type: String,
+			},
 		},
-		cloudinaryId: {
-			type: String,
+		banner: {
+			url: {
+				type: String,
+			},
+			cloudinaryId: {
+				type: String,
+			},
 		},
-		picture: {
-			type: String,
-			default:
-				'https://res.cloudinary.com/drlwtqzgt/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1619727940/samples/animals/cat.jpg',
-			required: true,
+		avatar: {
+			url: {
+				// TODO: Set a default.
+				type: String,
+			},
+			cloudinaryId: {
+				type: String,
+			},
 		},
+		contact: {
+			phoneNumber: {
+				type: String,
+				required: [true, 'Please add a phone number'],
+				match: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+			},
+		},
+		available: {
+			hours: {
+				open: {
+					type: String,
+				},
+				close: {
+					type: String,
+				},
+			},
+			days: {
+				type: [String],
+				enum: [
+					'sunday',
+					'monday',
+					'tuesday',
+					'wednesday',
+					'thursday',
+					'friday',
+					'saturday',
+				],
+			},
+		},
+
 		// owner: {
 		// 	type: mongoose.Schema.Types.ObjectId,
 		// 	ref: 'Owner'
-		// }
+		// },
 	},
 	{ timestamps: true }
 )
