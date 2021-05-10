@@ -40,7 +40,7 @@ const BarbershopSchema = new mongoose.Schema(
 		contact: {
 			phoneNumber: {
 				type: String,
-				required: [true, 'Please add a phone number'],
+				required: [true, 'Please add a phone number, instead got {VALUE}'],
 				match: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
 			},
 		},
