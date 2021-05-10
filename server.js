@@ -14,7 +14,7 @@ app.use(express.json())
 
 connectDB()
 
-if (process.env.PORT === 'development') {
+if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'))
 }
 
