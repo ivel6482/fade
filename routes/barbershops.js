@@ -9,6 +9,7 @@ const {
   updateBarbershop,
   deleteBarbershop,
   uploadBanner,
+  uploadAvatar,
 } = require("../controllers/barbershops")
 
 
@@ -24,5 +25,6 @@ router
   .delete(deleteBarbershop)
 
 router.route("/:id/banner").put(upload.single("image"), uploadBanner)
+router.route('/:id/avatar').put(upload.single('image'), uploadAvatar)
 
 module.exports = router
