@@ -40,10 +40,6 @@ exports.updateUserDetails = async (req, res) => {
       const updatedData = {
         firstName: firstName || user.firstName,
         lastName: lastName || user.lastName,
-        // TODO: Check if this is necessary. (avatar, cloudinaryId, email)
-        avatar: user.avatar,
-        cloudinaryId: user.cloudinaryId,
-        email: user.email,
       }
 
       const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
