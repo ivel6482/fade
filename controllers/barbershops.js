@@ -122,20 +122,26 @@ exports.uploadBanner = async (req, res) => {
     // TODO: If this works, refactor other controllers that contain cloudinary.
     if (barbershop) {
       if (barbershop.banner.cloudinaryId) {
-        // await cloudinary.uploader.destroy(babershop.banner.cloudinaryId)
-        console.log('Delete Image')
+        await cloudinary.uploader.destroy(barbershop.banner.cloudinaryId)
+        console.log("Delete Image")
       }
-      // const result = cloudinary.uploader.upload(req.file.path)
-      console.log('Upload Image')
-      // const newData = {
-      //   banner.cloudinaryId: result.public_id,
-      //   banner.url = result.secure_url,
-      // }
-      // const updatedBarbershop = await Barbershop.findByIdAndUpdate(id, newData, {
-      //   new: true,
-      //   runValidators: true,
-      // })
-      // res.status(200).json({ barbershop: updatedBarbershop })
+      const result = await cloudinary.uploader.upload(req.file.path)
+      console.log("Upload Image")
+      const newData = {
+        banner: {
+          cloudinaryId: result.public_id,
+          url: result.secure_url,
+        },
+      }
+      const updatedBarbershop = await Barbershop.findByIdAndUpdate(
+        id,
+        newData,
+        {
+          new: true,
+          runValidators: true,
+        }
+      )
+      res.status(200).json({ barbershop: updatedBarbershop })
 
       // if (barbershop.banner.cloudinaryId) {
       //   // handle changing banner
@@ -164,7 +170,7 @@ exports.uploadBanner = async (req, res) => {
       //   res.status(200).json({ barbershop: updatedBarbershop })
       // }
     } else {
-      res.status(404).json({ message: 'Barbershop not found.' })
+      res.status(404).json({ message: "Barbershop not found." })
     }
   } catch (error) {
     console.error(error)
