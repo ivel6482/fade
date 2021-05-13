@@ -40,6 +40,7 @@ exports.updateUserDetails = async (req, res) => {
 			const updatedData = {
 				firstName: firstName || user.firstName,
 				lastName: lastName || user.lastName,
+				// TODO: Check if this is necessary. (avatar, cloudinaryId, email)
 				avatar: user.avatar,
 				cloudinaryId: user.cloudinaryId,
 				email: user.email,
@@ -65,22 +66,13 @@ exports.updateUserAvatar = async (req, res) => {
 		const user = await User.findById(id)
 
 		if (user) {
-			if (!user.cloudinaryId) {
-				const result = await cloudinary.uploader.upload(req.file.path)
-				const data = {
-					avatar: result.secure_url,
-					cloudinaryId: result.public_id,
-				}
-				const updatedUser = await User.findByIdAndUpdate(id, data, {
-					new: true,
-					runValidators: true,
-				})
-
-				res.status(200).json(updatedUser)
+			if (user.cloudinaryId) {
+				await cloudinary.uploader.destroy(user.cloudinaryId)
+				console.log('Delete avatar image')
 			}
 
-			await cloudinary.uploader.destroy(user.cloudinaryId)
 			const result = await cloudinary.uploader.upload(req.file.path)
+			console.log('Upload avatar image')
 			const data = {
 				avatar: result.secure_url,
 				cloudinaryId: result.public_id,
