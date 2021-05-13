@@ -112,8 +112,6 @@ exports.updateBarbershop = async (req, res) => {
 }
 // -----------------------------------------------------------------------------
 //        - Upload barbershop banner image -
-// - TODO:
-//   - Upload banner
 // -----------------------------------------------------------------------------
 exports.uploadBanner = async (req, res) => {
   try {
@@ -142,33 +140,6 @@ exports.uploadBanner = async (req, res) => {
         }
       )
       res.status(200).json({ barbershop: updatedBarbershop })
-
-      // if (barbershop.banner.cloudinaryId) {
-      //   // handle changing banner
-      //   await cloudinary.uploader.destroy(barbershop.banner.cloudinaryId)
-      //   const result = cloudinary.uploader.upload(req.file.path)
-      //   const newData = {
-      //     banner.cloudinaryId: result.public_id,
-      //     banner.url = result.secure_url,
-      //   }
-      //   const updatedBarbershop = await Barbershop.findByIdAndUpdate(id, newData, {
-      //     new: true,
-      //     runValidators: true,
-      //   })
-      //   res.status(200).json({ barbershop: updatedBarbershop })
-      // } else {
-      //   // handle first upload
-      //   const result = cloudinary.uploader.upload(req.file.path)
-      //   const newData = {
-      //     banner.cloudinaryId: result.public_id,
-      //     banner.url = result.secure_url,
-      //   }
-      //   const updatedBarbershop = await Barbershop.findByIdAndUpdate(id, newData, {
-      //     new: true,
-      //     runValidators: true,
-      //   })
-      //   res.status(200).json({ barbershop: updatedBarbershop })
-      // }
     } else {
       res.status(404).json({ message: "Barbershop not found." })
     }
@@ -192,7 +163,15 @@ exports.deleteBarbershop = async (req, res) => {
     const { id } = req.params
     const barbershop = await Barbershop.findById(id)
     if (barbershop) {
-      // Handle deletion of cloudinary pictures.
+      if (barbershop.banner.cloudinaryId) {
+        await cloudinary.uploader.destroy(barbershop.banner.cloudinaryId)
+        console.log('Deleted banner image')
+      }
+
+      if (barbershop.avatar.cloudinaryId) {
+        await cloudinary.uploader.destroy(barbershop.avatar.cloudinaryId)
+        console.log('Deleted avatar image')
+      }
       await Barbershop.deleteOne({ _id: id }) // replaced remove with deleteOne.
       res.status(200).json({ message: `${barbershop.name} has been removed.` })
     } else {
