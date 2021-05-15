@@ -118,6 +118,11 @@ exports.uploadBanner = async (req, res) => {
     const { id } = req.params
     const barbershop = await Barbershop.findById(id)
     if (barbershop) {
+
+      if (req.file === undefined) {
+        return res.status(400).json({ message: 'An image is required.' })
+      }
+
       if (barbershop.banner.cloudinaryId) {
         await cloudinary.uploader.destroy(barbershop.banner.cloudinaryId)
         console.log("Delete Image")
@@ -157,6 +162,10 @@ exports.uploadAvatar = async (req, res) => {
     const { id } = req.params
     const barbershop = await Barbershop.findById(id)
     if (barbershop) {
+      if (req.file === undefined) {
+        return res.status(400).json({ message: 'An image is required.' })
+      }
+
       if (barbershop.avatar.cloudinaryId) {
         await cloudinary.uploader.destroy(barbershop.avatar.cloudinaryId)
       }
