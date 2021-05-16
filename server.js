@@ -7,6 +7,7 @@ const barbershopRoutes = require('./routes/barbershops')
 const authRoutes = require('./routes/auth')
 const usersRoutes = require('./routes/users')
 const barberRoutes = require('./routes/barbers')
+const appointmentRoutes = require('./routes/appointments')
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', usersRoutes)
 app.use('/api/v1/barbershops', barbershopRoutes)
 app.use('/api/v1/barbers', barberRoutes)
+app.use('/api/v1/appointments', appointmentRoutes)
 
 const PORT = process.env.PORT || 5000
 
