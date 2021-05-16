@@ -6,6 +6,7 @@ const connectDB = require('./config/db')
 const barbershopRoutes = require('./routes/barbershops')
 const authRoutes = require('./routes/auth')
 const usersRoutes = require('./routes/users')
+const barberRoutes = require('./routes/barbers')
 
 const app = express()
 
@@ -21,6 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', usersRoutes)
 app.use('/api/v1/barbershops', barbershopRoutes)
+app.use('/api/v1/barbers', barberRoutes)
 
 const PORT = process.env.PORT || 5000
 

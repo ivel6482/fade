@@ -7,17 +7,25 @@ const BarberSchema = new mongoose.Schema(
       required: [true, "Please enter a barber name"],
       trim: true,
     },
+    avatar: {
+      url: {
+        type: String,
+      },
+      cloudinaryId: {
+        type: String,
+      },
+    },
     status: {
       type: String,
       required: [true, "Please enter a status"],
       enum: ["available", "booked", "not available"],
-      default: "not availlable",
+      default: "not available",
     },
     barbershop: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Barbershop",
     },
-    specialty: {
+    specialties: {
       type: [String],
       enum: ["beard trimming", "haircut", "fade", "coloring"],
       default: "haircut",
