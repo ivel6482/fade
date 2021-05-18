@@ -48,6 +48,7 @@ exports.createAppointment = async (req, res) => {
 	}
 }
 
+// FIXME: Provide a better error message when a duplicated value is sent to a unique field
 exports.updateAppointment = async (req, res) => {
 	try {
 		const { id } = req.params
@@ -69,6 +70,28 @@ exports.updateAppointment = async (req, res) => {
 			res.status(200).json({ appointment: updatedAppointment })
 		} else {
 			res.status(404).json({ message: 'Appointment not found' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
+
+// TODO: Get all booked appointments
+// TODO: Get all available appointments
+exports.deleteAppointment = async (req, res) => {
+	try {
+		const { id } = req.params
+		const appointment = await Appointment.findById(id)
+		if (appointment) {
+			await Appointment.deleteOne({ _id: id })
+			res
+				.status(200)
+				.json({
+					message: `Appointment at ${appointment.time} with the id of ${appointment._id}`,
+				})
+		} else {
+			res.status(404).json({ message: 'Appointment not found.' })
 		}
 	} catch (error) {
 		console.error(error)

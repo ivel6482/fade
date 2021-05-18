@@ -5,9 +5,14 @@ const {
 	getAllAppointments,
 	getAppointment,
 	updateAppointment,
+	deleteAppointment,
 } = require('../controllers/appointments')
 
 router.route('/').post(createAppointment).get(getAllAppointments)
-router.route('/:id').get(getAppointment).put(updateAppointment)
+router
+	.route('/:id')
+	.get(getAppointment)
+	.put(updateAppointment)
+	.delete(deleteAppointment)
 
 module.exports = router
