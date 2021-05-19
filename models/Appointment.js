@@ -13,6 +13,11 @@ const AppointmentSchema = new mongoose.Schema(
 			default: Date.now(),
 			unique: true,
 		},
+		booked: {
+			type: Boolean,
+			required: [true, 'Please specify is the appointment is booked'],
+			default: false,
+		},
 		bookedAt: {
 			type: Date,
 		},
@@ -27,6 +32,10 @@ const AppointmentSchema = new mongoose.Schema(
 		barberId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Barber',
+			required: [
+				true,
+				'Please specify the id of the barber that the appointment belongs to',
+			],
 		},
 	},
 	{ timestamps: true }

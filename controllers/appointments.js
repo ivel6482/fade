@@ -34,10 +34,10 @@ exports.getAppointment = async (req, res) => {
 
 exports.createAppointment = async (req, res) => {
 	try {
-		const { time, day } = req.body
+		const { time, barberId } = req.body
 		const newAppointment = {
 			time,
-			day,
+			barberId,
 		}
 
 		const appointment = await Appointment.create(newAppointment)
@@ -86,6 +86,7 @@ exports.bookAppointment = async (req, res) => {
 			const bookedData = {
 				bookedAt: Date.now(),
 				bookedBy: req.user._id,
+				booked: true,
 			}
 
 			const bookedAppointment = await Appointment.findByIdAndUpdate(
@@ -112,6 +113,7 @@ exports.cancelAppointment = async (req, res) => {
 			const cancelData = {
 				bookedAt: null,
 				bookedBy: null,
+				booked: false,
 			}
 
 			const canceledAppointment = await Appointment.findByIdAndUpdate(
