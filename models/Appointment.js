@@ -19,10 +19,10 @@ const AppointmentSchema = new mongoose.Schema(
 		bookedBy: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
-			required: [
-				true,
-				'Please provide the id of the user who booked the appointment',
-			],
+			// required: [
+			// 	true,
+			// 	'Please provide the id of the user who booked the appointment',
+			// ],
 		},
 		barberId: {
 			type: mongoose.Schema.Types.ObjectId,

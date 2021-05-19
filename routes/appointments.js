@@ -7,6 +7,7 @@ const {
 	updateAppointment,
 	deleteAppointment,
 	bookAppointment,
+	cancelAppointment,
 } = require('../controllers/appointments')
 const { protect } = require('../middleware/auth')
 
@@ -18,5 +19,6 @@ router
 	.delete(deleteAppointment)
 
 router.put('/:id/book', protect, bookAppointment)
+router.put('/:id/cancel', protect, cancelAppointment)
 
 module.exports = router
