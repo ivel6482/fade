@@ -16,6 +16,36 @@ exports.getAllAppointments = async (req, res) => {
 	}
 }
 
+exports.getAvailableAppointments = async (req, res) => {
+	try {
+		const appointments = await Appointment.find({ booked: false })
+		const count = await Appointment.countDocuments({ booked: false })
+		if (appointments) {
+			res.status(200).json({ count, appointments })
+		} else {
+			res.status(404).json({ message: 'No available appointments' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
+
+exports.getBookedAppointments = async (req, res) => {
+	try {
+		const appointments = await Appointment.find({ booked: true })
+		const count = await Appointment.countDocuments({ booked: true })
+		if (appointments) {
+			res.status(200).json({ count, appointments })
+		} else {
+			res.status(404).json({ message: 'No available appointments' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
+
 exports.getAppointment = async (req, res) => {
 	try {
 		const { id } = req.params

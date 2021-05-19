@@ -8,10 +8,14 @@ const {
 	deleteAppointment,
 	bookAppointment,
 	cancelAppointment,
+	getAvailableAppointments,
+	getBookedAppointments,
 } = require('../controllers/appointments')
 const { protect } = require('../middleware/auth')
 
 router.route('/').post(createAppointment).get(getAllAppointments)
+router.get('/available', getAvailableAppointments)
+router.get('/booked', getBookedAppointments)
 router
 	.route('/:id')
 	.get(getAppointment)
