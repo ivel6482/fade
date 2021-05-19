@@ -78,11 +78,11 @@ exports.createAppointment = async (req, res) => {
 	}
 }
 
-// FIXME: Provide a better error message when a duplicated value is sent to a unique field
+// TODO: Better handle duplicate key error
 exports.updateAppointment = async (req, res) => {
+	const { id } = req.params
+	const { time, day } = req.body
 	try {
-		const { id } = req.params
-		const { time, day } = req.body
 		const appointment = await Appointment.findById(id)
 
 		if (appointment) {
@@ -102,7 +102,14 @@ exports.updateAppointment = async (req, res) => {
 			res.status(404).json({ message: 'Appointment not found' })
 		}
 	} catch (error) {
-		console.error(error)
+		if (
+			error.name === 'MongoError' &&
+			error.message.split(' ')[0] === 'E11000'
+		) {
+			return res.status(400).json({
+				message: `There is already an appointment with the time: ${time}`,
+			})
+		}
 		res.status(500).json({ message: 'Server Error' })
 	}
 }
