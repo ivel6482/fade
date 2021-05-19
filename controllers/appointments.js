@@ -76,8 +76,34 @@ exports.updateAppointment = async (req, res) => {
 		res.status(500).json({ message: 'Server Error' })
 	}
 }
+// TODO: Make an appointment unique to a barber instead of time. There can be multiple 3:00PM appointments, but only one 3:00 PM appointment per barber.
 
-// TODO: Get all booked appointments
+// TODO: Test this controller
+exports.bookAppointment = async (req, res) => {
+	try {
+		const { id } = req.params
+		const appointment = await Appointment.findById(id)
+		if (appointment) {
+			const bookedData = {
+				bookedAt: Date.now(),
+				bookedBy: req.user._id,
+			}
+
+			const bookedAppointment = await Appointment.findByIdAndUpdate(
+				id,
+				bookedData,
+				{ new: true, runValidators: true }
+			)
+
+			res.status(200).json({ appointment: bookedAppointment })
+		} else {
+			res.status(404).json({ message: 'Appointment not found.' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
 // TODO: Get all available appointments
 exports.deleteAppointment = async (req, res) => {
 	try {
@@ -85,11 +111,9 @@ exports.deleteAppointment = async (req, res) => {
 		const appointment = await Appointment.findById(id)
 		if (appointment) {
 			await Appointment.deleteOne({ _id: id })
-			res
-				.status(200)
-				.json({
-					message: `Appointment at ${appointment.time} with the id of ${appointment._id}`,
-				})
+			res.status(200).json({
+				message: `Appointment at ${appointment.time} with the id of ${appointment._id}`,
+			})
 		} else {
 			res.status(404).json({ message: 'Appointment not found.' })
 		}

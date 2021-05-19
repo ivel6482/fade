@@ -6,7 +6,9 @@ const {
 	getAppointment,
 	updateAppointment,
 	deleteAppointment,
+	bookAppointment,
 } = require('../controllers/appointments')
+const { protect } = require('../middleware/auth')
 
 router.route('/').post(createAppointment).get(getAllAppointments)
 router
@@ -14,5 +16,7 @@ router
 	.get(getAppointment)
 	.put(updateAppointment)
 	.delete(deleteAppointment)
+
+router.put('/:id/book', protect, bookAppointment)
 
 module.exports = router
