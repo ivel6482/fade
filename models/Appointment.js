@@ -5,7 +5,6 @@ const AppointmentSchema = new mongoose.Schema(
 		time: {
 			type: String, // For testing, change to date
 			required: [true, 'Please specify an appointment time'],
-			unique: true,
 		},
 		day: {
 			type: Date,

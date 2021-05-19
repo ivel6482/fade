@@ -65,6 +65,17 @@ exports.getAppointment = async (req, res) => {
 exports.createAppointment = async (req, res) => {
 	try {
 		const { time, barberId } = req.body
+		const duplicateAppointmentExists = await Appointment.findOne({
+			barberId,
+			time,
+		}).populate('barberId')
+
+		if (duplicateAppointmentExists) {
+			return res.status(400).json({
+				message: `An appointment at ${time} for ${duplicateAppointmentExists.barberId.name} already exists.`,
+			})
+		}
+
 		const newAppointment = {
 			time,
 			barberId,
@@ -113,7 +124,6 @@ exports.updateAppointment = async (req, res) => {
 		res.status(500).json({ message: 'Server Error' })
 	}
 }
-// TODO: Make an appointment unique to a barber instead of time. There can be multiple 3:00PM appointments, but only one 3:00 PM appointment per barber.
 
 exports.bookAppointment = async (req, res) => {
 	try {
@@ -168,7 +178,7 @@ exports.cancelAppointment = async (req, res) => {
 		res.status(500).json({ message: 'Server Error' })
 	}
 }
-// TODO: Get all available appointments
+
 exports.deleteAppointment = async (req, res) => {
 	try {
 		const { id } = req.params
