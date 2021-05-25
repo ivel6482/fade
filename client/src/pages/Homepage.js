@@ -1,10 +1,9 @@
-import { Link } from 'react-router-dom'
+import Hero from '../components/Hero'
 
 export default function Homepage() {
 	return (
 		<>
-			<h1 className='text-6xl'>Homepage</h1>
-			<Link to='/signup'>Signup</Link>
+			<Hero />
 		</>
 	)
 }
