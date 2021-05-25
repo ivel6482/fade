@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 require('dotenv').config()
 const connectDB = require('./config/db')
 
@@ -10,7 +11,7 @@ const barberRoutes = require('./routes/barbers')
 const appointmentRoutes = require('./routes/appointments')
 
 const app = express()
-
+app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
