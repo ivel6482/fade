@@ -6,18 +6,23 @@ import {
 	LOGIN_USER_FAIL,
 	LOGIN_USER_SUCCESS,
 	LOGOUT_USER,
-	LOGOUT_USER_FAIL,
-	LOGOUT_USER_SUCCESS,
+	// LOGOUT_USER_FAIL,
+	// LOGOUT_USER_SUCCESS,
 	SIGNUP_USER,
 	SIGNUP_USER_FAIL,
 	SIGNUP_USER_SUCCESS,
+	GET_LOGGED_IN_USER,
+	GET_LOGGED_IN_USER_FAIL,
+	GET_LOGGED_IN_USER_SUCCESS,
 } from '../actions/userActions'
 
 // TODO: Implement session management using next-auth npm package
 
 const initialState = {
 	user: localStorage.getItem('user') ? localStorage.getItem('user') : null,
-	isAuthenticated: false,
+	isAuthenticated: localStorage.getItem('isAuthenticated')
+		? localStorage.getItem('isAuthenticated')
+		: false,
 	loading: false,
 	errors: [],
 }
@@ -32,6 +37,23 @@ export const UserProvider = ({ children }) => {
 	// -------------------------------------------------------------------------
 	//                              - Actions -
 	// -------------------------------------------------------------------------
+
+	const getLoggedInUser = () => {
+		dispatch({
+			type: GET_LOGGED_IN_USER,
+		})
+		const user = localStorage.getItem('user')
+
+		if (user) {
+			dispatch({ type: GET_LOGGED_IN_USER_SUCCESS, payload: user })
+		} else {
+			dispatch({
+				type: GET_LOGGED_IN_USER_FAIL,
+				payload: 'Error getting logged in user.',
+			})
+		}
+	}
+
 	const login = async ({ email, password }) => {
 		try {
 			dispatch({ type: LOGIN_USER })
@@ -74,12 +96,21 @@ export const UserProvider = ({ children }) => {
 	}
 
 	const logout = () => {
-		dispatch({ type: LOGIN_USER })
+		dispatch({ type: LOGOUT_USER })
 	}
 
 	return (
 		<Provider
-			value={{ user, isAuthenticated, loading, errors, login, signup, logout }}
+			value={{
+				user,
+				isAuthenticated,
+				loading,
+				errors,
+				login,
+				signup,
+				logout,
+				getLoggedInUser,
+			}}
 		>
 			{children}
 		</Provider>

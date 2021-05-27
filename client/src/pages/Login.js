@@ -106,12 +106,12 @@ export default function Login() {
 								</div>
 
 								<div className='text-sm'>
-									<a
-										href='#'
+									<Link
+										to='/forgot-password'
 										className='font-medium text-indigo-600 hover:text-indigo-500'
 									>
 										Forgot your password?
-									</a>
+									</Link>
 								</div>
 							</div>
 
@@ -140,7 +140,7 @@ export default function Login() {
 							<div className='grid grid-cols-3 gap-3 mt-6'>
 								<div>
 									<a
-										href='#'
+										href='https://facebook.com'
 										className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50'
 									>
 										<span className='sr-only'>Sign in with Facebook</span>
@@ -161,7 +161,7 @@ export default function Login() {
 
 								<div>
 									<a
-										href='#'
+										href='https://twitter.com'
 										className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50'
 									>
 										<span className='sr-only'>Sign in with Twitter</span>
@@ -178,7 +178,7 @@ export default function Login() {
 
 								<div>
 									<a
-										href='#'
+										href='https://github.com'
 										className='inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50'
 									>
 										<span className='sr-only'>Sign in with GitHub</span>

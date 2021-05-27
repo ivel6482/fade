@@ -58,7 +58,10 @@ export default function Footer() {
 					</p>
 					<p className='text-base text-center text-gray-400'>
 						Made with ❤ by
-						<a href='#' className='text-blue-900 hover:text-opacity-90'>
+						<a
+							href='https://twitter.com/velezilder'
+							className='text-blue-900 hover:text-opacity-90'
+						>
 							{' '}
 							Ilder V&eacute;lez
 						</a>
