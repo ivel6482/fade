@@ -95,8 +95,9 @@ export const UserProvider = ({ children }) => {
 		}
 	}
 
-	const logout = () => {
+	const logout = (history) => {
 		dispatch({ type: LOGOUT_USER })
+		history.push('/login')
 	}
 
 	return (

@@ -19,7 +19,6 @@ export function userReducer(state, action) {
 	switch (type) {
 		case LOGIN_USER:
 		case SIGNUP_USER:
-		case LOGOUT_USER:
 		case GET_LOGGED_IN_USER:
 			return {
 				...state,
@@ -45,12 +44,24 @@ export function userReducer(state, action) {
 				loading: false,
 			}
 
+		case LOGOUT_USER:
+			localStorage.removeItem('user')
+			localStorage.removeItem('isAuthenticated')
+			console.log('RAN')
+			return {
+				...state,
+				user: null,
+				isAuthenticated: false,
+				loading: false,
+			}
+
 		case LOGIN_USER_FAIL:
 		case LOGOUT_USER_FAIL:
 		case SIGNUP_USER_FAIL:
 		case LOGOUT_USER_SUCCESS:
 		case GET_LOGGED_IN_USER_FAIL:
 			localStorage.removeItem('user')
+			localStorage.removeItem('isAuthenticated')
 			return {
 				user: null,
 				isAuthenticated: false,
