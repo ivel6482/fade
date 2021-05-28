@@ -133,6 +133,14 @@ export default function Dashboard() {
 												{item.name}
 											</a>
 										))}
+										<button
+											className='px-2 py-1 text-red-900 transition bg-red-500 rounded hover:bg-red-600'
+											onClick={() => {
+												logout(history)
+											}}
+										>
+											Logout
+										</button>
 									</div>
 								</nav>
 							</div>

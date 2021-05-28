@@ -114,7 +114,7 @@ export const UserProvider = ({ children }) => {
 		localStorage.removeItem('token')
 		localStorage.removeItem('user')
 		localStorage.removeItem('isAuthenticated')
-		dispatch({ type: LOGIN_USER_SUCCESS })
+		dispatch({ type: LOGOUT_USER_SUCCESS })
 		history.push('/login')
 		// FIXME: Add trycatch block
 	}

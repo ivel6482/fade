@@ -24,7 +24,6 @@ export function userReducer(state, action) {
 			return {
 				...state,
 				loading: true,
-				isAuthenticated: false,
 			}
 
 		case LOGIN_USER_SUCCESS:
@@ -49,9 +48,7 @@ export function userReducer(state, action) {
 		case LOGOUT_USER_SUCCESS:
 			return {
 				...state,
-				user: localStorage.getItem('token')
-					? localStorage.getItem('token')
-					: null,
+				user: null,
 				token: null,
 				isAuthenticated: false,
 				loading: false,
