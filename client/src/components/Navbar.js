@@ -86,8 +86,6 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ homepage }) {
-	const { user } = useContext(UserContext)
-
 	return (
 		<>
 			<Popover className='relative bg-white'>

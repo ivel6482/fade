@@ -2,6 +2,7 @@ import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../store/contexts/userContext'
 import ErrorList from '../components/ErrorList'
+import { useHistory } from 'react-router-dom'
 
 export default function Signup() {
 	const [firstName, setFirstName] = useState('')
@@ -11,9 +12,11 @@ export default function Signup() {
 
 	const { signup, loading, errors } = useContext(UserContext)
 
+	const history = useHistory()
+
 	const submitHandler = (e) => {
 		e.preventDefault()
-		signup({ firstName, lastName, email, password })
+		signup(firstName, lastName, email, password, history)
 		setEmail('')
 		setFirstName('')
 		setLastName('')

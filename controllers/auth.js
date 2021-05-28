@@ -50,7 +50,7 @@ exports.signup = async (req, res) => {
 		const newUser = await User.create(userToAdd)
 
 		if (newUser) {
-			res.status(201).json({ user: newUser, token: generateToken(newUser._id) })
+			res.status(201).json({ token: generateToken(newUser._id) })
 		}
 	} catch (error) {
 		console.error(error)
@@ -70,8 +70,14 @@ exports.login = async (req, res) => {
 	// If there's  a user and the password matches send the user information and token
 	if (user && isMatch) {
 		res.json({
-			user,
 			token: generateToken(user._id), // **See: ./utils/generateToken
+			user: {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				_id: user._id,
+				email: user.email,
+				avatar: user.avatar,
+			},
 		})
 	} else {
 		res.status(401).json({ message: 'Invalid email or password' })
@@ -83,11 +89,12 @@ exports.getLoggedInUser = async (req, res) => {
 		const user = await User.findById(req.user._id)
 
 		if (user) {
-			res.json(user)
+			res.json({ token: generateToken(user._id) })
 		} else {
 			res.status(404).json({ message: 'User not found' })
 		}
 	} catch (error) {
 		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
 	}
 }

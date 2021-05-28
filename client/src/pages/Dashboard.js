@@ -27,7 +27,7 @@ export default function Dashboard() {
 		}
 	}, [history, user, isAuthenticated])
 
-	const { firstName, lastName, avatar } = JSON.parse(user)
+	const { firstName, lastName, avatar } = user
 
 	const navigation = [
 		{ name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -142,8 +142,8 @@ export default function Dashboard() {
 										<div>
 											<img
 												className='inline-block w-10 h-10 rounded-full'
-												src='https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80'
-												alt=''
+												src={avatar}
+												alt={`${firstName} ${lastName}`}
 											/>
 										</div>
 										<div className='ml-3'>

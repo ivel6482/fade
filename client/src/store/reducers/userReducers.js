@@ -1,14 +1,14 @@
 import {
-	LOGIN_USER,
+	LOGIN_USER_REQUEST,
 	LOGIN_USER_FAIL,
 	LOGIN_USER_SUCCESS,
-	LOGOUT_USER,
+	LOGOUT_USER_REQUEST,
 	LOGOUT_USER_FAIL,
 	LOGOUT_USER_SUCCESS,
-	SIGNUP_USER,
+	SIGNUP_USER_REQUEST,
 	SIGNUP_USER_FAIL,
 	SIGNUP_USER_SUCCESS,
-	GET_LOGGED_IN_USER,
+	GET_LOGGED_IN_USER_REQUEST,
 	GET_LOGGED_IN_USER_FAIL,
 	GET_LOGGED_IN_USER_SUCCESS,
 } from '../actions/userActions'
@@ -17,22 +17,23 @@ export function userReducer(state, action) {
 	const { type, payload } = action
 
 	switch (type) {
-		case LOGIN_USER:
-		case SIGNUP_USER:
-		case GET_LOGGED_IN_USER:
+		case LOGIN_USER_REQUEST:
+		case SIGNUP_USER_REQUEST:
+		case GET_LOGGED_IN_USER_REQUEST:
+		case LOGOUT_USER_REQUEST:
 			return {
 				...state,
 				loading: true,
+				isAuthenticated: false,
 			}
 
 		case LOGIN_USER_SUCCESS:
 		case SIGNUP_USER_SUCCESS:
-			localStorage.setItem('user', JSON.stringify(payload.user))
-			localStorage.setItem('isAuthenticated', JSON.stringify(true))
 			return {
 				...state,
-				isAuthenticated: true,
 				user: payload.user,
+				token: payload.token,
+				isAuthenticated: true,
 				loading: false,
 			}
 
@@ -40,17 +41,18 @@ export function userReducer(state, action) {
 			return {
 				...state,
 				isAuthenticated: true,
+				token: payload.token,
 				user: payload.user,
 				loading: false,
 			}
 
-		case LOGOUT_USER:
-			localStorage.removeItem('user')
-			localStorage.removeItem('isAuthenticated')
-			console.log('RAN')
+		case LOGOUT_USER_SUCCESS:
 			return {
 				...state,
-				user: null,
+				user: localStorage.getItem('token')
+					? localStorage.getItem('token')
+					: null,
+				token: null,
 				isAuthenticated: false,
 				loading: false,
 			}
@@ -58,12 +60,10 @@ export function userReducer(state, action) {
 		case LOGIN_USER_FAIL:
 		case LOGOUT_USER_FAIL:
 		case SIGNUP_USER_FAIL:
-		case LOGOUT_USER_SUCCESS:
 		case GET_LOGGED_IN_USER_FAIL:
-			localStorage.removeItem('user')
-			localStorage.removeItem('isAuthenticated')
 			return {
 				user: null,
+				token: null,
 				isAuthenticated: false,
 				errors: [...state.errors, payload],
 				loading: false,

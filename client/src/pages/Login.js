@@ -9,18 +9,11 @@ export default function Login() {
 
 	const history = useHistory()
 
-	const { loading, errors, login, isAuthenticated, user } =
-		useContext(UserContext)
-
-	useEffect(() => {
-		if (user && isAuthenticated && !loading) {
-			history.push('/dashboard')
-		}
-	}, [user, isAuthenticated, loading, history])
+	const { login, errors, loading } = useContext(UserContext)
 
 	const submitHandler = (e) => {
 		e.preventDefault()
-		login({ email, password })
+		login(email, password, history)
 		setEmail('')
 		setPassword('')
 	}
