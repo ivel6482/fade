@@ -6,7 +6,6 @@ import { Dialog, Transition } from '@headlessui/react'
 import {
 	CalendarIcon,
 	HomeIcon,
-	LogoutIcon,
 	MapIcon,
 	MenuIcon,
 	SearchCircleIcon,
@@ -14,6 +13,7 @@ import {
 	UserGroupIcon,
 	XIcon,
 } from '@heroicons/react/outline'
+import BarbershopList from '../components/BarbershopsList'
 
 export default function Dashboard() {
 	const { user, isAuthenticated, logout } = useContext(UserContext)
@@ -272,7 +272,8 @@ export default function Dashboard() {
 					<main className='relative z-0 flex-1 overflow-y-auto focus:outline-none'>
 						{/* Start main area*/}
 						<div className='absolute inset-0 px-4 py-6 sm:px-6 lg:px-8'>
-							<div className='h-full border-2 border-gray-200 border-dashed rounded-lg' />
+							<BarbershopList />
+							{/* <div className='h-full border-2 border-gray-200 border-dashed rounded-lg' /> */}
 						</div>
 						{/* End main area */}
 					</main>
