@@ -10,16 +10,14 @@ export default function App() {
 	return (
 		//TODO: handle context migration from next to react
 		<Router>
-			<Layout>
-				<Switch>
-					<Route path='/' exact component={Homepage} />
-					<Route path='/signup' component={Signup} />
-					<Route path='/login' component={Login} />
-					<PrivateRoute path='/dashboard'>
-						<Dashboard />
-					</PrivateRoute>
-				</Switch>
-			</Layout>
+			<Switch>
+				<Route path='/' exact component={Homepage} />
+				<Route path='/signup' component={Signup} />
+				<Route path='/login' component={Login} />
+				<PrivateRoute path='/dashboard'>
+					<Dashboard />
+				</PrivateRoute>
+			</Switch>
 		</Router>
 	)
 }
