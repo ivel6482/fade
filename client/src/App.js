@@ -4,6 +4,7 @@ import Signup from './pages/Signup'
 import Layout from './components/Layout'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import PrivateRoute from './components/PrivateRoute'
 
 export default function App() {
 	return (
@@ -14,7 +15,9 @@ export default function App() {
 					<Route path='/' exact component={Homepage} />
 					<Route path='/signup' component={Signup} />
 					<Route path='/login' component={Login} />
-					<Route path='/dashboard' component={Dashboard} />
+					<PrivateRoute path='/dashboard'>
+						<Dashboard />
+					</PrivateRoute>
 				</Switch>
 			</Layout>
 		</Router>
