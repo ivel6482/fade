@@ -1,7 +1,8 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../store/contexts/userContext'
 import ErrorList from '../components/ErrorList'
+import Layout from '../components/Layout'
 import { useHistory } from 'react-router-dom'
 
 export default function Signup() {
@@ -10,9 +11,16 @@ export default function Signup() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-	const { signup, loading, errors } = useContext(UserContext)
+	const { signup, loading, errors, user, isAuthenticated } =
+		useContext(UserContext)
 
 	const history = useHistory()
+
+	useEffect(() => {
+		if (user && isAuthenticated) {
+			history.push('/dashboard')
+		}
+	}, [user, isAuthenticated, history])
 
 	const submitHandler = (e) => {
 		e.preventDefault()
@@ -24,7 +32,7 @@ export default function Signup() {
 	}
 
 	return (
-		<>
+		<Layout>
 			<div className='flex flex-col min-h-screen py-12 sm:justify-center bg-gray-50 sm:px-6 lg:px-8'>
 				<div className='sm:mx-auto sm:w-full sm:max-w-md'>
 					<h2 className='mt-6 text-3xl font-extrabold text-center text-gray-900'>
@@ -233,6 +241,6 @@ export default function Signup() {
 					</div>
 				</div>
 			</div>
-		</>
+		</Layout>
 	)
 }

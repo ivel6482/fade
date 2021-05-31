@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
+import Layout from '../components/Layout'
 import { Link, useHistory } from 'react-router-dom'
 import { UserContext } from '../store/contexts/userContext'
 import ErrorList from '../components/ErrorList'
@@ -9,7 +10,14 @@ export default function Login() {
 
 	const history = useHistory()
 
-	const { login, errors, loading } = useContext(UserContext)
+	const { login, errors, loading, user, isAuthenticated } =
+		useContext(UserContext)
+
+	useEffect(() => {
+		if (user && isAuthenticated) {
+			history.push('/dashboard')
+		}
+	}, [history, user, isAuthenticated])
 
 	const submitHandler = (e) => {
 		e.preventDefault()
@@ -19,7 +27,7 @@ export default function Login() {
 	}
 
 	return (
-		<>
+		<Layout>
 			<div className='flex flex-col min-h-screen py-12 sm:justify-center bg-gray-50 sm:px-6 lg:px-8'>
 				<div className='sm:mx-auto sm:w-full sm:max-w-md'>
 					<h2 className='mt-6 text-3xl font-extrabold text-center text-gray-900'>
@@ -194,6 +202,6 @@ export default function Login() {
 					</div>
 				</div>
 			</div>
-		</>
+		</Layout>
 	)
 }
