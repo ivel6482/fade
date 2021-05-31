@@ -25,11 +25,13 @@ export const BarbershopsProvider = ({ children }) => {
 		try {
 			dispatch({ type: GET_BARBERSHOPS_REQUEST })
 			const res = await axios.get('/barbershops')
-
-			dispatch({ type: GET_BARBERSHOPS_SUCCESS, payload: res.data })
+			dispatch({ type: GET_BARBERSHOPS_SUCCESS, payload: res.data.barbershops })
 		} catch (error) {
 			console.error(error)
-			dispatch({ type: GET_BARBERSHOPS_FAIL, payload: error })
+			dispatch({
+				type: GET_BARBERSHOPS_FAIL,
+				payload: error.response.data.message,
+			})
 		}
 	}
 
