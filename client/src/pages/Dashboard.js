@@ -145,7 +145,7 @@ export default function Dashboard() {
 								</nav>
 							</div>
 							<div className='flex flex-shrink-0 p-4 border-t border-gray-200'>
-								<a href='#' className='flex-shrink-0 block group'>
+								<a href='#!' className='flex-shrink-0 block group'>
 									<div className='flex items-center'>
 										<div>
 											<img
@@ -223,7 +223,7 @@ export default function Dashboard() {
 							</nav>
 						</div>
 						<div className='flex flex-shrink-0 p-4 border-t border-gray-200'>
-							<a href='#' className='flex-shrink-0 block w-full group'>
+							<a href='#!' className='flex-shrink-0 block w-full group'>
 								<div className='flex items-center'>
 									<div>
 										<img
