@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react'
 import Hero from '../components/Hero'
+import Layout from '../components/Layout'
 import { UserContext } from '../store/contexts/userContext'
 import { useHistory } from 'react-router-dom'
 
@@ -14,8 +15,8 @@ export default function Homepage() {
 	}, [history, isAuthenticated, user])
 
 	return (
-		<>
+		<Layout>
 			<Hero />
-		</>
+		</Layout>
 	)
 }
