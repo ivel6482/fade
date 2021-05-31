@@ -1,7 +1,7 @@
 import { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Popover, Transition } from '@headlessui/react'
-import { UserContext } from '../store/contexts/userContext'
+// import { UserContext } from '../store/contexts/userContext'
 import {
 	ChartBarIcon,
 	CursorClickIcon,
@@ -142,9 +142,9 @@ export default function Navbar({ homepage }) {
 												>
 													<div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5'>
 														<div className='relative grid gap-6 px-5 py-6 bg-white sm:gap-8 sm:p-8 lg:grid-cols-2'>
-															{solutions.map((item) => (
+															{solutions.map((item, index) => (
 																<a
-																	key={item.name}
+																	key={index}
 																	href={item.href}
 																	className='flex items-start p-3 -m-3 rounded-lg hover:bg-gray-50'
 																>
@@ -167,7 +167,7 @@ export default function Navbar({ homepage }) {
 														</div>
 														<div className='p-5 bg-gray-50 sm:p-8'>
 															<a
-																href='#'
+																href='#!'
 																className='flow-root p-3 -m-3 rounded-md hover:bg-gray-100'
 															>
 																<div className='flex items-center'>
@@ -192,13 +192,13 @@ export default function Navbar({ homepage }) {
 								</Popover>
 
 								<a
-									href='#'
+									href='#!'
 									className='text-base font-medium text-gray-500 hover:text-gray-900'
 								>
 									Pricing
 								</a>
 								<a
-									href='#'
+									href='#!'
 									className='text-base font-medium text-gray-500 hover:text-gray-900'
 								>
 									Docs
@@ -239,9 +239,9 @@ export default function Navbar({ homepage }) {
 												>
 													<div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5'>
 														<div className='relative grid gap-6 px-5 py-6 bg-white sm:gap-8 sm:p-8'>
-															{resources.map((item) => (
+															{resources.map((item, index) => (
 																<a
-																	key={item.name}
+																	key={index}
 																	href={item.href}
 																	className='block p-3 -m-3 rounded-md hover:bg-gray-50'
 																>
@@ -263,13 +263,13 @@ export default function Navbar({ homepage }) {
 							</Popover.Group>
 							<div className='items-center justify-end hidden md:flex md:flex-1 lg:w-0'>
 								<a
-									href='#'
+									href='#!'
 									className='text-base font-medium text-gray-500 whitespace-nowrap hover:text-gray-900'
 								>
 									Sign in
 								</a>
 								<a
-									href='#'
+									href='#!'
 									className='inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm whitespace-nowrap hover:bg-indigo-700'
 								>
 									Sign up
@@ -311,9 +311,9 @@ export default function Navbar({ homepage }) {
 										</div>
 										<div className='mt-6'>
 											<nav className='grid grid-cols-1 gap-7'>
-												{solutions.map((item) => (
+												{solutions.map((item, index) => (
 													<a
-														key={item.name}
+														key={index}
 														href={item.href}
 														className='flex items-center p-3 -m-3 rounded-lg hover:bg-gray-50'
 													>
@@ -334,28 +334,28 @@ export default function Navbar({ homepage }) {
 									<div className='px-5 py-6'>
 										<div className='grid grid-cols-2 gap-4'>
 											<a
-												href='#'
+												href='#!'
 												className='text-base font-medium text-gray-900 hover:text-gray-700'
 											>
 												Pricing
 											</a>
 
 											<a
-												href='#'
+												href='#!'
 												className='text-base font-medium text-gray-900 hover:text-gray-700'
 											>
 												Docs
 											</a>
 
 											<a
-												href='#'
+												href='#!'
 												className='text-base font-medium text-gray-900 hover:text-gray-700'
 											>
 												Enterprise
 											</a>
-											{resources.map((item) => (
+											{resources.map((item, index) => (
 												<a
-													key={resources.name}
+													key={index}
 													href={item.href}
 													className='text-base font-medium text-gray-900 hover:text-gray-700'
 												>
@@ -365,7 +365,7 @@ export default function Navbar({ homepage }) {
 										</div>
 										<div className='mt-6'>
 											<a
-												href='#'
+												href='#!'
 												className='flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700'
 											>
 												Sign up
@@ -373,7 +373,7 @@ export default function Navbar({ homepage }) {
 											<p className='mt-6 text-base font-medium text-center text-gray-500'>
 												Existing customer?{' '}
 												<a
-													href='#'
+													href='#!'
 													className='text-indigo-600 hover:text-indigo-500'
 												>
 													Sign in
