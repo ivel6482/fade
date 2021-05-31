@@ -15,7 +15,7 @@ export default function BarbershopList() {
 		<section className='h-4/5'>
 			<h3 className='font-bold text-gray-200 text-9xl'>Barbershops</h3>
 			{errors && <ErrorList errors={errors} />}
-			<section className='flex mt-8 space-x-8'>
+			<section className='flex flex-wrap mt-8'>
 				{barbershops.length > 0 ? (
 					barbershops.map((barbershop) => (
 						<Barbershop key={barbershop._id} barbershop={barbershop} />
