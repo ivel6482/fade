@@ -87,19 +87,19 @@ export const UserProvider = ({ children }) => {
 			dispatch({ type: LOGIN_USER_FAIL, payload: error.message })
 		}
 	}
-
+	// TODO: Fix signup
 	const signup = async (firstName, lastName, email, password, history) => {
 		try {
 			dispatch({ type: SIGNUP_USER_REQUEST })
-			const newUser = JSON.stringify({
+			const newUser = {
 				firstName,
 				lastName,
 				email,
 				password,
-			})
+			}
 			const res = await axios.post('/auth/signup', newUser)
-			dispatch({ type: SIGNUP_USER_SUCCESS, payload: res.data })
-			dispatch(login(res.data.user.email, res.data.user.password), history)
+			console.log(res.data.user)
+			login(email, password, history)
 		} catch (error) {
 			console.error(error.response.data.message)
 			dispatch({

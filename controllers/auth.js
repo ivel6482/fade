@@ -5,7 +5,7 @@ const cloudinary = require('../utils/cloudinary')
 exports.signup = async (req, res) => {
 	try {
 		// get the user information sent from the form
-		const { firstName, lastName, email, password, role } = req.body
+		const { firstName, lastName, email, password } = req.body
 		// see if the user already exists
 		const userExists = await User.findOne({ email })
 
@@ -16,42 +16,16 @@ exports.signup = async (req, res) => {
 
 		// Makes the image upload optional
 		// FIXME: Handle default value for avatar url and cloudinaryId here.
-		if (req.file === undefined) {
-			const userToAdd = {
-				firstName,
-				lastName,
-				email,
-				password,
-				role,
-			}
-
-			const newUser = await User.create(userToAdd)
-
-			if (newUser) {
-				res
-					.status(201)
-					.json({ user: newUser, token: generateToken(newUser._id) })
-			}
-		}
-
-		const result = await cloudinary.uploader.upload(req.file.path)
 
 		const userToAdd = {
 			firstName,
 			lastName,
 			email,
 			password,
-			avatar: result.secure_url,
-			cloudinaryId: result.public_id,
-			role,
 		}
 
-		// create new user if it doesn't exists
 		const newUser = await User.create(userToAdd)
-
-		if (newUser) {
-			res.status(201).json({ token: generateToken(newUser._id) })
-		}
+		res.status(201).json({ user: newUser, token: generateToken(newUser._id) })
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ message: 'Server Error' })
