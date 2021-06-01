@@ -3,6 +3,7 @@ import Homepage from './pages/Homepage'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import BarbershopDetails from './components/BarbershopDetails'
 import PrivateRoute from './components/PrivateRoute'
 
 export default function App() {
@@ -15,6 +16,9 @@ export default function App() {
 				<Route path='/login' component={Login} />
 				<PrivateRoute path='/dashboard'>
 					<Dashboard />
+				</PrivateRoute>
+				<PrivateRoute path='/barbershops/:id'>
+					<BarbershopDetails />
 				</PrivateRoute>
 			</Switch>
 		</Router>
