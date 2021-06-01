@@ -12,6 +12,7 @@ import {
 	SpeakerphoneIcon,
 	UserGroupIcon,
 	XIcon,
+	LogoutIcon,
 } from '@heroicons/react/outline'
 import BarbershopList from '../components/BarbershopsList'
 
@@ -30,8 +31,8 @@ export default function Dashboard() {
 	const { firstName, lastName, avatar } = user
 
 	const navigation = [
-		{ name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-		{ name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
+		{ name: 'Barbershops', href: '#', icon: HomeIcon, current: true },
+		{ name: 'Appointments', href: '#', icon: CalendarIcon, current: false },
 		{ name: 'Teams', href: '#', icon: UserGroupIcon, current: false },
 		{ name: 'Directory', href: '#', icon: SearchCircleIcon, current: false },
 		{
@@ -134,11 +135,12 @@ export default function Dashboard() {
 											</a>
 										))}
 										<button
-											className='px-2 py-1 text-red-900 transition bg-red-500 rounded hover:bg-red-600'
+											className='flex items-center w-full px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900'
 											onClick={() => {
 												logout(history)
 											}}
 										>
+											<LogoutIcon className='w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500' />
 											Logout
 										</button>
 									</div>
@@ -154,7 +156,7 @@ export default function Dashboard() {
 												alt={`${firstName} ${lastName}`}
 											/>
 										</div>
-										<div className='ml-3'>
+										<div className='ml-3 '>
 											<p className='text-base font-medium text-gray-700 group-hover:text-gray-900'>
 												{firstName} {lastName}
 											</p>
@@ -212,11 +214,12 @@ export default function Dashboard() {
 										</a>
 									))}
 									<button
-										className='px-2 py-1 text-red-900 transition bg-red-500 rounded hover:bg-red-600'
+										className='flex items-center w-full px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900'
 										onClick={() => {
 											logout(history)
 										}}
 									>
+										<LogoutIcon className='w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500' />
 										Logout
 									</button>
 								</div>
