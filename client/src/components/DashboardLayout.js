@@ -14,13 +14,10 @@ import {
 	XIcon,
 	LogoutIcon,
 } from '@heroicons/react/outline'
-import BarbershopList from '../components/BarbershopsList'
 
-export default function Dashboard() {
+export default function DashboardLayout({ children }) {
 	const { user, isAuthenticated, logout } = useContext(UserContext)
 	const history = useHistory()
-
-	//FIXME: if the user is not log in and visits the /daskboard page, it will throw an error where user is null and cannot read its properties. How to handle better protecting routes on the front-end?
 
 	useEffect(() => {
 		if (!isAuthenticated) {
@@ -275,7 +272,7 @@ export default function Dashboard() {
 					<main className='relative z-0 flex-1 overflow-y-auto focus:outline-none'>
 						{/* Start main area*/}
 						<div className='absolute inset-0 px-4 py-6 sm:px-6 lg:px-8'>
-							<BarbershopList />
+							{children}
 							{/* <div className='h-full border-2 border-gray-200 border-dashed rounded-lg' /> */}
 						</div>
 						{/* End main area */}

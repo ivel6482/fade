@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Homepage from './pages/Homepage'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
+import Barbershops from './pages/Barbershops'
+import Barbershop from './pages/Barbershop'
 import BarbershopDetails from './components/BarbershopDetails'
 import PrivateRoute from './components/PrivateRoute'
 
@@ -15,10 +16,10 @@ export default function App() {
 				<Route path='/signup' component={Signup} />
 				<Route path='/login' component={Login} />
 				<PrivateRoute path='/dashboard'>
-					<Dashboard />
+					<Barbershops />
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>
-					<BarbershopDetails />
+					<Barbershop />
 				</PrivateRoute>
 			</Switch>
 		</Router>
