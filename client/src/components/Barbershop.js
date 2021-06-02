@@ -10,7 +10,7 @@ import BarbershopItem from './BarbershopItem' //TODO: Rename this better
 
 export default function Barbershop({ barbershop }) {
 	return (
-		<section className='w-1/3 p-4'>
+		<section className='col-span-1 p-4'>
 			<section className='p-4 space-y-2 text-gray-700 transition bg-gray-100 border border-gray-100 rounded-md shadow hover:shadow-md hover:border-gray-300'>
 				<section className='flex justify-between'>
 					<p className='font-semibold text-gray-900'>{barbershop?.name}</p>
