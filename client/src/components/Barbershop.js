@@ -8,6 +8,7 @@ import {
 
 import BarbershopItem from './BarbershopItem' //TODO: Rename this better
 
+//TODO: Make responsive
 export default function Barbershop({ barbershop }) {
 	return (
 		<section className='col-span-1 p-4'>

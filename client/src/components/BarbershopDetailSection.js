@@ -1,0 +1,12 @@
+export default function BarbershopDetailSection({ children, title }) {
+	return (
+		<section className='mt-8'>
+			<div className='pb-5 mb-3 border-b border-gray-200'>
+				<h3 className='text-lg font-semibold leading-6 text-gray-900'>
+					{title}
+				</h3>
+			</div>
+			{children}
+		</section>
+	)
+}

@@ -2,7 +2,8 @@ import { useParams } from 'react-router-dom'
 import { useContext, useEffect } from 'react'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { useHistory } from 'react-router-dom'
-import { MailIcon, PhoneIcon } from '@heroicons/react/solid'
+import { MailIcon, PhoneIcon, LocationMarkerIcon } from '@heroicons/react/solid'
+import BarbershopDetailSection from './BarbershopDetailSection'
 
 //TODO: Refactor this component, extract the dashboard layout to a different component.
 
@@ -20,7 +21,7 @@ export default function BarbershopDetails() {
 
 	return (
 		<section>
-			{loading ? (
+			{loading && !barbershop ? (
 				<p>Loading barbershop...</p>
 			) : (
 				<div>
@@ -78,6 +79,31 @@ export default function BarbershopDetails() {
 					</div>
 				</div>
 			)}
+			<BarbershopDetailSection title='Contact Us' barbershop={barbershop}>
+				<section>
+					<p className='flex items-center gap-2'>
+						<span>
+							<PhoneIcon width='20' />
+						</span>{' '}
+						{barbershop?.contact?.phoneNumber}
+					</p>
+				</section>
+			</BarbershopDetailSection>
+			<BarbershopDetailSection title='Location' barbershop={barbershop}>
+				<section>
+					<p className='flex items-center gap-2'>
+						<span>
+							<LocationMarkerIcon width='20' />
+						</span>{' '}
+						{barbershop?.location?.address}
+					</p>
+				</section>
+			</BarbershopDetailSection>
+			<BarbershopDetailSection title='Barbers' barbershop={barbershop}>
+				<section className='p-3 bg-gray-100 border rounded'>
+					<p>Barber name</p>
+				</section>
+			</BarbershopDetailSection>
 		</section>
 	)
 }
