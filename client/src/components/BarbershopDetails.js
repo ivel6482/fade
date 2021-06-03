@@ -4,6 +4,7 @@ import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { useHistory } from 'react-router-dom'
 import { MailIcon, PhoneIcon, LocationMarkerIcon } from '@heroicons/react/solid'
 import BarbershopDetailSection from './BarbershopDetailSection'
+import Barber from './Barber'
 
 //TODO: Refactor this component, extract the dashboard layout to a different component.
 
@@ -104,23 +105,17 @@ export default function BarbershopDetails() {
 				</section>
 			</BarbershopDetailSection>
 			<BarbershopDetailSection title='Barbers' barbershop={barbershop}>
-				{barbers.map((barber) => {
-					return (
-						<section
-							key={barber._id}
-							className='p-3 bg-gray-100 border rounded'
-						>
-							<p>{barber.name}</p>
-							{/* //TODO: Make specialty an object in the Barber model that contains the name of the specialty and an id. */}
-							<h3>I specialize in:</h3>
-							<ul>
-								{barber.specialties.map((specialty, index) => (
-									<li key={index}>{specialty}</li>
-								))}
-							</ul>
-						</section>
-					)
-				})}
+				<ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+					{barbers.length === 0 ? (
+						<p className='text-gray-500'>
+							This barbershop currently has no barbers.
+						</p>
+					) : (
+						barbers.map((barber) => {
+							return <Barber barber={barber} key={barber._id} />
+						})
+					)}
+				</ul>
 			</BarbershopDetailSection>
 		</section>
 	)
