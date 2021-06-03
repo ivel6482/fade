@@ -10,18 +10,22 @@ import BarbershopDetailSection from './BarbershopDetailSection'
 export default function BarbershopDetails() {
 	const { id } = useParams()
 	const history = useHistory()
-	const { loading, errors, barbershop, getBarbershop } =
+	const { loading, errors, barbershop, barbers, getBarbershop, getBarbers } =
 		useContext(BarbershopsContext)
 
 	useEffect(() => {
 		getBarbershop(id)
 	}, [])
 
+	useEffect(() => {
+		getBarbers(id)
+	}, [])
+
 	//TODO: Fetch barbers that have the barbershopId of the selected barbershop
 
 	return (
 		<section>
-			{loading && !barbershop ? (
+			{loading && !barbershop && !barbers ? (
 				<p>Loading barbershop...</p>
 			) : (
 				<div>
@@ -100,9 +104,23 @@ export default function BarbershopDetails() {
 				</section>
 			</BarbershopDetailSection>
 			<BarbershopDetailSection title='Barbers' barbershop={barbershop}>
-				<section className='p-3 bg-gray-100 border rounded'>
-					<p>Barber name</p>
-				</section>
+				{barbers.map((barber) => {
+					return (
+						<section
+							key={barber._id}
+							className='p-3 bg-gray-100 border rounded'
+						>
+							<p>{barber.name}</p>
+							{/* //TODO: Make specialty an object in the Barber model that contains the name of the specialty and an id. */}
+							<h3>I specialize in:</h3>
+							<ul>
+								{barber.specialties.map((specialty, index) => (
+									<li key={index}>{specialty}</li>
+								))}
+							</ul>
+						</section>
+					)
+				})}
 			</BarbershopDetailSection>
 		</section>
 	)
