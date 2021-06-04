@@ -13,7 +13,9 @@ export default function BarbershopList() {
 
 	return (
 		<section className='h-4/5'>
-			<h3 className='font-bold text-gray-200 text-9xl'>Barbershops</h3>
+			<h3 className='text-6xl font-bold text-gray-200 lg:text-8xl 2xl:text-9xl'>
+				Barbershops
+			</h3>
 			{/* {errors && <ErrorList errors={errors} />} */}
 			{/* <section className='flex flex-wrap mt-8'> */}
 			<section className='grid grid-cols-1 mt-8 sm:grid-cols-2 lg:grid-cols-3'>
