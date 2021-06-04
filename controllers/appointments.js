@@ -62,6 +62,26 @@ exports.getAppointment = async (req, res) => {
 	}
 }
 
+//TODO: Get appointment by barber
+// /barbers/:id/appointments
+exports.getBarberAppointments = async (req, res) => {
+	try {
+		const { id } = req.params
+		const appointments = await Appointment.find({ barberId: id })
+
+		if (appointments.length === 0 || !appointments) {
+			return res
+				.status(404)
+				.json({ message: 'No appointments for selected barber' })
+		} else {
+			res.status(200).json({ appointments })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
+
 exports.createAppointment = async (req, res) => {
 	try {
 		const { time, barberId } = req.body

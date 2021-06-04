@@ -9,9 +9,11 @@ const {
 	uploadAvatar,
 	deleteBarber,
 } = require('../controllers/barbers')
+const { getBarberAppointments } = require('../controllers/appointments')
 
 router.route('/').post(createBarber).get(getAllBarbers)
 router.route('/:id').get(getBarber).put(updateBarber).delete(deleteBarber)
 router.route('/:id/avatar').put(upload.single('image'), uploadAvatar)
+router.route('/:id/appointments').get(getBarberAppointments)
 
 module.exports = router
