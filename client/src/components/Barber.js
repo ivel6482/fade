@@ -12,7 +12,7 @@ export default function Barber({ barber }) {
 				<div className='flex flex-col flex-1 p-8'>
 					<img
 						className='flex-shrink-0 w-32 h-32 mx-auto bg-black rounded-full'
-						src={barber.imageUrl}
+						src='https://source.unsplash.com/random'
 						alt=''
 					/>
 					<h3 className='mt-6 text-sm font-medium text-gray-900'>
