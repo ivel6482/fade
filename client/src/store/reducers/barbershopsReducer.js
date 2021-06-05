@@ -8,6 +8,9 @@ import {
 	GET_BARBERSHOP_BARBER_REQUEST,
 	GET_BARBERSHOP_BARBER_SUCCESS,
 	GET_BARBERSHOP_BARBER_FAIL,
+	GET_BARBERS_APPOINTMENTS_REQUEST,
+	GET_BARBERS_APPOINTMENTS_SUCCESS,
+	GET_BARBERS_APPOINTMENTS_FAIL,
 } from '../actions/barbershopsActions'
 
 export function barbershopsReducer(state, action) {
@@ -16,6 +19,7 @@ export function barbershopsReducer(state, action) {
 		case GET_BARBERSHOPS_REQUEST:
 		case GET_BARBERSHOP_REQUEST:
 		case GET_BARBERSHOP_BARBER_REQUEST:
+		case GET_BARBERS_APPOINTMENTS_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -62,6 +66,22 @@ export function barbershopsReducer(state, action) {
 			return {
 				...state,
 				barbers: [],
+				appointments: [],
+				loading: false,
+				errors: [...state.errors, payload],
+			}
+
+		case GET_BARBERS_APPOINTMENTS_SUCCESS:
+			return {
+				...state,
+				appointments: payload,
+				loading: false,
+			}
+
+		case GET_BARBERS_APPOINTMENTS_FAIL:
+			return {
+				...state,
+				appointments: [],
 				loading: false,
 				errors: [...state.errors, payload],
 			}

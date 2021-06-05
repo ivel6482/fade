@@ -11,12 +11,16 @@ import {
 	GET_BARBERSHOP_BARBER_REQUEST,
 	GET_BARBERSHOP_BARBER_SUCCESS,
 	GET_BARBERSHOP_BARBER_FAIL,
+	GET_BARBERS_APPOINTMENTS_REQUEST,
+	GET_BARBERS_APPOINTMENTS_SUCCESS,
+	GET_BARBERS_APPOINTMENTS_FAIL,
 } from '../actions/barbershopsActions'
 
 const initialState = {
 	barbershops: [],
 	barbershop: null,
 	barbers: [],
+	appointments: [],
 	loading: false,
 	errors: [],
 }
@@ -26,7 +30,8 @@ const { Provider } = BarbershopsContext
 
 export const BarbershopsProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(barbershopsReducer, initialState)
-	const { barbershops, barbershop, barbers, loading, errors } = state
+	const { barbershops, barbershop, barbers, appointments, loading, errors } =
+		state
 
 	const getBarbershops = async () => {
 		try {
@@ -76,6 +81,23 @@ export const BarbershopsProvider = ({ children }) => {
 		}
 	}
 
+	const getBarberAppointments = async (id) => {
+		try {
+			dispatch({ type: GET_BARBERS_APPOINTMENTS_REQUEST })
+			const res = await axios.get(`/barbers/${id}/appointments`)
+			dispatch({
+				type: GET_BARBERS_APPOINTMENTS_SUCCESS,
+				payload: res.data.appointments,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_BARBERS_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -87,6 +109,7 @@ export const BarbershopsProvider = ({ children }) => {
 				getBarbershops,
 				getBarbershop,
 				getBarbers,
+				getBarberAppointments,
 			}}
 		>
 			{children}
