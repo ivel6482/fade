@@ -1,9 +1,16 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { CalendarIcon } from '@heroicons/react/solid'
 import Modal from './Modal'
+import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 
 export default function Barber({ barber }) {
 	const [open, setOpen] = useState(false)
+	const { getBarberAppointments } = useContext(BarbershopsContext)
+
+	const fetchBarberAppointments = (id) => {
+		getBarberAppointments(id)
+		setOpen(true)
+	}
 
 	return (
 		<>
@@ -40,7 +47,7 @@ export default function Barber({ barber }) {
 						{/* //TODO: When this is clicked show a modal with the appointments. */}
 						<div className='flex flex-1 w-0 transition hover:bg-gray-50'>
 							<button
-								onClick={() => setOpen(true)}
+								onClick={() => fetchBarberAppointments(barber._id)}
 								className='relative inline-flex items-center justify-center flex-1 w-0 py-4 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-lg hover:text-gray-500'
 							>
 								<CalendarIcon
