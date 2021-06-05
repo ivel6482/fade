@@ -103,6 +103,7 @@ export const BarbershopsProvider = ({ children }) => {
 			value={{
 				barbershops,
 				barbershop,
+				appointments,
 				barbers,
 				loading,
 				errors,
