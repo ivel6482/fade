@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { UserContext } from '../store/contexts/userContext'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -15,7 +15,10 @@ import {
 	LogoutIcon,
 } from '@heroicons/react/outline'
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({
+	children,
+	currentTab = 'barbershops',
+}) {
 	const { user, isAuthenticated, logout } = useContext(UserContext)
 	const history = useHistory()
 
@@ -28,17 +31,18 @@ export default function DashboardLayout({ children }) {
 	const { firstName, lastName, avatar } = user
 
 	const navigation = [
-		{ name: 'Barbershops', href: '#', icon: HomeIcon, current: true },
-		{ name: 'Appointments', href: '#', icon: CalendarIcon, current: false },
-		{ name: 'Teams', href: '#', icon: UserGroupIcon, current: false },
-		{ name: 'Directory', href: '#', icon: SearchCircleIcon, current: false },
 		{
-			name: 'Announcements',
-			href: '#',
-			icon: SpeakerphoneIcon,
-			current: false,
+			name: 'Barbershops',
+			to: '/dashboard',
+			icon: HomeIcon,
+			current: currentTab === 'barbershops' ? true : false,
 		},
-		{ name: 'Office Map', href: '#', icon: MapIcon, current: false },
+		{
+			name: 'My Appointments',
+			to: '/appointments',
+			icon: CalendarIcon,
+			current: currentTab === 'appointments' ? true : false,
+		},
 	]
 
 	function classNames(...classes) {
@@ -188,9 +192,9 @@ export default function DashboardLayout({ children }) {
 							<nav className='flex-1 mt-5' aria-label='Sidebar'>
 								<div className='px-2 space-y-1'>
 									{navigation.map((item) => (
-										<a
+										<Link
 											key={item.name}
-											href={item.href}
+											to={item.to}
 											className={classNames(
 												item.current
 													? 'bg-gray-200 text-gray-900'
@@ -208,7 +212,7 @@ export default function DashboardLayout({ children }) {
 												aria-hidden='true'
 											/>
 											{item.name}
-										</a>
+										</Link>
 									))}
 									<button
 										className='flex items-center w-full px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900'
