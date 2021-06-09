@@ -216,3 +216,19 @@ exports.deleteAppointment = async (req, res) => {
 		res.status(500).json({ message: 'Server Error' })
 	}
 }
+
+exports.getUserBookedAppointments = async (req, res) => {
+	try {
+		const { id } = req.params
+		const appointments = await Appointment.find({ bookedBy: id })
+
+		if (appointments) {
+			res.status(200).json({ appointments })
+		} else {
+			res.status(404).json({ message: 'No appointments found' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
