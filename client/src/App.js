@@ -4,8 +4,8 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Barbershops from './pages/Barbershops'
 import Barbershop from './pages/Barbershop'
-import BarbershopDetails from './components/BarbershopDetails'
 import PrivateRoute from './components/PrivateRoute'
+import UserAppointments from './pages/UserAppointments'
 
 export default function App() {
 	return (
@@ -20,6 +20,9 @@ export default function App() {
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>
 					<Barbershop />
+				</PrivateRoute>
+				<PrivateRoute path='/appointments'>
+					<UserAppointments />
 				</PrivateRoute>
 			</Switch>
 		</Router>

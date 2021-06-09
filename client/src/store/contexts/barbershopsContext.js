@@ -20,6 +20,9 @@ import {
 	CANCEL_APPOINTMENT_REQUEST,
 	CANCEL_APPOINTMENT_SUCCESS,
 	CANCEL_APPOINTMENT_FAIL,
+	GET_USER_BOOKED_APPOINTMENTS_REQUEST,
+	GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
+	GET_USER_BOOKED_APPOINTMENTS_FAIL,
 } from '../actions/barbershopsActions'
 
 const initialState = {
@@ -27,7 +30,7 @@ const initialState = {
 	barbershop: null,
 	barbers: [],
 	appointments: [],
-	appointment: null,
+	userAppointments: [],
 	loading: false,
 	errors: [],
 }
@@ -42,7 +45,7 @@ export const BarbershopsProvider = ({ children }) => {
 		barbershop,
 		barbers,
 		appointments,
-		appointment,
+		userAppointments,
 		loading,
 		errors,
 	} = state
@@ -164,13 +167,31 @@ export const BarbershopsProvider = ({ children }) => {
 		}
 	}
 
+	//TODO: Implement this route on the backend.
+	const getUserAppointments = async (id) => {
+		try {
+			dispatch({ type: GET_USER_BOOKED_APPOINTMENTS_REQUEST })
+			const res = await axios.get(`/users/${id}/appointments`)
+			dispatch({
+				type: GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
+				payload: res.data.appointments,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_USER_BOOKED_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
 				barbershops,
 				barbershop,
 				appointments,
-				appointment,
+				userAppointments,
 				barbers,
 				loading,
 				errors,
@@ -180,6 +201,7 @@ export const BarbershopsProvider = ({ children }) => {
 				getBarberAppointments,
 				bookAppointment,
 				cancelAppointment,
+				getUserAppointments,
 			}}
 		>
 			{children}
