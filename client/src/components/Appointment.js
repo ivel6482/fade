@@ -1,12 +1,17 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { UserContext } from '../store/contexts/userContext'
 import { CalendarIcon } from '@heroicons/react/solid'
 
 export default function Appointment({ appointment }) {
+	const {
+		bookAppointment,
+		cancelAppointment,
+		loading,
+		appointment: currentAppointment,
+	} = useContext(BarbershopsContext)
+
 	const [booked, setBooked] = useState(appointment.booked)
-	const { bookAppointment, cancelAppointment, loading } =
-		useContext(BarbershopsContext)
 	const { token } = useContext(UserContext)
 
 	// const bookAppointmentHandler = (id) => {
@@ -18,6 +23,7 @@ export default function Appointment({ appointment }) {
 	// }
 
 	//FIXME: The button does not change the function to trigger based on `appointment.booked` state. Make it change text and disabled when booked and trigger the cancelAppointment action instead of re-calling the bookAppointment action
+
 	const handleAppointment = (id) => {
 		if (appointment.booked) {
 			console.log('Cancel')
