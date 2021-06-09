@@ -37,7 +37,7 @@ const { Provider } = UserContext
 
 export const UserProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(userReducer, initialState)
-	const { user, isAuthenticated, loading, errors } = state
+	const { user, isAuthenticated, token, loading, errors } = state
 
 	// -------------------------------------------------------------------------
 	//                              - Actions -
@@ -124,6 +124,7 @@ export const UserProvider = ({ children }) => {
 			value={{
 				user,
 				isAuthenticated,
+				token,
 				loading,
 				errors,
 				login,
