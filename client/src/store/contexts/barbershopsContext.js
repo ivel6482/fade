@@ -153,7 +153,7 @@ export const BarbershopsProvider = ({ children }) => {
 			)
 			dispatch({
 				type: CANCEL_APPOINTMENT_SUCCESS,
-				payload: res.data.appointment,
+				payload: res.data.appointment._id,
 			})
 		} catch (error) {
 			console.error(error)

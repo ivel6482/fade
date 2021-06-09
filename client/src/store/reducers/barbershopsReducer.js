@@ -100,7 +100,11 @@ export function barbershopsReducer(state, action) {
 		case CANCEL_APPOINTMENT_SUCCESS:
 			return {
 				...state,
-				appointment: payload,
+				appointments: state.appointments.map((appointment) =>
+					appointment._id === payload
+						? { ...appointment, booked: false }
+						: appointment
+				),
 				loading: false,
 			}
 
