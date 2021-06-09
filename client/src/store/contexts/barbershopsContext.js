@@ -14,6 +14,12 @@ import {
 	GET_BARBERS_APPOINTMENTS_REQUEST,
 	GET_BARBERS_APPOINTMENTS_SUCCESS,
 	GET_BARBERS_APPOINTMENTS_FAIL,
+	BOOK_APPOINTMENT_REQUEST,
+	BOOK_APPOINTMENT_SUCCESS,
+	BOOK_APPOINTMENT_FAIL,
+	CANCEL_APPOINTMENT_REQUEST,
+	CANCEL_APPOINTMENT_SUCCESS,
+	CANCEL_APPOINTMENT_FAIL,
 } from '../actions/barbershopsActions'
 
 const initialState = {
@@ -21,6 +27,7 @@ const initialState = {
 	barbershop: null,
 	barbers: [],
 	appointments: [],
+	appointment: null,
 	loading: false,
 	errors: [],
 }
@@ -30,8 +37,15 @@ const { Provider } = BarbershopsContext
 
 export const BarbershopsProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(barbershopsReducer, initialState)
-	const { barbershops, barbershop, barbers, appointments, loading, errors } =
-		state
+	const {
+		barbershops,
+		barbershop,
+		barbers,
+		appointments,
+		appointment,
+		loading,
+		errors,
+	} = state
 
 	const getBarbershops = async () => {
 		try {
@@ -98,12 +112,65 @@ export const BarbershopsProvider = ({ children }) => {
 		}
 	}
 
+	const bookAppointment = async (id, token) => {
+		try {
+			dispatch({ type: BOOK_APPOINTMENT_REQUEST })
+			const res = await axios.put(
+				`/appointments/${id}/book`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			dispatch({
+				type: BOOK_APPOINTMENT_SUCCESS,
+				payload: res.data.appointment,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: BOOK_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
+	const cancelAppointment = async (id, token) => {
+		try {
+			dispatch({
+				type: CANCEL_APPOINTMENT_REQUEST,
+			})
+			const res = await axios.put(
+				`/appointments/${id}/cancel`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			dispatch({
+				type: CANCEL_APPOINTMENT_SUCCESS,
+				payload: res.data.appointment,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: CANCEL_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
 				barbershops,
 				barbershop,
 				appointments,
+				appointment,
 				barbers,
 				loading,
 				errors,
@@ -111,6 +178,8 @@ export const BarbershopsProvider = ({ children }) => {
 				getBarbershop,
 				getBarbers,
 				getBarberAppointments,
+				bookAppointment,
+				cancelAppointment,
 			}}
 		>
 			{children}

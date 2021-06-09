@@ -11,6 +11,12 @@ import {
 	GET_BARBERS_APPOINTMENTS_REQUEST,
 	GET_BARBERS_APPOINTMENTS_SUCCESS,
 	GET_BARBERS_APPOINTMENTS_FAIL,
+	BOOK_APPOINTMENT_REQUEST,
+	BOOK_APPOINTMENT_SUCCESS,
+	BOOK_APPOINTMENT_FAIL,
+	CANCEL_APPOINTMENT_REQUEST,
+	CANCEL_APPOINTMENT_SUCCESS,
+	CANCEL_APPOINTMENT_FAIL,
 } from '../actions/barbershopsActions'
 
 export function barbershopsReducer(state, action) {
@@ -20,6 +26,8 @@ export function barbershopsReducer(state, action) {
 		case GET_BARBERSHOP_REQUEST:
 		case GET_BARBERSHOP_BARBER_REQUEST:
 		case GET_BARBERS_APPOINTMENTS_REQUEST:
+		case BOOK_APPOINTMENT_REQUEST:
+		case CANCEL_APPOINTMENT_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -43,6 +51,13 @@ export function barbershopsReducer(state, action) {
 			return {
 				...state,
 				barbershop: payload,
+				loading: false,
+			}
+
+		case BOOK_APPOINTMENT_SUCCESS:
+			return {
+				...state,
+				appointment: payload,
 				loading: false,
 			}
 
@@ -78,10 +93,33 @@ export function barbershopsReducer(state, action) {
 				loading: false,
 			}
 
+		case CANCEL_APPOINTMENT_SUCCESS:
+			return {
+				...state,
+				appointment: payload,
+				loading: false,
+			}
+
 		case GET_BARBERS_APPOINTMENTS_FAIL:
 			return {
 				...state,
 				appointments: [],
+				loading: false,
+				errors: [...state.errors, payload],
+			}
+
+		case BOOK_APPOINTMENT_FAIL:
+			return {
+				...state,
+				appointment: null,
+				loading: false,
+				errors: [...state.errors, payload],
+			}
+
+		case CANCEL_APPOINTMENT_FAIL:
+			return {
+				...state,
+				appointment: null,
 				loading: false,
 				errors: [...state.errors, payload],
 			}
