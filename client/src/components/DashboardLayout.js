@@ -6,11 +6,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import {
 	CalendarIcon,
 	HomeIcon,
-	MapIcon,
 	MenuIcon,
-	SearchCircleIcon,
-	SpeakerphoneIcon,
-	UserGroupIcon,
 	XIcon,
 	LogoutIcon,
 } from '@heroicons/react/outline'
@@ -30,6 +26,7 @@ export default function DashboardLayout({
 
 	const { firstName, lastName, avatar } = user
 
+	// FIXME: Navigation is not working on mobile.
 	const navigation = [
 		{
 			name: 'Barbershops',
