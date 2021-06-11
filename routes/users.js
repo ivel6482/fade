@@ -7,7 +7,10 @@ const {
 	updateUserDetails,
 	updateUserAvatar,
 } = require('../controllers/users')
-const { getUserBookedAppointments } = require('../controllers/appointments')
+const {
+	getUserBookedAppointments,
+	getUserPastBookedAppointments,
+} = require('../controllers/appointments')
 const { protect } = require('../middleware/auth')
 const upload = require('../utils/multer')
 
@@ -18,5 +21,6 @@ router.route('/:id').get(getUser).put(updateUserDetails).delete(deleteUser)
 router.route('/:id/avatar').put(upload.single('avatar'), updateUserAvatar)
 
 router.get('/:id/appointments', getUserBookedAppointments)
+router.get('/:id/appointments/complete', getUserPastBookedAppointments)
 
 module.exports = router

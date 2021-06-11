@@ -17,6 +17,11 @@ const AppointmentSchema = new mongoose.Schema(
 			required: [true, 'Please specify is the appointment is booked'],
 			default: false,
 		},
+		completed: {
+			type: Boolean,
+			required: [true, 'Please specify if the appointment has been completed'],
+			default: false,
+		},
 		bookedAt: {
 			type: Date,
 		},

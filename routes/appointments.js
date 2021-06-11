@@ -10,6 +10,7 @@ const {
 	cancelAppointment,
 	getAvailableAppointments,
 	getBookedAppointments,
+	completeAppointment,
 } = require('../controllers/appointments')
 const { protect } = require('../middleware/auth')
 
@@ -24,5 +25,6 @@ router
 
 router.put('/:id/book', protect, bookAppointment)
 router.put('/:id/cancel', protect, cancelAppointment)
+router.put('/:id/complete', protect, completeAppointment)
 
 module.exports = router

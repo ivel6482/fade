@@ -172,6 +172,34 @@ exports.bookAppointment = async (req, res) => {
 	}
 }
 
+exports.completeAppointment = async (req, res) => {
+	try {
+		const { id } = req.params
+		const appointment = await Appointment.findById(id)
+		if (appointment) {
+			const bookedData = {
+				bookedAt: Date.now(),
+				bookedBy: req.user._id,
+				booked: true,
+				completed: true,
+			}
+
+			const completedAppointment = await Appointment.findByIdAndUpdate(
+				id,
+				bookedData,
+				{ new: true, runValidators: true }
+			)
+
+			res.status(200).json({ appointment: completedAppointment })
+		} else {
+			res.status(404).json({ message: 'Appointment not found.' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
+
 exports.cancelAppointment = async (req, res) => {
 	try {
 		const { id } = req.params
@@ -220,7 +248,30 @@ exports.deleteAppointment = async (req, res) => {
 exports.getUserBookedAppointments = async (req, res) => {
 	try {
 		const { id } = req.params
-		const appointments = await Appointment.find({ bookedBy: id })
+		const appointments = await Appointment.find({
+			bookedBy: id,
+			completed: false,
+		})
+
+		if (appointments) {
+			res.status(200).json({ appointments })
+		} else {
+			res.status(404).json({ message: 'No appointments found' })
+		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
+
+exports.getUserPastBookedAppointments = async (req, res) => {
+	try {
+		//TODO: Use the current logged in user id instead of passing it as parameter.
+		const { id } = req.params
+		const appointments = await Appointment.find({
+			bookedBy: id,
+			completed: true,
+		})
 
 		if (appointments) {
 			res.status(200).json({ appointments })
