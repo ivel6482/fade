@@ -6,11 +6,17 @@ import UserAppoinmentsList from '../components/UserAppointmentsList'
 
 export default function UserAppointments() {
 	const { user } = useContext(UserContext)
-	const { getUserAppointments, userAppointments, loading } =
-		useContext(BarbershopsContext)
+	const {
+		getActiveUserAppointments,
+		getCompletedUserAppointments,
+		activeUserAppointments,
+		completedUserAppointments,
+		loading,
+	} = useContext(BarbershopsContext)
 
 	useEffect(() => {
-		getUserAppointments(user._id)
+		getActiveUserAppointments(user._id)
+		getCompletedUserAppointments(user._id)
 	}, [])
 
 	return (
@@ -21,11 +27,14 @@ export default function UserAppointments() {
 			{loading ? (
 				<p>Loading appointments...</p>
 			) : (
-				<div className='space-y-6'>
-					<UserAppoinmentsList title='Active' appointments={userAppointments} />
+				<div className='mt-6 space-y-6'>
+					<UserAppoinmentsList
+						title='Booked'
+						appointments={activeUserAppointments}
+					/>
 					<UserAppoinmentsList
 						title='Completed'
-						appointments={userAppointments}
+						appointments={completedUserAppointments}
 					/>
 				</div>
 			)}

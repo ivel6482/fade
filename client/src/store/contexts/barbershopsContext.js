@@ -23,6 +23,12 @@ import {
 	GET_USER_BOOKED_APPOINTMENTS_REQUEST,
 	GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
 	GET_USER_BOOKED_APPOINTMENTS_FAIL,
+	GET_ACTIVE_USER_APPOINTMENTS_REQUEST,
+	GET_ACTIVE_USER_APPOINTMENTS_SUCCESS,
+	GET_ACTIVE_USER_APPOINTMENTS_FAIL,
+	GET_COMPLETED_USER_APPOINTMENTS_REQUEST,
+	GET_COMPLETED_USER_APPOINTMENTS_SUCCESS,
+	GET_COMPLETED_USER_APPOINTMENTS_FAIL,
 } from '../actions/barbershopsActions'
 
 const initialState = {
@@ -31,6 +37,8 @@ const initialState = {
 	barbers: [],
 	appointments: [],
 	userAppointments: [],
+	activeUserAppointments: [],
+	completedUserAppointments: [],
 	loading: false,
 	errors: [],
 }
@@ -46,6 +54,8 @@ export const BarbershopsProvider = ({ children }) => {
 		barbers,
 		appointments,
 		userAppointments,
+		activeUserAppointments,
+		completedUserAppointments,
 		loading,
 		errors,
 	} = state
@@ -168,18 +178,35 @@ export const BarbershopsProvider = ({ children }) => {
 	}
 
 	//TODO: Implement this route on the backend.
-	const getUserAppointments = async (id) => {
+	const getActiveUserAppointments = async (id) => {
 		try {
-			dispatch({ type: GET_USER_BOOKED_APPOINTMENTS_REQUEST })
+			dispatch({ type: GET_ACTIVE_USER_APPOINTMENTS_REQUEST })
 			const res = await axios.get(`/users/${id}/appointments`)
 			dispatch({
-				type: GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
+				type: GET_ACTIVE_USER_APPOINTMENTS_SUCCESS,
 				payload: res.data.appointments,
 			})
 		} catch (error) {
 			console.error(error)
 			dispatch({
-				type: GET_USER_BOOKED_APPOINTMENTS_FAIL,
+				type: GET_ACTIVE_USER_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
+	const getCompletedUserAppointments = async (id) => {
+		try {
+			dispatch({ type: GET_COMPLETED_USER_APPOINTMENTS_REQUEST })
+			const res = await axios.get(`/users/${id}/appointments/complete`)
+			dispatch({
+				type: GET_COMPLETED_USER_APPOINTMENTS_SUCCESS,
+				payload: res.data.appointments,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_COMPLETED_USER_APPOINTMENTS_FAIL,
 				payload: error.response.data.message,
 			})
 		}
@@ -192,6 +219,8 @@ export const BarbershopsProvider = ({ children }) => {
 				barbershop,
 				appointments,
 				userAppointments,
+				activeUserAppointments,
+				completedUserAppointments,
 				barbers,
 				loading,
 				errors,
@@ -201,7 +230,8 @@ export const BarbershopsProvider = ({ children }) => {
 				getBarberAppointments,
 				bookAppointment,
 				cancelAppointment,
-				getUserAppointments,
+				getActiveUserAppointments,
+				getCompletedUserAppointments,
 			}}
 		>
 			{children}
