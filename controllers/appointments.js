@@ -257,7 +257,8 @@ exports.getUserBookedAppointments = async (req, res) => {
 		const appointments = await Appointment.find({
 			bookedBy: id,
 			completed: false,
-		})
+			// How to populate populated field, research nesting populate
+		}).populate(['barberId', 'barbershop'])
 
 		if (appointments) {
 			res.status(200).json({ appointments })
@@ -277,7 +278,7 @@ exports.getUserPastBookedAppointments = async (req, res) => {
 		const appointments = await Appointment.find({
 			bookedBy: id,
 			completed: true,
-		})
+		}).populate('barberId')
 
 		if (appointments) {
 			res.status(200).json({ appointments })
