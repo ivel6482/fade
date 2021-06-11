@@ -67,7 +67,13 @@ exports.getAppointment = async (req, res) => {
 exports.getBarberAppointments = async (req, res) => {
 	try {
 		const { id } = req.params
-		const appointments = await Appointment.find({ barberId: id })
+		const appointments = await Appointment.find({
+			barberId: id,
+			bookedBy: null,
+			bookAt: null,
+			completed: false,
+			booked: false,
+		})
 
 		if (appointments.length === 0 || !appointments) {
 			return res
@@ -180,7 +186,7 @@ exports.completeAppointment = async (req, res) => {
 			const bookedData = {
 				bookedAt: Date.now(),
 				bookedBy: req.user._id,
-				booked: true,
+				booked: false,
 				completed: true,
 			}
 
