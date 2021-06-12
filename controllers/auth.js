@@ -33,6 +33,7 @@ exports.signup = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
+	// FIXME: UnhandledPromiseRejectionWarning: TypeError: Cannot read property 'matchPassword' of null. I believe this happens when the passwords don't match. Send a response with an error.
 	// get email and password from information sent
 	const { email, password } = req.body
 	// find the user with that email
@@ -51,6 +52,7 @@ exports.login = async (req, res) => {
 				_id: user._id,
 				email: user.email,
 				avatar: user.avatar,
+				role: user.role,
 			},
 		})
 	} else {
