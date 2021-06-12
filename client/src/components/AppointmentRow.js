@@ -61,6 +61,9 @@ export default function AppointmentRow({ appointment }) {
 				<td className='px-6 py-4 text-sm text-gray-500 whitespace-nowrap'>
 					{formattedDate}
 				</td>
+				<td className='px-6 py-4 text-sm text-gray-500 whitespace-nowrap'>
+					{appointment._id}
+				</td>
 				<td className='px-6 py-4 text-sm font-medium text-right whitespace-nowrap'>
 					{appointment.booked && !appointment.completed && (
 						<button

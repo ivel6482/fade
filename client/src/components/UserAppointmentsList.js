@@ -52,6 +52,12 @@ export default function UserAppointmentsList({ title, appointments }) {
 											>
 												Date
 											</th>
+											<th
+												scope='col'
+												className='px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase'
+											>
+												Id
+											</th>
 											<th scope='col' className='relative px-6 py-3'>
 												<span className='sr-only'>Cancel</span>
 											</th>
