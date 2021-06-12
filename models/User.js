@@ -18,7 +18,8 @@ const UserSchema = new mongoose.Schema(
 			unique: true,
 			required: [true, 'Please enter your email address.'],
 			trim: true,
-			match: /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/,
+			match:
+				/(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/,
 		},
 		password: {
 			type: String,
@@ -39,7 +40,7 @@ const UserSchema = new mongoose.Schema(
 		role: {
 			type: String,
 			required: [true, 'Please provide a valid user role, instead got {VALUE}'],
-			enum: ['admin', 'mod', 'owner', 'barber', 'costumer'],
+			enum: ['admin', 'barber', 'costumer'],
 			default: 'costumer',
 		},
 		favoriteBarbershops: {
