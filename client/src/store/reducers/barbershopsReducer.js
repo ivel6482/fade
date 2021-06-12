@@ -17,9 +17,9 @@ import {
 	CANCEL_APPOINTMENT_REQUEST,
 	CANCEL_APPOINTMENT_SUCCESS,
 	CANCEL_APPOINTMENT_FAIL,
-	GET_USER_BOOKED_APPOINTMENTS_REQUEST,
-	GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
-	GET_USER_BOOKED_APPOINTMENTS_FAIL,
+	// GET_USER_BOOKED_APPOINTMENTS_REQUEST,
+	// GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
+	// GET_USER_BOOKED_APPOINTMENTS_FAIL,
 	GET_ACTIVE_USER_APPOINTMENTS_FAIL,
 	GET_ACTIVE_USER_APPOINTMENTS_SUCCESS,
 	GET_ACTIVE_USER_APPOINTMENTS_REQUEST,
@@ -129,6 +129,9 @@ export function barbershopsReducer(state, action) {
 					appointment._id === payload
 						? { ...appointment, booked: false }
 						: appointment
+				),
+				activeUserAppointments: state.activeUserAppointments.filter(
+					(appointment) => appointment._id !== payload
 				),
 				loading: false,
 			}
