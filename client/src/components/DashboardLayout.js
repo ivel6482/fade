@@ -110,9 +110,9 @@ export default function DashboardLayout({
 								<nav aria-label='Sidebar' className='mt-5'>
 									<div className='px-2 space-y-1'>
 										{navigation.map((item) => (
-											<a
+											<Link
 												key={item.name}
-												href={item.href}
+												to={item.to}
 												className={classNames(
 													item.current
 														? 'bg-gray-100 text-gray-900'
@@ -130,15 +130,15 @@ export default function DashboardLayout({
 													aria-hidden='true'
 												/>
 												{item.name}
-											</a>
+											</Link>
 										))}
 										<button
-											className='flex items-center w-full px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900'
+											className='flex items-center px-2 py-2 text-sm font-medium rounded-md group'
 											onClick={() => {
 												logout(history)
 											}}
 										>
-											<LogoutIcon className='w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500' />
+											<LogoutIcon className='w-6 h-6 ml-1 mr-3 text-gray-400 group-hover:text-gray-500' />
 											Logout
 										</button>
 									</div>
@@ -158,9 +158,12 @@ export default function DashboardLayout({
 											<p className='text-base font-medium text-gray-700 group-hover:text-gray-900'>
 												{firstName} {lastName}
 											</p>
-											<p className='text-sm font-medium text-gray-500 group-hover:text-gray-700'>
+											<Link
+												to='/profile'
+												className='text-sm font-medium text-gray-500 group-hover:text-gray-700'
+											>
 												View profile
-											</p>
+											</Link>
 										</div>
 									</div>
 								</a>
@@ -212,12 +215,12 @@ export default function DashboardLayout({
 										</Link>
 									))}
 									<button
-										className='flex items-center w-full px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900'
+										className='flex items-center w-full px-2 py-2 text-sm text-gray-600 rounded-md font-sm group hover:bg-gray-50 hover:text-gray-900'
 										onClick={() => {
 											logout(history)
 										}}
 									>
-										<LogoutIcon className='w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500' />
+										<LogoutIcon className='w-6 h-6 ml-1 mr-3 text-gray-400 group-hover:text-gray-500' />
 										Logout
 									</button>
 								</div>
@@ -237,9 +240,12 @@ export default function DashboardLayout({
 										<p className='text-sm font-medium text-gray-700 group-hover:text-gray-900'>
 											{firstName} {lastName}
 										</p>
-										<p className='text-xs font-medium text-gray-500 group-hover:text-gray-700'>
+										<Link
+											to='/profile'
+											className='text-xs font-medium text-gray-500 group-hover:text-gray-700'
+										>
 											View profile
-										</p>
+										</Link>
 									</div>
 								</div>
 							</a>
