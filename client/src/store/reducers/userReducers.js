@@ -11,6 +11,9 @@ import {
 	GET_LOGGED_IN_USER_REQUEST,
 	GET_LOGGED_IN_USER_FAIL,
 	GET_LOGGED_IN_USER_SUCCESS,
+	UPDATE_USER_INFORMATION_REQUEST,
+	UPDATE_USER_INFORMATION_SUCCESS,
+	UPDATE_USER_INFORMATION_FAIL,
 } from '../actions/userActions'
 
 export function userReducer(state, action) {
@@ -21,6 +24,7 @@ export function userReducer(state, action) {
 		case SIGNUP_USER_REQUEST:
 		case GET_LOGGED_IN_USER_REQUEST:
 		case LOGOUT_USER_REQUEST:
+		case UPDATE_USER_INFORMATION_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -54,10 +58,19 @@ export function userReducer(state, action) {
 				loading: false,
 			}
 
+		case UPDATE_USER_INFORMATION_SUCCESS:
+			return {
+				...state,
+				user: payload,
+				isAuthenticated: true,
+				loading: false,
+			}
+
 		case LOGIN_USER_FAIL:
 		case LOGOUT_USER_FAIL:
 		case SIGNUP_USER_FAIL:
 		case GET_LOGGED_IN_USER_FAIL:
+		case UPDATE_USER_INFORMATION_FAIL:
 			return {
 				user: null,
 				token: null,

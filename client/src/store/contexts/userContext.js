@@ -14,6 +14,9 @@ import {
 	GET_LOGGED_IN_USER_REQUEST,
 	GET_LOGGED_IN_USER_FAIL,
 	GET_LOGGED_IN_USER_SUCCESS,
+	UPDATE_USER_INFORMATION_REQUEST,
+	UPDATE_USER_INFORMATION_SUCCESS,
+	UPDATE_USER_INFORMATION_FAIL,
 } from '../actions/userActions'
 
 // TODO: Implement session management using next-auth npm package
@@ -119,6 +122,25 @@ export const UserProvider = ({ children }) => {
 		// FIXME: Add trycatch block
 	}
 
+	const updateUserInformation = async (id, data) => {
+		try {
+			dispatch({ type: UPDATE_USER_INFORMATION_REQUEST })
+			const res = await axios.put(`/users/${id}`, data)
+			localStorage.setItem('user', JSON.stringify(res.data))
+			dispatch({
+				type: UPDATE_USER_INFORMATION_SUCCESS,
+				payload: res.data,
+			})
+			//TODO: Show an alert when the user has been updated.
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: UPDATE_USER_INFORMATION_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -131,6 +153,7 @@ export const UserProvider = ({ children }) => {
 				signup,
 				logout,
 				getLoggedInUser,
+				updateUserInformation,
 			}}
 		>
 			{children}
