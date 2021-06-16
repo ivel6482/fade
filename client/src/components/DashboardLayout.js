@@ -145,7 +145,7 @@ export default function DashboardLayout({
 								</nav>
 							</div>
 							<div className='flex flex-shrink-0 p-4 border-t border-gray-200'>
-								<a href='#!' className='flex-shrink-0 block group'>
+								<div className='flex-shrink-0 block group'>
 									<div className='flex items-center'>
 										<div>
 											<img
@@ -155,9 +155,12 @@ export default function DashboardLayout({
 											/>
 										</div>
 										<div className='ml-3 '>
-											<p className='text-base font-medium text-gray-700 group-hover:text-gray-900'>
+											<Link
+												to='/profile'
+												className='block text-base font-medium text-gray-700 group-hover:text-gray-900'
+											>
 												{firstName} {lastName}
-											</p>
+											</Link>
 											<Link
 												to='/profile'
 												className='text-sm font-medium text-gray-500 group-hover:text-gray-700'
@@ -166,7 +169,7 @@ export default function DashboardLayout({
 											</Link>
 										</div>
 									</div>
-								</a>
+								</div>
 							</div>
 						</div>
 					</Transition.Child>
@@ -227,7 +230,7 @@ export default function DashboardLayout({
 							</nav>
 						</div>
 						<div className='flex flex-shrink-0 p-4 border-t border-gray-200'>
-							<a href='#!' className='flex-shrink-0 block w-full group'>
+							<div className='flex-shrink-0 block w-full group'>
 								<div className='flex items-center'>
 									<div>
 										<img
@@ -237,9 +240,12 @@ export default function DashboardLayout({
 										/>
 									</div>
 									<div className='ml-3'>
-										<p className='text-sm font-medium text-gray-700 group-hover:text-gray-900'>
+										<Link
+											to='/profile'
+											className='block text-sm font-medium text-gray-700 group-hover:text-gray-900'
+										>
 											{firstName} {lastName}
-										</p>
+										</Link>
 										<Link
 											to='/profile'
 											className='text-xs font-medium text-gray-500 group-hover:text-gray-700'
@@ -248,7 +254,7 @@ export default function DashboardLayout({
 										</Link>
 									</div>
 								</div>
-							</a>
+							</div>
 						</div>
 					</div>
 				</div>
