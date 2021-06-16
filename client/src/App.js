@@ -7,6 +7,7 @@ import Barbershop from './pages/Barbershop'
 import PrivateRoute from './components/PrivateRoute'
 import UserAppointments from './pages/UserAppointments'
 import UserProfile from './pages/UserProfile'
+import Notification from './components/Notification'
 
 export default function App() {
 	return (
@@ -29,6 +30,7 @@ export default function App() {
 					<UserProfile />
 				</PrivateRoute>
 			</Switch>
+			<Notification />
 		</Router>
 	)
 }

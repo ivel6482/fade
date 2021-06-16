@@ -1,16 +1,19 @@
 import { useContext, useState } from 'react'
 import { UserContext } from '../store/contexts/userContext'
+import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Link } from 'react-router-dom'
 
 export default function Profile() {
 	const { user, updateUserInformation } = useContext(UserContext)
+	const { displayNotification } = useContext(NotificationContext)
 	const [firstName, setFirstName] = useState(user.firstName)
 	const [lastName, setLastName] = useState(user.lastName)
 
 	const onSubmitHandler = (e) => {
 		e.preventDefault()
 		updateUserInformation(user._id, { firstName, lastName })
-		alert('Your profile has been updated')
+		// alert('Your profile has been updated')
+		displayNotification('Your profile has been updated.')
 	}
 
 	return (
