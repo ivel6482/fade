@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import { UserContext } from './store/contexts/userContext'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Homepage from './pages/Homepage'
 import Signup from './pages/Signup'
@@ -8,8 +10,12 @@ import PrivateRoute from './components/PrivateRoute'
 import UserAppointments from './pages/UserAppointments'
 import UserProfile from './pages/UserProfile'
 import Notification from './components/Notification'
+import BarberProfile from './components/BarberProfile'
+import BarberAppointments from './components/BarberAppointments'
 
 export default function App() {
+	const { user } = useContext(UserContext)
+
 	return (
 		//TODO: handle context migration from next to react
 		<Router>
@@ -24,10 +30,14 @@ export default function App() {
 					<Barbershop />
 				</PrivateRoute>
 				<PrivateRoute path='/appointments'>
-					<UserAppointments />
+					{user?.role === 'barber' ? (
+						<BarberAppointments />
+					) : (
+						<UserAppointments />
+					)}
 				</PrivateRoute>
 				<PrivateRoute path='/profile'>
-					<UserProfile />
+					{user?.role === 'barber' ? <BarberProfile /> : <UserProfile />}
 				</PrivateRoute>
 			</Switch>
 			<Notification />
