@@ -73,24 +73,15 @@ export default function Profile() {
 								</div>
 							</div>
 
-							<div className='sm:col-span-4'>
+							<div className='sm:col-span-3'>
 								<label
 									htmlFor='email'
 									className='block text-sm font-semibold text-gray-700'
 								>
 									Email address
 								</label>
-								<div className='mt-1'>
+								<div className='px-3 py-2 mt-3 bg-gray-100 rounded-md sm:text-sm'>
 									<p>{user.email}</p>
-									{/* <input
-										id='email'
-										name='email'
-										type='email'
-										autoComplete='email'
-										value={email}
-										onChange={(e) => setEmail(e.target.value)}
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-									/> */}
 								</div>
 							</div>
 						</div>
