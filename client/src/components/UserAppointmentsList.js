@@ -1,6 +1,6 @@
 import AppointmentRow from './AppointmentRow'
 
-export default function UserAppointmentsList({ title, appointments }) {
+export default function UserAppointmentsList({ title, appointments = [] }) {
 	// TODO: Implement a button to cancel the appointment on the My Appointments page, this button will only appear for appointments that have the status of `booked` or `booked: true`. When the button is pressed a modal should show with a dialog to the user to confirm their choice.
 
 	return (

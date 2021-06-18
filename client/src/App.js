@@ -10,8 +10,8 @@ import PrivateRoute from './components/PrivateRoute'
 import UserAppointments from './pages/UserAppointments'
 import UserProfile from './pages/UserProfile'
 import Notification from './components/Notification'
-import BarberProfile from './components/BarberProfile'
-import BarberAppointments from './components/BarberAppointments'
+import BarberProfile from './pages/BarberProfile'
+import BarberAppointments from './pages/BarberAppointments'
 
 export default function App() {
 	const { user } = useContext(UserContext)
