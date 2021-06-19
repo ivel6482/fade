@@ -1,14 +1,30 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
+import { Fragment, useContext, useState } from 'react'
+import { UserContext } from '../store/contexts/userContext'
 import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
+import {
+	CheckCircleIcon,
+	ExclamationIcon,
+	XIcon,
+} from '@heroicons/react/outline'
 
 export default function NewAppointment({ open, setOpen }) {
 	const [hour, setHour] = useState('')
 	const [time, setTime] = useState('AM')
+	const [valid, setValid] = useState()
+	const { user } = useContext(UserContext)
 
+	// * FIXME: Barbers are not currently accounts that can log in, add a barbershop field to the user model and set it to null by default, check if the role is barber then we can modify barbershop field.
+	//   TODO: Make a route to get barbers, this has to be changed from getting barbers collection to use the user collection and filter by role: 'barber' instead.
 	const newAppointmentHandler = () => {
-		console.log(`${hour} ${time}`)
+		if (user.role === 'barber' && valid) {
+			alert(`${hour} ${time} - barberID:${user._id}`)
+		}
+	}
+
+	const onKeyUp = () => {
+		const regex = /^(1[012]|[1-9]):([0-5]{1}[0-9]{1})$/
+		const isValidTimeString = regex.test(hour)
+		setValid(isValidTimeString)
 	}
 
 	//TODO: Maybe change time input from text to select with options from 1,2,3,... and another PM or AM
@@ -62,58 +78,81 @@ export default function NewAppointment({ open, setOpen }) {
 								</button>
 							</div>
 							<div className='sm:flex sm:items-start'>
-								<form className='w-full'>
-									<div className='mt-3 text-center sm:mt-0 sm:text-left'>
-										<Dialog.Title
-											as='h3'
-											className='text-lg font-semibold leading-6 text-gray-900'
-										>
-											New Appointment
-										</Dialog.Title>
-										<div className='mt-2'>
-											{/* Content */}
-											<div>
-												<label
-													htmlFor='Hour'
-													className='block text-sm font-medium text-gray-700'
-												>
-													Hour
-												</label>
-												<div className='relative mt-1 rounded-md shadow-sm'>
-													<input
-														type='text'
-														name='hour'
-														id='hour'
-														value={hour}
-														onChange={(e) => setHour(e.target.value)}
-														className='block w-full pr-12 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 pl-7 sm:text-sm'
-														placeholder='1:00'
-													/>
-													<div className='absolute inset-y-0 right-0 flex items-center'>
-														<label htmlFor='time' className='sr-only'>
-															Time
-														</label>
-														<select
-															id='time'
-															name='time'
-															value={time}
-															onChange={(e) => setTime(e.target.value)}
-															className='h-full py-0 pl-2 text-gray-500 bg-transparent border-transparent rounded-md focus:ring-indigo-500 focus:border-indigo-500 pr-7 sm:text-sm'
-														>
-															<option value='AM'>AM</option>
-															<option value='PM'>PM</option>
-														</select>
-													</div>
+								<div className='mt-3 text-center sm:mt-0 sm:text-left'>
+									<Dialog.Title
+										as='h3'
+										className='text-lg font-semibold leading-6 text-gray-900'
+									>
+										New Appointment
+									</Dialog.Title>
+									<div className='mt-2'>
+										{/* Content */}
+										<div>
+											<label
+												htmlFor='Hour'
+												className='block text-sm font-medium text-gray-700'
+											>
+												Hour
+											</label>
+											<div className='relative mt-1 rounded-md shadow-sm'>
+												<input
+													type='text'
+													name='hour'
+													id='hour'
+													value={hour}
+													onChange={(e) => setHour(e.target.value)}
+													onKeyUp={() => onKeyUp()}
+													//TODO: Change border color depending if input is valid or not
+													className={`${
+														valid
+															? 'focus:border-green-400 focus:ring-green-400'
+															: 'focus:border-red-500 focus:ring-red-500'
+													} block w-full pr-12 border-gray-300 rounded-md  pl-7 sm:text-sm`}
+													placeholder='1:00'
+												/>
+												<div className='absolute inset-y-0 right-0 flex items-center'>
+													<label htmlFor='time' className='sr-only'>
+														Time
+													</label>
+													<select
+														id='time'
+														name='time'
+														value={time}
+														onChange={(e) => setTime(e.target.value)}
+														className='h-full py-0 pl-2 text-gray-500 bg-transparent border-transparent rounded-md focus:ring-indigo-500 focus:border-indigo-500 pr-7 sm:text-sm'
+													>
+														<option value='AM'>AM</option>
+														<option value='PM'>PM</option>
+													</select>
 												</div>
 											</div>
+
+											<small>
+												{valid ? (
+													<div className='flex items-center my-2 font-semibold text-green-600'>
+														<CheckCircleIcon className='w-4 h-4 mr-1' />
+														<span>Time is valid</span>
+													</div>
+												) : (
+													<div className='flex items-center my-2 font-semibold text-red-600'>
+														<ExclamationIcon className='w-4 h-4 mr-1' />
+														<span>Time is invalid</span>
+													</div>
+												)}
+											</small>
+
+											<small className='block text-sm text-gray-400 sm:w-3/4'>
+												Time must be in 12-Hour format. Example: 1:00 PM
+											</small>
 										</div>
 									</div>
-								</form>
+								</div>
 							</div>
 							<div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
 								<button
 									type='button'
-									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm'
+									disabled={!valid}
+									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm'
 									onClick={() => newAppointmentHandler()}
 								>
 									Post
