@@ -1,9 +1,17 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationIcon, XIcon } from '@heroicons/react/outline'
+import { XIcon } from '@heroicons/react/outline'
 
 export default function NewAppointment({ open, setOpen }) {
+	const [hour, setHour] = useState('')
+	const [time, setTime] = useState('AM')
+
+	const newAppointmentHandler = () => {
+		console.log(`${hour} ${time}`)
+	}
+
+	//TODO: Maybe change time input from text to select with options from 1,2,3,... and another PM or AM
 	return (
 		<Transition.Root show={open} as={Fragment}>
 			<Dialog
@@ -42,7 +50,7 @@ export default function NewAppointment({ open, setOpen }) {
 						leaveFrom='opacity-100 translate-y-0 sm:scale-100'
 						leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
 					>
-						<div className='inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6'>
+						<div className='inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-xs sm:w-full sm:p-6'>
 							<div className='absolute top-0 right-0 hidden pt-4 pr-4 sm:block'>
 								<button
 									type='button'
@@ -54,46 +62,59 @@ export default function NewAppointment({ open, setOpen }) {
 								</button>
 							</div>
 							<div className='sm:flex sm:items-start'>
-								{/* <div className='flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10'>
-									<ExclamationIcon
-										className='w-6 h-6 text-red-600'
-										aria-hidden='true'
-									/>
-								</div> */}
-								<div className='mt-3 text-center sm:mt-0 sm:text-left'>
-									<Dialog.Title
-										as='h3'
-										className='text-lg font-semibold leading-6 text-gray-900'
-									>
-										New Appointment
-									</Dialog.Title>
-									<div className='mt-2'>
-										{/* Content */}
-										<div>
-											<label
-												htmlFor='time'
-												className='block text-sm font-medium text-gray-700'
-											>
-												Time
-											</label>
-											<div className='mt-1'>
-												<input
-													type='text'
-													name='time'
-													id='time'
-													className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-													placeholder='1:00 PM'
-												/>
+								<form className='w-full'>
+									<div className='mt-3 text-center sm:mt-0 sm:text-left'>
+										<Dialog.Title
+											as='h3'
+											className='text-lg font-semibold leading-6 text-gray-900'
+										>
+											New Appointment
+										</Dialog.Title>
+										<div className='mt-2'>
+											{/* Content */}
+											<div>
+												<label
+													htmlFor='Hour'
+													className='block text-sm font-medium text-gray-700'
+												>
+													Hour
+												</label>
+												<div className='relative mt-1 rounded-md shadow-sm'>
+													<input
+														type='text'
+														name='hour'
+														id='hour'
+														value={hour}
+														onChange={(e) => setHour(e.target.value)}
+														className='block w-full pr-12 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 pl-7 sm:text-sm'
+														placeholder='1:00'
+													/>
+													<div className='absolute inset-y-0 right-0 flex items-center'>
+														<label htmlFor='time' className='sr-only'>
+															Time
+														</label>
+														<select
+															id='time'
+															name='time'
+															value={time}
+															onChange={(e) => setTime(e.target.value)}
+															className='h-full py-0 pl-2 text-gray-500 bg-transparent border-transparent rounded-md focus:ring-indigo-500 focus:border-indigo-500 pr-7 sm:text-sm'
+														>
+															<option value='AM'>AM</option>
+															<option value='PM'>PM</option>
+														</select>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</form>
 							</div>
 							<div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
 								<button
 									type='button'
 									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm'
-									onClick={() => setOpen(false)}
+									onClick={() => newAppointmentHandler()}
 								>
 									Post
 								</button>
