@@ -89,6 +89,8 @@ exports.getBarberAppointments = async (req, res) => {
 }
 
 exports.createAppointment = async (req, res) => {
+	//TODO: Accept only 12 hour formatted time.
+	//TODO: Check if time is greater than 12 return message only accepts 12 hour format.
 	try {
 		const { time, barberId } = req.body
 		const duplicateAppointmentExists = await Appointment.findOne({
