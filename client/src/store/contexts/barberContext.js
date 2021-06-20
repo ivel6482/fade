@@ -18,7 +18,7 @@ const initialState = {
 export const BarbersContext = createContext()
 const { Provider } = BarbersContext
 
-export const UserProvider = ({ children }) => {
+export const BarbersProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(barbersReducer, initialState)
 	const {
 		availableAppointments,
@@ -28,16 +28,16 @@ export const UserProvider = ({ children }) => {
 		loading,
 	} = state
 
-	const postAppointment = async (appointment, barberId) => {
+	const postAppointment = async (time, barberId) => {
 		try {
 			dispatch({ type: POST_APPOINTMENT_REQUEST })
 			const newAppointment = {
-				appointment,
+				time,
 				barberId,
 			}
 
 			const res = await axios.post('/appointments', newAppointment)
-			console.log(res.data.appointment)
+			console.log(res.data)
 			// dispatch({
 			// 	type: POST_APPOINTMENT_SUCCESS,
 			// 	payload: res.data.appointment,

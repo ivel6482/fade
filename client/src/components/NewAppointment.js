@@ -1,5 +1,6 @@
 import { Fragment, useContext, useState } from 'react'
 import { UserContext } from '../store/contexts/userContext'
+import { BarbersContext } from '../store/contexts/barberContext'
 import { Dialog, Transition } from '@headlessui/react'
 import {
 	CheckCircleIcon,
@@ -12,12 +13,14 @@ export default function NewAppointment({ open, setOpen }) {
 	const [time, setTime] = useState('AM')
 	const [valid, setValid] = useState()
 	const { user } = useContext(UserContext)
+	const { postAppointment } = useContext(BarbersContext)
 
 	// * FIXME: Barbers are not currently accounts that can log in, add a barbershop field to the user model and set it to null by default, check if the role is barber then we can modify barbershop field.
 	//   TODO: Make a route to get barbers, this has to be changed from getting barbers collection to use the user collection and filter by role: 'barber' instead.
 	const newAppointmentHandler = () => {
 		if (user.role === 'barber' && valid) {
-			alert(`${hour} ${time} - barberID:${user._id}`)
+			const newAppointment = `${hour} ${time}`
+			postAppointment(newAppointment, user._id)
 		}
 	}
 
