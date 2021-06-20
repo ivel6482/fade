@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// ? Is there a way of extending User schema to use this Barber schema as well if the role is barber in the User schema?
 const BarberSchema = new mongoose.Schema(
 	{
 		name: {
