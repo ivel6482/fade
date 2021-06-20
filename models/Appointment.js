@@ -35,7 +35,7 @@ const AppointmentSchema = new mongoose.Schema(
 		},
 		barberId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Barber',
+			ref: 'User',
 			required: [
 				true,
 				'Please specify the id of the barber that the appointment belongs to',

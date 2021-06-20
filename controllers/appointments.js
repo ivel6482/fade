@@ -100,7 +100,7 @@ exports.createAppointment = async (req, res) => {
 
 		if (duplicateAppointmentExists) {
 			return res.status(400).json({
-				message: `An appointment at ${time} for ${duplicateAppointmentExists.barberId.name} already exists.`,
+				message: `An appointment at ${time} for ${duplicateAppointmentExists.barberId.firstName} ${duplicateAppointmentExists.barberId.lastName} already exists.`,
 			})
 		}
 
