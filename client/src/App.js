@@ -12,6 +12,10 @@ import UserProfile from './pages/UserProfile'
 import Notification from './components/Notification'
 import BarberProfile from './pages/BarberProfile'
 import BarberAppointments from './pages/BarberAppointments'
+import AdminBarbers from './pages/AdminBarbers'
+import AdminUsers from './pages/AdminUsers'
+import AdminProfile from './pages/AdminProfile'
+import AdminAppointments from './pages/AdminAppointments'
 
 export default function App() {
 	const { user } = useContext(UserContext)
@@ -30,14 +34,18 @@ export default function App() {
 					<Barbershop />
 				</PrivateRoute>
 				<PrivateRoute path='/appointments'>
-					{user?.role === 'barber' ? (
-						<BarberAppointments />
-					) : (
-						<UserAppointments />
-					)}
+					{user?.role === 'costumer' && <UserAppointments />}
+					{user?.role === 'barber' && <BarberAppointments />}
+					{user?.role === 'admin' && <AdminAppointments />}
 				</PrivateRoute>
 				<PrivateRoute path='/profile'>
 					{user?.role === 'barber' ? <BarberProfile /> : <UserProfile />}
+				</PrivateRoute>
+				<PrivateRoute path='/barbers'>
+					{user?.role === 'admin' ? <AdminBarbers /> : <h2>404</h2>}
+				</PrivateRoute>
+				<PrivateRoute path='/users'>
+					{user?.role === 'admin' ? <AdminUsers /> : <h2>404</h2>}
 				</PrivateRoute>
 			</Switch>
 			<Notification />
