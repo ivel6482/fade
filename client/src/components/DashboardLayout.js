@@ -10,6 +10,10 @@ import {
 	XIcon,
 	LogoutIcon,
 } from '@heroicons/react/outline'
+import {
+	UserCircleIcon,
+	ScissorsIcon
+} from '@heroicons/react/solid'
 
 export default function DashboardLayout({
 	children,
@@ -27,7 +31,7 @@ export default function DashboardLayout({
 	const { firstName, lastName, avatar } = user
 
 	// FIXME: Navigation is not working on mobile.
-	const navigation = [
+	const userNavigation = [
 		{
 			name: 'Barbershops',
 			to: '/dashboard',
@@ -41,6 +45,32 @@ export default function DashboardLayout({
 			current: currentTab === 'appointments' ? true : false,
 		},
 	]
+
+	const barberNavigation = [
+		...userNavigation,
+	]
+
+	const adminNavigation = [
+		...userNavigation,
+		{
+			name: 'Users',
+			to: '/users',
+			icon: UserCircleIcon,
+			current:  currentTab === 'users' ? true : false,
+		},
+		{
+			name: 'Barbers',
+			to: '/barbers',
+			icon: ScissorsIcon,
+			current:  currentTab === 'barbers' ? true : false,
+		},
+	]
+
+	let navigation
+
+	if (user.role === 'admin') navigation = adminNavigation
+	else if (user.role === 'barber') navigation = barberNavigation
+	else navigation = userNavigation
 
 	function classNames(...classes) {
 		return classes.filter(Boolean).join(' ')
