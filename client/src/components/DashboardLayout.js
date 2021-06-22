@@ -9,6 +9,7 @@ import {
 	MenuIcon,
 	XIcon,
 	LogoutIcon,
+	ChartBarIcon,
 } from '@heroicons/react/outline'
 import {
 	UserCircleIcon,
@@ -48,10 +49,27 @@ export default function DashboardLayout({
 
 	const barberNavigation = [
 		...userNavigation,
+		{
+			name: 'Stats',
+			to: '/appointments',
+			icon: ChartBarIcon,
+			current: currentTab === 'stats',
+		}
 	]
 
 	const adminNavigation = [
-		...userNavigation,
+		{
+			name: 'Barbershops',
+			to: '/dashboard',
+			icon: HomeIcon,
+			current: currentTab === 'barbershops' ? true : false,
+		},
+		{
+			name: 'Appointments',
+			to: '/appointments',
+			icon: CalendarIcon,
+			current: currentTab === 'appointments' ? true : false,
+		},
 		{
 			name: 'Users',
 			to: '/users',
