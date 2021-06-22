@@ -1,4 +1,12 @@
+import { useHistory } from 'react-router-dom'
+
 export default function User({ user }) {
+  const history = useHistory()
+
+  const viewProfileHandler = () => {
+    alert('Clicked')
+  }
+
   return (
     <li className='flex flex-col col-span-1 text-center bg-white divide-y divide-gray-200 rounded-lg shadow'>
       <div className='flex flex-col flex-1 p-8'>
@@ -37,7 +45,7 @@ export default function User({ user }) {
           {/* //TODO: When this is clicked show a modal with the appointments. */}
           <div className='flex flex-1 w-0 transition hover:bg-gray-50'>
             <button
-              // onClick={() => fetchBarberAppointments(barber._id)}
+              onClick={() => viewProfileHandler()}
               className='relative inline-flex items-center justify-center flex-1 w-0 py-4 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-lg hover:text-gray-500'
             >
               {/* <CalendarIcon
