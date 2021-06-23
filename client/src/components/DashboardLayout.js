@@ -11,10 +11,7 @@ import {
 	LogoutIcon,
 	ChartBarIcon,
 } from '@heroicons/react/outline'
-import {
-	UserCircleIcon,
-	ScissorsIcon
-} from '@heroicons/react/solid'
+import { UserCircleIcon, ScissorsIcon } from '@heroicons/react/solid'
 
 export default function DashboardLayout({
 	children,
@@ -37,13 +34,13 @@ export default function DashboardLayout({
 			name: 'Barbershops',
 			to: '/dashboard',
 			icon: HomeIcon,
-			current: currentTab === 'barbershops' ? true : false,
+			current: currentTab === 'barbershops',
 		},
 		{
 			name: 'My Appointments',
 			to: '/appointments',
 			icon: CalendarIcon,
-			current: currentTab === 'appointments' ? true : false,
+			current: currentTab === 'appointments',
 		},
 	]
 
@@ -54,7 +51,7 @@ export default function DashboardLayout({
 			to: '/appointments',
 			icon: ChartBarIcon,
 			current: currentTab === 'stats',
-		}
+		},
 	]
 
 	const adminNavigation = [
@@ -62,25 +59,25 @@ export default function DashboardLayout({
 			name: 'Barbershops',
 			to: '/dashboard',
 			icon: HomeIcon,
-			current: currentTab === 'barbershops' ? true : false,
+			current: currentTab === 'barbershops',
 		},
 		{
 			name: 'Appointments',
 			to: '/appointments',
 			icon: CalendarIcon,
-			current: currentTab === 'appointments' ? true : false,
+			current: currentTab === 'appointments',
 		},
 		{
 			name: 'Users',
 			to: '/users',
 			icon: UserCircleIcon,
-			current:  currentTab === 'users' ? true : false,
+			current: currentTab === 'users',
 		},
 		{
 			name: 'Barbers',
 			to: '/barbers',
 			icon: ScissorsIcon,
-			current:  currentTab === 'barbers' ? true : false,
+			current: currentTab === 'barbers',
 		},
 	]
 
