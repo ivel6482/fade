@@ -16,6 +16,7 @@ import AdminBarbers from './pages/AdminBarbers'
 import AdminUsers from './pages/AdminUsers'
 import AdminProfile from './pages/AdminProfile'
 import AdminAppointments from './pages/AdminAppointments'
+import AdminUserProfile from './components/AdminUserProfile'
 
 export default function App() {
 	const { user } = useContext(UserContext)
@@ -45,6 +46,9 @@ export default function App() {
 				</PrivateRoute>
 				<PrivateRoute path='/barbers'>
 					{user?.role === 'admin' ? <AdminBarbers /> : <h2>404</h2>}
+				</PrivateRoute>
+				<PrivateRoute path='/users/:id'>
+					{user?.role === 'admin' ? <AdminUserProfile /> : <h2>404</h2>}
 				</PrivateRoute>
 				<PrivateRoute path='/users'>
 					{user?.role === 'admin' ? <AdminUsers /> : <h2>404</h2>}
