@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import SquareBadge from './SquareBadge'
 
 export default function User({ user }) {
 	return (
@@ -12,8 +13,16 @@ export default function User({ user }) {
 				<h3 className='mt-6 text-sm font-medium text-gray-900'>
 					{user.firstName} {user.lastName}
 				</h3>
-				<div>
-					<span className='text-semibold'>{user.role}</span>
+				<div className='mt-2'>
+					{user.role === 'admin' && (
+						<SquareBadge color='red' text={user.role} />
+					)}
+					{user.role === 'barber' && (
+						<SquareBadge color='green' text={user.role} />
+					)}
+					{user.role === 'costumer' && (
+						<SquareBadge color='yellow' text={user.role} />
+					)}
 				</div>
 				<dl className='flex flex-col justify-between flex-grow mt-1'>
 					{/* <dt className='sr-only'>Title</dt>
