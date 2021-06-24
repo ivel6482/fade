@@ -7,8 +7,8 @@ export default function User({ user }) {
 			<div className='flex flex-col flex-1 p-8'>
 				<img
 					className='flex-shrink-0 w-32 h-32 mx-auto bg-black rounded-full'
-					src='https://source.unsplash.com/random'
-					alt=''
+					src={user.avatar}
+					alt='avatar'
 				/>
 				<h3 className='mt-6 text-sm font-medium text-gray-900'>
 					{user.firstName} {user.lastName}
