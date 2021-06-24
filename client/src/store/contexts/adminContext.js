@@ -70,7 +70,6 @@ export const AdminProvider = ({ children }) => {
 		try {
 			dispatch({ type: GET_USER_REQUEST })
 			const res = await axios.get(`/users/${id}`)
-			console.log('RAAAAAAAAAAAAAN')
 			dispatch({ type: GET_USER_SUCCESS, payload: res.data })
 		} catch (error) {
 			console.error(error)
