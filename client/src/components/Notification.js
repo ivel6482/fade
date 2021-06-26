@@ -5,7 +5,7 @@ import { CheckCircleIcon } from '@heroicons/react/outline'
 import { XIcon } from '@heroicons/react/solid'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 
-export default function Notification() {
+export default function Notification({ notification }) {
 	const { show, hideNotification } = useContext(NotificationContext)
 
 	//TODO: Map through notifications. Where can I map through notifications
@@ -39,7 +39,7 @@ export default function Notification() {
 									</div>
 									<div className='ml-3 w-0 flex-1 pt-0.5'>
 										<p className='text-lg font-semibold text-white'>
-											Successfully saved!
+											{notification.message}
 										</p>
 										{/* <p className='mt-1 text-sm text-white'>
 											Anyone with a link can now view this file.

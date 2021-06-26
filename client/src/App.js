@@ -17,9 +17,11 @@ import AdminUsers from './pages/AdminUsers'
 import AdminProfile from './pages/AdminProfile'
 import AdminAppointments from './pages/AdminAppointments'
 import AdminUserProfile from './components/AdminUserProfile'
+import { NotificationContext } from './store/contexts/notificationsContext'
 
 export default function App() {
 	const { user } = useContext(UserContext)
+	const { notifications } = useContext(NotificationContext)
 
 	return (
 		//TODO: handle context migration from next to react
@@ -54,7 +56,10 @@ export default function App() {
 					{user?.role === 'admin' ? <AdminUsers /> : <h2>404</h2>}
 				</PrivateRoute>
 			</Switch>
-			<Notification />
+			{notifications.length > 0 &&
+				notifications.map((notification) => (
+					<Notification notification={notification} key={notification.id} />
+				))}
 		</Router>
 	)
 }
