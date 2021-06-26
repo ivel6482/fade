@@ -11,6 +11,9 @@ import {
 	UPDATE_USER_REQUEST,
 	UPDATE_USER_SUCCESS,
 	UPDATE_USER_FAIL,
+	GET_APPOINTMENTS_REQUEST,
+	GET_APPOINTMENTS_SUCCESS,
+	GET_APPOINTMENTS_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -91,6 +94,30 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const getAppointments = async (token) => {
+		try {
+			dispatch({ type: GET_APPOINTMENTS_REQUEST })
+			const res = await axios.get('/appointments', {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			dispatch({
+				type: GET_APPOINTMENTS_SUCCESS,
+				payload: {
+					count: res.data.count,
+					appointments: res.data.appointments,
+				},
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -111,6 +138,7 @@ export const AdminProvider = ({ children }) => {
 				getUsers,
 				getUser,
 				updateUser,
+				getAppointments,
 			}}
 		>
 			{children}

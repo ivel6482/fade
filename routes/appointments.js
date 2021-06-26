@@ -14,7 +14,10 @@ const {
 } = require('../controllers/appointments')
 const { protect, authorize } = require('../middleware/auth')
 
-router.route('/').post(createAppointment).get(protect, authorize('barber'), getAllAppointments)
+router
+	.route('/')
+	.post(createAppointment)
+	.get(protect, authorize('barber', 'admin'), getAllAppointments)
 router.get('/available', getAvailableAppointments)
 router.get('/booked', getBookedAppointments)
 router
