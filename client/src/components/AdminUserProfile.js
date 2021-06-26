@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link, useHistory } from 'react-router-dom'
 import { AdminContext } from '../store/contexts/adminContext'
+import { NotificationContext } from '../store/contexts/notificationsContext'
 import DashboardLayout from './DashboardLayout'
 
 export default function AdminUserProfile() {
 	const { id } = useParams()
-	const { loading, user, getUser } = useContext(AdminContext)
+	const history = useHistory()
+	const { loading, user, getUser, updateUser } = useContext(AdminContext)
+	const { displayNotification } = useContext(NotificationContext)
 	//TODO: Get the user from the admin context, then do the same as below.
 	const [firstName, setFirstName] = useState('')
 	const [lastName, setLastName] = useState('')
@@ -13,7 +16,6 @@ export default function AdminUserProfile() {
 	const [role, setRole] = useState('')
 	const [email, setEmail] = useState('')
 
-	//TODO: Make a request to get the current user using the id from params
 	useEffect(() => {
 		getUser(id)
 	}, [])
@@ -26,12 +28,31 @@ export default function AdminUserProfile() {
 		setEmail(user.email)
 	}, [user])
 
+	const onSubmitHandler = (e) => {
+		e.preventDefault()
+		if (
+			firstName === user.firstName &&
+			lastName === user.lastName &&
+			email === user.email &&
+			role === user.role
+		) {
+			//FIXME: Notifications are currently not accepting custom messages like below, make it accept custom messages.
+			displayNotification('Please make some changes before saving.')
+		} else {
+			updateUser(user._id, { firstName, lastName, email, role }, history)
+			displayNotification('Profile has been updated.')
+		}
+	}
+
 	return (
 		<DashboardLayout currentTab='users'>
 			{loading && user === null ? (
 				<p>Loading user...</p>
 			) : (
-				<form className='pb-4 space-y-8 divide-y divide-gray-200'>
+				<form
+					onSubmit={onSubmitHandler}
+					className='pb-4 space-y-8 divide-y divide-gray-200'
+				>
 					<div className='space-y-8 divide-y divide-gray-200'>
 						<div className='pt-8'>
 							<div>
@@ -153,12 +174,12 @@ export default function AdminUserProfile() {
 
 					<div className='pt-5'>
 						<div className='flex justify-end'>
-							<button
-								type='button'
+							<Link
+								to='/users'
 								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
 							>
 								Cancel
-							</button>
+							</Link>
 							<button
 								type='submit'
 								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'

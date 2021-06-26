@@ -8,6 +8,9 @@ import {
 	GET_USER_REQUEST,
 	GET_USER_SUCCESS,
 	GET_USER_FAIL,
+	UPDATE_USER_REQUEST,
+	UPDATE_USER_SUCCESS,
+	UPDATE_USER_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -76,6 +79,18 @@ export const AdminProvider = ({ children }) => {
 			dispatch({ type: GET_USER_FAIL, payload: error.response.data.message })
 		}
 	}
+
+	const updateUser = async (id, data) => {
+		try {
+			dispatch({ type: UPDATE_USER_REQUEST })
+			const res = await axios.put(`/users/${id}`, data)
+			dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data })
+		} catch (error) {
+			console.error(error)
+			dispatch({ type: UPDATE_USER_FAIL, payload: error.response.data.message })
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -95,6 +110,7 @@ export const AdminProvider = ({ children }) => {
 				errors,
 				getUsers,
 				getUser,
+				updateUser,
 			}}
 		>
 			{children}
