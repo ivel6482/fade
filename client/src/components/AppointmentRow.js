@@ -13,6 +13,7 @@ export default function AppointmentRow({ appointment }) {
 			day: 'numeric',
 		}
 	)
+
 	return (
 		<>
 			{open && (
@@ -33,7 +34,7 @@ export default function AppointmentRow({ appointment }) {
 													</div> */}
 						{/* <div className='ml-4'> */}
 						<div className='text-sm font-medium text-gray-900'>
-							{appointment.barberId.name}
+							{appointment.barberId.firstName} {appointment.barberId.lastName}
 						</div>
 						{/* <div className="text-sm text-gray-500">{person.email}</div> */}
 						{/* </div> */}
@@ -44,12 +45,11 @@ export default function AppointmentRow({ appointment }) {
                       <div className="text-sm text-gray-500">{person.department}</div>
 											</td> */}
 				<td className='px-6 py-4 whitespace-nowrap'>
-					{appointment.booked && (
+					{!appointment.completed ? (
 						<span className='inline-flex px-2 text-xs font-semibold leading-5 text-indigo-800 bg-indigo-100 rounded-full'>
 							Booked
 						</span>
-					)}{' '}
-					{appointment.completed && (
+					) : (
 						<span className='inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full'>
 							Completed
 						</span>
@@ -65,7 +65,7 @@ export default function AppointmentRow({ appointment }) {
 					{appointment._id}
 				</td>
 				<td className='px-6 py-4 text-sm font-medium text-right whitespace-nowrap'>
-					{appointment.booked && !appointment.completed && (
+					{!appointment.completed && (
 						<button
 							onClick={() => setOpen(true)}
 							type='button'

@@ -2,7 +2,7 @@ const Appointment = require('../models/Appointment')
 
 exports.getAllAppointments = async (req, res) => {
 	try {
-		const appointments = await Appointment.find()
+		const appointments = await Appointment.find().populate('barberId')
 		const count = await Appointment.countDocuments()
 
 		if (appointments.length === 0) {
