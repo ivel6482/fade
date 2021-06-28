@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 import UserAppointmentsList from '../components/UserAppointmentsList'
+import Stats from '../components/Stats'
 import { AdminContext } from '../store/contexts/adminContext'
 import { UserContext } from '../store/contexts/userContext'
 
@@ -13,27 +14,21 @@ export default function AdminAppointments() {
 		getAppointments(token)
 	}, [])
 
+	const stats = [
+		{
+			name: 'Total Appointments',
+			stat: appointmentsCount,
+		},
+	]
+
 	return (
 		<DashboardLayout currentTab='appointments'>
+			<h3 className='font-bold text-gray-300 text-8xl'>Appointments</h3>
 			{loading ? (
 				<p>Loading appointments...</p>
 			) : (
 				<>
-					<div className='mb-3'>
-						<h3 className='text-lg font-medium leading-6 text-gray-900'>
-							Last 30 days
-						</h3>
-						<dl className='grid grid-cols-1 gap-5 mt-5 sm:grid-cols-3'>
-							<div className='px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6'>
-								<dt className='text-sm font-medium text-gray-500 truncate'>
-									Total appointments
-								</dt>
-								<dd className='mt-1 text-3xl font-semibold text-gray-900'>
-									{appointmentsCount}
-								</dd>
-							</div>
-						</dl>
-					</div>
+					<Stats stats={stats} />
 					<UserAppointmentsList
 						title='Appointments'
 						appointments={appointments}
