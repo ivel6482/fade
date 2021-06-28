@@ -1,4 +1,5 @@
 const Barber = require('../models/Barber')
+const User = require('../models/User')
 const cloudinary = require('../utils/cloudinary')
 
 //------------------------------------------------------------------------------
@@ -7,8 +8,8 @@ const cloudinary = require('../utils/cloudinary')
 
 exports.getAllBarbers = async (req, res) => {
 	try {
-		const barbers = await Barber.find()
-		const count = await Barber.countDocuments()
+		const barbers = await User.find({ role: 'barber' })
+		const count = await User.countDocuments({ role: 'barber' })
 
 		if (barbers.length === 0) {
 			return res.status(200).json({ message: 'No barbers' })

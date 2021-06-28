@@ -8,6 +8,9 @@ import {
 	GET_APPOINTMENTS_REQUEST,
 	GET_APPOINTMENTS_SUCCESS,
 	GET_APPOINTMENTS_FAIL,
+	GET_BARBERS_REQUEST,
+	GET_BARBERS_SUCCESS,
+	GET_BARBERS_FAIL,
 } from '../actions/adminActions'
 
 export default function adminReducer(state, action) {
@@ -17,6 +20,7 @@ export default function adminReducer(state, action) {
 		case GET_USERS_REQUEST:
 		case GET_USER_REQUEST:
 		case GET_APPOINTMENTS_REQUEST:
+		case GET_BARBERS_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -45,6 +49,14 @@ export default function adminReducer(state, action) {
 				loading: false,
 			}
 
+		case GET_BARBERS_SUCCESS:
+			return {
+				...state,
+				barbers: payload.barbers,
+				barbersCount: payload.count,
+				loading: false,
+			}
+
 		case GET_USERS_FAIL:
 			return {
 				...state,
@@ -67,6 +79,15 @@ export default function adminReducer(state, action) {
 				...state,
 				appointmentsCount: 0,
 				appointments: [],
+				loading: false,
+				errors: [...state.errors, payload],
+			}
+
+		case GET_BARBERS_FAIL:
+			return {
+				...state,
+				barbers: [],
+				barbersCount: 0,
 				loading: false,
 				errors: [...state.errors, payload],
 			}

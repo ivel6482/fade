@@ -23,14 +23,14 @@ export default function Barber({ barber }) {
 						alt=''
 					/>
 					<h3 className='mt-6 text-sm font-medium text-gray-900'>
-						{barber.name}
+						{barber.firstName} {barber.lastName}
 					</h3>
 					<dl className='flex flex-col justify-between flex-grow mt-1'>
 						<dt className='sr-only'>Title</dt>
 						<dd className='text-sm text-gray-500'>{barber.title}</dd>
 						<dt className='sr-only'>Role</dt>
 						<dd className='mt-3'>
-							{barber.specialties.map((specialty, index) => (
+							{/* {barber.specialties.map((specialty, index) => (
 								//TODO: use uuid for key instead of index, implement this in the database model and controller.
 								<span
 									key={index}
@@ -38,7 +38,7 @@ export default function Barber({ barber }) {
 								>
 									{specialty}
 								</span>
-							))}
+							))} */}
 						</dd>
 					</dl>
 				</div>

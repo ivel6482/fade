@@ -1,3 +1,4 @@
+// =============== Users ===============
 export const GET_USERS_REQUEST = 'GET_USERS_REQUEST'
 export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS'
 export const GET_USERS_FAIL = 'GET_USERS_FAIL'
@@ -10,6 +11,12 @@ export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST'
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
 export const UPDATE_USER_FAIL = 'UPDATE_USER_FAIL'
 
+// =============== Barbers ===============
+export const GET_BARBERS_REQUEST = 'GET_BARBERS_REQUEST'
+export const GET_BARBERS_SUCCESS = 'GET_BARBERS_SUCCESS'
+export const GET_BARBERS_FAIL = 'GET_BARBERS_FAIL'
+
+// =============== Appointments ===============
 export const GET_APPOINTMENTS_REQUEST = 'GET_APPOINTMENTS_REQUEST'
 export const GET_APPOINTMENTS_SUCCESS = 'GET_APPOINTMENTS_SUCCESS'
 export const GET_APPOINTMENTS_FAIL = 'GET_APPOINTMENTS_FAIL'

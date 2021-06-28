@@ -14,6 +14,9 @@ import {
 	GET_APPOINTMENTS_REQUEST,
 	GET_APPOINTMENTS_SUCCESS,
 	GET_APPOINTMENTS_FAIL,
+	GET_BARBERS_REQUEST,
+	GET_BARBERS_SUCCESS,
+	GET_BARBERS_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -118,6 +121,24 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const getBarbers = async () => {
+		try {
+			dispatch({ type: GET_BARBERS_REQUEST })
+			//FIXME: This is incorrect we have to query the user collection that have the role of barber.
+			const res = await axios.get('/barbers')
+			dispatch({
+				type: GET_BARBERS_SUCCESS,
+				payload: {
+					count: res.data.count,
+					barbers: res.data.barbers,
+				},
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({ type: GET_BARBERS_FAIL, payload: error.response.data.message })
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -139,6 +160,7 @@ export const AdminProvider = ({ children }) => {
 				getUser,
 				updateUser,
 				getAppointments,
+				getBarbers,
 			}}
 		>
 			{children}
