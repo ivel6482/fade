@@ -33,7 +33,7 @@ import {
 
 const initialState = {
 	barbershops: [],
-	barbershop: null,
+	barbershop: {},
 	barbers: [],
 	appointments: [],
 	userAppointments: [],
