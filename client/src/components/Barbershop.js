@@ -7,9 +7,13 @@ import {
 } from '@heroicons/react/solid'
 
 import BarbershopItem from './BarbershopItem' //TODO: Rename this better
+import { useContext } from 'react'
+import { UserContext } from '../store/contexts/userContext'
 
 //TODO: Make responsive
 export default function Barbershop({ barbershop }) {
+	const { user } = useContext(UserContext)
+
 	return (
 		<section className='col-span-1 p-4'>
 			<section className='p-4 space-y-2 text-gray-700 transition bg-gray-100 border border-gray-100 rounded-md shadow hover:shadow-md hover:border-gray-300'>
@@ -31,9 +35,17 @@ export default function Barbershop({ barbershop }) {
 				<section className='flex justify-end'>
 					<Link
 						to={`/barbershops/${barbershop._id}`}
-						className='flex items-end gap-2 font-semibold text-gray-500 transition hover:text-gray-900'
+						className='font-semibold text-gray-500 transition hover:text-gray-900'
 					>
-						See appointments <ArrowRightIcon width='20' />
+						{user?.role === 'admin' ? (
+							<span className='flex items-end gap-2'>
+								View barbershop <ArrowRightIcon width='20' />
+							</span>
+						) : (
+							<span className='flex items-end gap-2'>
+								See appointments <ArrowRightIcon width='20' />
+							</span>
+						)}
 					</Link>
 				</section>
 			</section>
