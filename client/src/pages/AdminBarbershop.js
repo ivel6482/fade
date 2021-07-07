@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import DashboardLayout from '../components/DashboardLayout'
 import { AdminContext } from '../store/contexts/adminContext'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
@@ -70,6 +70,17 @@ export default function AdminBarbershop() {
 
 	useEffect(() => {
 		getBarbershop(id)
+
+		return () => {
+			setName('')
+			setAbout('')
+			setAddress('')
+			setBarbershopOwner('')
+			setAvailable([false, false, false, false, false, false, false])
+			setCloseTime('')
+			setOpenTime('')
+			setPhoneNumber('')
+		}
 	}, [])
 
 	useEffect(() => {
@@ -116,6 +127,10 @@ export default function AdminBarbershop() {
 		displayNotification('Barbershop updated successfully!')
 	}
 
+	const deleteHandler = () => {
+		displayNotification('Barbershop deleted successfully.')
+	}
+
 	return (
 		<DashboardLayout>
 			{loading && barbershop === null ? (
@@ -127,14 +142,25 @@ export default function AdminBarbershop() {
 				>
 					<div className='space-y-8 divide-y divide-gray-200 sm:space-y-5'>
 						<div>
-							<div>
-								<h3 className='text-lg font-medium leading-6 text-gray-900'>
-									Barbershop
-								</h3>
-								<p className='max-w-2xl mt-1 text-sm text-gray-500'>
-									This information will be displayed publicly so be careful what
-									you share.
-								</p>
+							<div className='flex flex-col justify-between sm:flex-row'>
+								<div>
+									<h3 className='text-lg font-medium leading-6 text-gray-900'>
+										Barbershop
+									</h3>
+									<p className='max-w-2xl mt-1 text-sm text-gray-500'>
+										This information will be displayed publicly so be careful
+										what you share.
+									</p>
+								</div>
+								<div className='flex justify-end mt-3'>
+									<button
+										onClick={deleteHandler}
+										type='button'
+										className='inline-flex items-center px-3 py-2 text-sm font-semibold leading-4 text-white bg-gray-400 border border-transparent rounded-md shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
+									>
+										Delete
+									</button>
+								</div>
 							</div>
 
 							<div className='mt-6 space-y-6 sm:mt-5 sm:space-y-5'>
@@ -351,12 +377,12 @@ export default function AdminBarbershop() {
 
 					<div className='pt-5 pb-5'>
 						<div className='flex justify-end'>
-							<button
-								type='button'
+							<Link
+								to='/dashboard'
 								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
 							>
 								Cancel
-							</button>
+							</Link>
 							<button
 								type='submit'
 								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'

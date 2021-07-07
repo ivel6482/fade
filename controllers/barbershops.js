@@ -83,17 +83,14 @@ exports.updateBarbershop = async (req, res) => {
 		const { id } = req.params
 		const barbershop = await Barbershop.findById(id)
 		if (barbershop) {
-			const { name, location, contact, available } = req.body
-			console.log({
-				body: req.body,
-				barbershop,
-			})
+			const { name, location, contact, available, about } = req.body
 
 			const newData = {
 				name: name || barbershop.name,
 				location: location || barbershop.location,
 				contact: contact || barbershop.contact,
 				available: available || barbershop.available,
+				about: about || barbershop.about,
 			}
 
 			const updatedBarbershop = await Barbershop.findByIdAndUpdate(
