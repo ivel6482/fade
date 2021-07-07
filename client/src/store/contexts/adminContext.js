@@ -20,6 +20,9 @@ import {
 	CREATE_BARBERSHOP_REQUEST,
 	CREATE_BARBERSHOP_SUCCESS,
 	CREATE_BARBERSHOP_FAIL,
+	UPDATE_BARBERSHOP_REQUEST,
+	UPDATE_BARBERSHOP_SUCCESS,
+	UPDATE_BARBERSHOP_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -164,6 +167,21 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const updateBarbershop = async (id, data) => {
+		try {
+			dispatch({ type: UPDATE_BARBERSHOP_REQUEST })
+			const res = await axios.put(`/barbershops/${id}`, data)
+			console.log(res.data)
+			// dispatch({ type: UPDATE_BARBERSHOP_SUCCESS, payload: res.data })
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: UPDATE_BARBERSHOP_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -187,6 +205,7 @@ export const AdminProvider = ({ children }) => {
 				getAppointments,
 				getBarbers,
 				createBarbershop,
+				updateBarbershop,
 			}}
 		>
 			{children}

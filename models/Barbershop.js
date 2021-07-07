@@ -46,9 +46,17 @@ const BarbershopSchema = new mongoose.Schema(
 			hours: {
 				open: {
 					type: String,
+					required: [
+						true,
+						'Please specify an hour your barbershop will be opened to the public',
+					],
 				},
 				close: {
 					type: String,
+					required: [
+						true,
+						'Please specify an hour your barbershop will be closed to the public',
+					],
 				},
 			},
 			days: {
@@ -62,6 +70,11 @@ const BarbershopSchema = new mongoose.Schema(
 					'Friday',
 					'Saturday',
 				],
+				default: [],
+				required: [
+					true,
+					'Please specify at least one day that your barbershop will be opened.',
+				],
 			},
 		},
 		favoriteCount: {
@@ -71,6 +84,7 @@ const BarbershopSchema = new mongoose.Schema(
 		favorites: {
 			type: [mongoose.Schema.Types.ObjectId],
 			ref: 'User',
+			default: [],
 		},
 
 		// owner: {

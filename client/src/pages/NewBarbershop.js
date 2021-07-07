@@ -110,8 +110,10 @@ export default function NewBarbershop() {
 					},
 					barbershopOwner: barbershopOwner._id,
 					available: {
-						open: openTime,
-						close: closeTime,
+						hours: {
+							open: openTime,
+							close: closeTime,
+						},
 						days: selectedDays,
 					},
 				},

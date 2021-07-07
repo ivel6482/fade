@@ -14,6 +14,9 @@ import {
 	CREATE_BARBERSHOP_REQUEST,
 	CREATE_BARBERSHOP_SUCCESS,
 	CREATE_BARBERSHOP_FAIL,
+	UPDATE_BARBERSHOP_REQUEST,
+	UPDATE_BARBERSHOP_SUCCESS,
+	UPDATE_BARBERSHOP_FAIL,
 } from '../actions/adminActions'
 
 export default function adminReducer(state, action) {
@@ -25,6 +28,7 @@ export default function adminReducer(state, action) {
 		case GET_APPOINTMENTS_REQUEST:
 		case GET_BARBERS_REQUEST:
 		case CREATE_BARBERSHOP_REQUEST:
+		case UPDATE_BARBERSHOP_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -68,6 +72,13 @@ export default function adminReducer(state, action) {
 				loading: false,
 			}
 
+		case UPDATE_BARBERSHOP_SUCCESS:
+			return {
+				...state,
+				barbershop: payload,
+				loading: false,
+			}
+
 		case GET_USERS_FAIL:
 			return {
 				...state,
@@ -104,6 +115,14 @@ export default function adminReducer(state, action) {
 			}
 
 		case CREATE_BARBERSHOP_FAIL:
+			return {
+				...state,
+				barbershop: null,
+				loading: false,
+				errors: [...state.errors, payload],
+			}
+
+		case UPDATE_BARBERSHOP_FAIL:
 			return {
 				...state,
 				barbershop: null,
