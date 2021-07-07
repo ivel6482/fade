@@ -142,8 +142,7 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
-	const createBarbershop = async (data, token) => {
-		console.log(token)
+	const createBarbershop = async (data, token, history) => {
 		try {
 			dispatch({ type: CREATE_BARBERSHOP_REQUEST })
 			const res = await axios.post('/barbershops', data, {
@@ -151,8 +150,11 @@ export const AdminProvider = ({ children }) => {
 					Authorization: `Bearer ${token}`,
 				},
 			})
-			console.log(res.data)
-			// dispatch({ type: CREATE_BARBERSHOP_SUCCESS, payload: res.data })
+			dispatch({
+				type: CREATE_BARBERSHOP_SUCCESS,
+				payload: res.data.barbershop,
+			})
+			history.push(`/barbershops/${res.data.barbershop._id}`)
 		} catch (error) {
 			console.error(error)
 			dispatch({

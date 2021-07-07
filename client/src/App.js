@@ -35,7 +35,7 @@ export default function App() {
 				<PrivateRoute path='/dashboard'>
 					<Barbershops />
 				</PrivateRoute>
-				<PrivateRoute>
+				<PrivateRoute path='/barbershops/new'>
 					<NewBarbershop />
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>

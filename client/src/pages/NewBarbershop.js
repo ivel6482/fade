@@ -4,12 +4,13 @@ import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Listbox, Transition } from '@headlessui/react'
 import { SelectorIcon, CheckIcon } from '@heroicons/react/solid'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { UserContext } from '../store/contexts/userContext'
 
 //TODO: Change ids, values, names, labels
 
 export default function NewBarbershop() {
+	const history = useHistory()
 	const { loading, getUsers, users, createBarbershop } =
 		useContext(AdminContext)
 	const { displayNotification } = useContext(NotificationContext)
@@ -114,7 +115,8 @@ export default function NewBarbershop() {
 						days: selectedDays,
 					},
 				},
-				token
+				token,
+				history
 			)
 		}
 	}
