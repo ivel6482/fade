@@ -19,6 +19,7 @@ import AdminAppointments from './pages/AdminAppointments'
 import AdminUserProfile from './components/AdminUserProfile'
 import AdminBarbershop from './pages/AdminBarbershop'
 import { NotificationContext } from './store/contexts/notificationsContext'
+import NewBarbershop from './pages/NewBarbershop'
 
 export default function App() {
 	const { user } = useContext(UserContext)
@@ -33,6 +34,9 @@ export default function App() {
 				<Route path='/login' component={Login} />
 				<PrivateRoute path='/dashboard'>
 					<Barbershops />
+				</PrivateRoute>
+				<PrivateRoute>
+					<NewBarbershop />
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>
 					{user?.role === 'admin' ? <AdminBarbershop /> : <Barbershop />}
