@@ -17,6 +17,9 @@ import {
 	GET_BARBERS_REQUEST,
 	GET_BARBERS_SUCCESS,
 	GET_BARBERS_FAIL,
+	CREATE_BARBERSHOP_REQUEST,
+	CREATE_BARBERSHOP_SUCCESS,
+	CREATE_BARBERSHOP_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -139,6 +142,26 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const createBarbershop = async (data, token) => {
+		console.log(token)
+		try {
+			dispatch({ type: CREATE_BARBERSHOP_REQUEST })
+			const res = await axios.post('/barbershops', data, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			console.log(res.data)
+			// dispatch({ type: CREATE_BARBERSHOP_SUCCESS, payload: res.data })
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: CREATE_BARBERSHOP_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -161,6 +184,7 @@ export const AdminProvider = ({ children }) => {
 				updateUser,
 				getAppointments,
 				getBarbers,
+				createBarbershop,
 			}}
 		>
 			{children}

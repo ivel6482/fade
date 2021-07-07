@@ -1,13 +1,19 @@
 import { useContext, useEffect, useState, Fragment } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 import { AdminContext } from '../store/contexts/adminContext'
+import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Listbox, Transition } from '@headlessui/react'
 import { SelectorIcon, CheckIcon } from '@heroicons/react/solid'
+import { Link } from 'react-router-dom'
+import { UserContext } from '../store/contexts/userContext'
 
 //TODO: Change ids, values, names, labels
 
 export default function NewBarbershop() {
-	const { loading, getUsers, users } = useContext(AdminContext)
+	const { loading, getUsers, users, createBarbershop } =
+		useContext(AdminContext)
+	const { displayNotification } = useContext(NotificationContext)
+	const { token } = useContext(UserContext)
 	const [name, setName] = useState('')
 	const [about, setAbout] = useState('') //TODO: Add an about to the barbershop model.
 	const [address, setAddress] = useState('')
@@ -26,7 +32,6 @@ export default function NewBarbershop() {
 		'Sunday',
 	]
 
-	// const [available, setAvailable] = useState(new Array(days.length).fill(false)) // TODO:this can be checkboxes with each day of week, is this an array?
 	const [available, setAvailable] = useState([
 		false,
 		false,
@@ -78,12 +83,51 @@ export default function NewBarbershop() {
 		return classes.filter(Boolean).join(' ')
 	}
 
+	const submitHandler = (e) => {
+		e.preventDefault()
+		if (
+			name === '' ||
+			about === '' ||
+			address === '' ||
+			phoneNumber === '' ||
+			openTime === '' ||
+			closeTime === '' ||
+			barbershopOwner === ''
+		) {
+			displayNotification('Please completely fill the form.')
+		} else {
+			const selectedDays = days.filter((_, i) => available[i] === true)
+			createBarbershop(
+				{
+					name,
+					about,
+					location: {
+						address,
+					},
+					contact: {
+						phoneNumber,
+					},
+					barbershopOwner: barbershopOwner._id,
+					available: {
+						open: openTime,
+						close: closeTime,
+						days: selectedDays,
+					},
+				},
+				token
+			)
+		}
+	}
+
 	return (
 		<DashboardLayout>
 			{loading ? (
 				<p>Loading...</p>
 			) : (
-				<form className='space-y-8 divide-y divide-gray-200'>
+				<form
+					onSubmit={submitHandler}
+					className='space-y-8 divide-y divide-gray-200'
+				>
 					<div className='space-y-8 divide-y divide-gray-200 sm:space-y-5'>
 						<div>
 							<div>
@@ -358,6 +402,8 @@ export default function NewBarbershop() {
 											id='open-time'
 											name='open-time'
 											autoComplete='open-time'
+											value={openTime}
+											onChange={(e) => setOpenTime(e.target.value)}
 											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
 										>
 											{hours.map((hour) => (
@@ -380,6 +426,8 @@ export default function NewBarbershop() {
 											id='close-time'
 											name='close-time'
 											autoComplete='close-time'
+											value={closeTime}
+											onChange={(e) => setCloseTime(e.target.value)}
 											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
 										>
 											{hours.map((hour) => (
@@ -394,12 +442,12 @@ export default function NewBarbershop() {
 
 					<div className='pt-5 pb-5'>
 						<div className='flex justify-end'>
-							<button
-								type='button'
+							<Link
+								to='/dashboard'
 								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
 							>
 								Cancel
-							</button>
+							</Link>
 							<button
 								type='submit'
 								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'

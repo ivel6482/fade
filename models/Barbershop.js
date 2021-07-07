@@ -17,12 +17,6 @@ const BarbershopSchema = new mongoose.Schema(
 				required: [true, 'Please enter a barbershop address'],
 				trim: true,
 			},
-			lon: {
-				type: String,
-			},
-			lat: {
-				type: String,
-			},
 		},
 		banner: {
 			url: {
