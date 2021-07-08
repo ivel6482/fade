@@ -14,6 +14,10 @@ export default function AppointmentRow({ appointment }) {
 		}
 	)
 
+	const deleteAppointment = (id) => {
+		alert(`appointment id: ${id}`)
+	}
+
 	return (
 		<>
 			{open && (
@@ -45,13 +49,19 @@ export default function AppointmentRow({ appointment }) {
                       <div className="text-sm text-gray-500">{person.department}</div>
 											</td> */}
 				<td className='px-6 py-4 whitespace-nowrap'>
-					{!appointment.completed ? (
+					{!appointment.completed && appointment.booked && (
 						<span className='inline-flex px-2 text-xs font-semibold leading-5 text-indigo-800 bg-indigo-100 rounded-full'>
 							Booked
 						</span>
-					) : (
+					)}
+					{appointment.completed && (
 						<span className='inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full'>
 							Completed
+						</span>
+					)}
+					{!appointment.completed && !appointment.booked && (
+						<span className='inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full'>
+							Available
 						</span>
 					)}
 				</td>
@@ -65,13 +75,22 @@ export default function AppointmentRow({ appointment }) {
 					{appointment._id}
 				</td>
 				<td className='px-6 py-4 text-sm font-medium text-right whitespace-nowrap'>
-					{!appointment.completed && (
+					{!appointment.completed && appointment.booked && (
 						<button
 							onClick={() => setOpen(true)}
 							type='button'
 							className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
 						>
 							Cancel
+						</button>
+					)}
+					{!appointment.completed && !appointment.booked && (
+						<button
+							onClick={() => deleteAppointment(appointment._id)}
+							type='button'
+							className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
+						>
+							Delete
 						</button>
 					)}
 				</td>

@@ -5,7 +5,6 @@ import Stats from '../components/Stats'
 import { AdminContext } from '../store/contexts/adminContext'
 import { UserContext } from '../store/contexts/userContext'
 import { PlusIcon } from '@heroicons/react/solid'
-import AdminNewAppointment from '../components/AdminNewAppointment'
 import { Link } from 'react-router-dom'
 
 export default function AdminAppointments() {
