@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { AdminContext } from '../store/contexts/adminContext'
+import { NotificationContext } from '../store/contexts/notificationsContext'
 import ConfirmationModal from './ConfirmationModal'
 
 export default function AppointmentRow({ appointment }) {
 	const [open, setOpen] = useState(false)
+	const { deleteAppointment } = useContext(AdminContext)
+	const { displayNotification } = useContext(NotificationContext)
 
 	const formattedDate = new Date(appointment.createdAt).toLocaleDateString(
 		undefined,
@@ -14,8 +18,9 @@ export default function AppointmentRow({ appointment }) {
 		}
 	)
 
-	const deleteAppointment = (id) => {
-		alert(`appointment id: ${id}`)
+	const deleteHandler = (id) => {
+		deleteAppointment(id)
+		displayNotification('Appointment deleted successfully.')
 	}
 
 	return (
@@ -86,7 +91,7 @@ export default function AppointmentRow({ appointment }) {
 					)}
 					{!appointment.completed && !appointment.booked && (
 						<button
-							onClick={() => deleteAppointment(appointment._id)}
+							onClick={() => deleteHandler(appointment._id)}
 							type='button'
 							className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
 						>

@@ -29,6 +29,9 @@ import {
 	CREATE_APPOINTMENT_REQUEST,
 	CREATE_APPOINTMENT_SUCCESS,
 	CREATE_APPOINTMENT_FAIL,
+	DELETE_APPOINTMENT_REQUEST,
+	DELETE_APPOINTMENT_SUCCESS,
+	DELETE_APPOINTMENT_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -219,6 +222,20 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const deleteAppointment = async (id) => {
+		try {
+			//TODO: Check for unnecessary request dispatch
+			await axios.delete(`/appointments/${id}`)
+			dispatch({ type: DELETE_APPOINTMENT_SUCCESS, payload: id })
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: DELETE_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -245,6 +262,7 @@ export const AdminProvider = ({ children }) => {
 				updateBarbershop,
 				deleteBarbershop,
 				createAppointment,
+				deleteAppointment,
 			}}
 		>
 			{children}
