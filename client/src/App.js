@@ -18,6 +18,8 @@ import AdminProfile from './pages/AdminProfile'
 import AdminAppointments from './pages/AdminAppointments'
 import AdminUserProfile from './components/AdminUserProfile'
 import AdminBarbershop from './pages/AdminBarbershop'
+import AdminNewAppointment from './components/AdminNewAppointment'
+import AdminBookAppointment from './components/AdminBookAppointment'
 import { NotificationContext } from './store/contexts/notificationsContext'
 import NewBarbershop from './pages/NewBarbershop'
 
@@ -40,6 +42,12 @@ export default function App() {
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>
 					{user?.role === 'admin' ? <AdminBarbershop /> : <Barbershop />}
+				</PrivateRoute>
+				<PrivateRoute path='/appointments/new'>
+					{user?.role === 'admin' && <AdminNewAppointment />}
+				</PrivateRoute>
+				<PrivateRoute path='/appointments/book'>
+					{user?.role === 'admin' && <AdminBookAppointment />}
 				</PrivateRoute>
 				<PrivateRoute path='/appointments'>
 					{user?.role === 'costumer' && <UserAppointments />}

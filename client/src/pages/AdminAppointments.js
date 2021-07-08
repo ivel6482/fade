@@ -6,12 +6,12 @@ import { AdminContext } from '../store/contexts/adminContext'
 import { UserContext } from '../store/contexts/userContext'
 import { PlusIcon } from '@heroicons/react/solid'
 import AdminNewAppointment from '../components/AdminNewAppointment'
+import { Link } from 'react-router-dom'
 
 export default function AdminAppointments() {
 	const { token } = useContext(UserContext)
 	const { loading, appointmentsCount, appointments, getAppointments } =
 		useContext(AdminContext)
-	const [open, setOpen] = useState(false)
 
 	useEffect(() => {
 		getAppointments(token)
@@ -31,16 +31,22 @@ export default function AdminAppointments() {
 				<p>Loading appointments...</p>
 			) : (
 				<>
-					{open && <AdminNewAppointment open={open} setOpen={setOpen} />}
 					<Stats stats={stats} />
-					<div className='flex justify-end'>
-						<button
-							onClick={() => setOpen(true)}
+					<div className='flex justify-end gap-2'>
+						<Link
+							to='/appointments/new'
+							type='button'
+							className='flex items-center gap-2 px-3 py-2 text-white transition bg-gray-900 rounded-md hover:bg-gray-700'
+						>
+							<PlusIcon width='20' height='20' /> Create Appointment
+						</Link>
+						<Link
+							to='/appointments/book'
 							type='button'
 							className='flex items-center gap-2 px-3 py-2 text-white transition bg-gray-900 rounded-md hover:bg-gray-700'
 						>
 							<PlusIcon width='20' height='20' /> Book Appointment
-						</button>
+						</Link>
 					</div>
 					<UserAppointmentsList
 						title='Appointments'

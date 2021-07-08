@@ -26,6 +26,9 @@ import {
 	DELETE_BARBERSHOP_REQUEST,
 	DELETE_BARBERSHOP_SUCCESS,
 	DELETE_BARBERSHOP_FAIL,
+	CREATE_APPOINTMENT_REQUEST,
+	CREATE_APPOINTMENT_SUCCESS,
+	CREATE_APPOINTMENT_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -200,6 +203,22 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const createAppointment = async (data, history) => {
+		try {
+			dispatch({ type: CREATE_APPOINTMENT_REQUEST })
+			const res = await axios.post('/appointments', data)
+			console.log(res.data)
+			dispatch({ type: CREATE_APPOINTMENT_SUCCESS, payload: res.data })
+			history.push('/appointments')
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: CREATE_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -225,6 +244,7 @@ export const AdminProvider = ({ children }) => {
 				createBarbershop,
 				updateBarbershop,
 				deleteBarbershop,
+				createAppointment,
 			}}
 		>
 			{children}
