@@ -99,6 +99,7 @@ export default function adminReducer(state, action) {
 		case DELETE_APPOINTMENT_SUCCESS:
 			return {
 				...state,
+				appointmentsCount: state.appointmentsCount - 1,
 				appointments: state.appointments.filter(
 					(appointment) => appointment._id !== payload
 				),
