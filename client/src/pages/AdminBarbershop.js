@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import DashboardLayout from '../components/DashboardLayout'
 import { AdminContext } from '../store/contexts/adminContext'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
@@ -9,8 +9,9 @@ import { NotificationContext } from '../store/contexts/notificationsContext'
 
 export default function AdminBarbershop() {
 	const { id } = useParams()
+	const history = useHistory()
 	const { displayNotification } = useContext(NotificationContext)
-	const { updateBarbershop } = useContext(AdminContext)
+	const { updateBarbershop, deleteBarbershop } = useContext(AdminContext)
 	const { barbershop, getBarbershop, loading } = useContext(BarbershopsContext)
 	const [name, setName] = useState('')
 	const [about, setAbout] = useState('') //TODO: Add an about to the barbershop model.
@@ -128,6 +129,7 @@ export default function AdminBarbershop() {
 	}
 
 	const deleteHandler = () => {
+		deleteBarbershop(id, history)
 		displayNotification('Barbershop deleted successfully.')
 	}
 

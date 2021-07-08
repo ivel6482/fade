@@ -23,6 +23,9 @@ import {
 	UPDATE_BARBERSHOP_REQUEST,
 	UPDATE_BARBERSHOP_SUCCESS,
 	UPDATE_BARBERSHOP_FAIL,
+	DELETE_BARBERSHOP_REQUEST,
+	DELETE_BARBERSHOP_SUCCESS,
+	DELETE_BARBERSHOP_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -182,6 +185,21 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const deleteBarbershop = async (id, history) => {
+		try {
+			dispatch({ type: DELETE_BARBERSHOP_REQUEST })
+			await axios.delete(`/barbershops/${id}`)
+			dispatch({ type: DELETE_BARBERSHOP_SUCCESS, payload: id })
+			history.push('/dashboard')
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: DELETE_BARBERSHOP_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -206,6 +224,7 @@ export const AdminProvider = ({ children }) => {
 				getBarbers,
 				createBarbershop,
 				updateBarbershop,
+				deleteBarbershop,
 			}}
 		>
 			{children}
