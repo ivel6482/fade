@@ -1,5 +1,6 @@
 const Barber = require('../models/Barber')
 const User = require('../models/User')
+const Appointment = require('../models/Appointment')
 const cloudinary = require('../utils/cloudinary')
 
 //------------------------------------------------------------------------------
@@ -167,6 +168,28 @@ exports.deleteBarber = async (req, res) => {
 		} else {
 			res.status(404).json({ message: 'Barber not found.' })
 		}
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: 'Server Error' })
+	}
+}
+
+exports.getBarberAvailableAppointments = async (req, res) => {
+	try {
+		const { id } = req.body
+		const appointments = await Appointment.find({
+			barberId: id,
+			completed: false,
+			booked: false,
+		})
+
+		if (!appointments) {
+			return res
+				.status(404)
+				.json({ message: 'No available appointments found.' })
+		}
+
+		res.status(200).json({ appointments })
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ message: 'Server Error' })

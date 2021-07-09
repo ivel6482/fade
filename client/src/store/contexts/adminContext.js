@@ -32,6 +32,9 @@ import {
 	DELETE_APPOINTMENT_REQUEST,
 	DELETE_APPOINTMENT_SUCCESS,
 	DELETE_APPOINTMENT_FAIL,
+	GET_BARBERS_AVAILABLE_APPOINTMENTS_REQUEST,
+	GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS,
+	GET_BARBERS_AVAILABLE_APPOINTMENTS_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -47,6 +50,7 @@ const inititalState = {
 	appointmentsCount: 0,
 	appointments: [],
 	appointment: null,
+	barberAppointments: [],
 	loading: false,
 	errors: [],
 }
@@ -69,6 +73,7 @@ export const AdminProvider = ({ children }) => {
 		appointmentsCount,
 		appointments,
 		appointment,
+		barberAppointments,
 		loading,
 		errors,
 	} = state
@@ -236,6 +241,25 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const getBarberAvailableAppointments = async (id) => {
+		try {
+			// dispatch({ type: GET_BARBERS_AVAILABLE_APPOINTMENTS_REQUEST })
+			//TODO: Create a controller that fetches the barbers available appointments.
+			const res = await axios.get(`/barbers/${id}/appointments/available`)
+			console.log(res.data.appointments)
+			dispatch({
+				type: GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS,
+				payload: res.data.appointments,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_BARBERS_AVAILABLE_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -251,6 +275,7 @@ export const AdminProvider = ({ children }) => {
 				appointmentsCount,
 				appointments,
 				appointment,
+				barberAppointments,
 				loading,
 				errors,
 				getUsers,
@@ -263,6 +288,7 @@ export const AdminProvider = ({ children }) => {
 				deleteBarbershop,
 				createAppointment,
 				deleteAppointment,
+				getBarberAvailableAppointments,
 			}}
 		>
 			{children}

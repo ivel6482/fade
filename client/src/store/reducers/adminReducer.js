@@ -23,6 +23,9 @@ import {
 	DELETE_APPOINTMENT_REQUEST,
 	DELETE_APPOINTMENT_SUCCESS,
 	DELETE_APPOINTMENT_FAIL,
+	GET_BARBERS_AVAILABLE_APPOINTMENTS_REQUEST,
+	GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS,
+	GET_BARBERS_AVAILABLE_APPOINTMENTS_FAIL,
 } from '../actions/adminActions'
 
 export default function adminReducer(state, action) {
@@ -37,6 +40,7 @@ export default function adminReducer(state, action) {
 		case UPDATE_BARBERSHOP_REQUEST:
 		case DELETE_BARBERSHOP_REQUEST:
 		case DELETE_APPOINTMENT_REQUEST:
+		case GET_BARBERS_AVAILABLE_APPOINTMENTS_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -106,6 +110,13 @@ export default function adminReducer(state, action) {
 				loading: false,
 			}
 
+		case GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS:
+			return {
+				...state,
+				barberAppointments: payload,
+				loading: false,
+			}
+
 		case GET_USERS_FAIL:
 			return {
 				...state,
@@ -169,6 +180,14 @@ export default function adminReducer(state, action) {
 				...state,
 				loading: false,
 				errors: [...state.errors, payload],
+			}
+
+		case GET_BARBERS_AVAILABLE_APPOINTMENTS_FAIL:
+			return {
+				...state,
+				barberAppointments: [],
+				errors: [...state.errors, payload],
+				loading: false,
 			}
 
 		default:
