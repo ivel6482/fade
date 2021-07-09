@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
+import { UserContext } from '../store/contexts/userContext'
 import DashboardLayout from './DashboardLayout'
 
 export default function AdminBookAppointment() {
@@ -16,6 +17,7 @@ export default function AdminBookAppointment() {
 		barberAppointments,
 		getBarberAvailableAppointments,
 	} = useContext(AdminContext)
+	const { token } = useContext(UserContext)
 	const { displayNotification } = useContext(NotificationContext)
 	const [barberId, setBarberId] = useState('')
 	const [userId, setUserId] = useState('')
@@ -35,10 +37,12 @@ export default function AdminBookAppointment() {
 		if (barberId === '' || userId === '' || appointmentId === '') {
 			displayNotification('Please enter all the required information')
 		} else {
-			bookAppointment({ barberId, userId, appointmentId }, history)
+			bookAppointment({ userId, appointmentId }, history, token)
 			displayNotification('Appointment booked successfully.')
 		}
 	}
+
+	//TODO: Add date picker for appointments, can only select from the current day to future days.
 
 	return (
 		<DashboardLayout currentTab='appointments'>
@@ -113,9 +117,9 @@ export default function AdminBookAppointment() {
 											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
 										>
 											<option>Select an appointment</option>
-											{users.map((user) => (
-												<option key={user._id} value={user._id}>
-													{user.firstName} {user.lastName}
+											{barberAppointments.map((appointment) => (
+												<option key={appointment._id} value={appointment._id}>
+													{appointment.time}
 												</option>
 											))}
 										</select>

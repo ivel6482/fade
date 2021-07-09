@@ -35,6 +35,9 @@ import {
 	GET_BARBERS_AVAILABLE_APPOINTMENTS_REQUEST,
 	GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS,
 	GET_BARBERS_AVAILABLE_APPOINTMENTS_FAIL,
+	BOOK_APPOINTMENT_REQUEST,
+	BOOK_APPOINTMENT_SUCCESS,
+	BOOK_APPOINTMENT_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -260,6 +263,31 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const bookAppointment = async (data, history, token) => {
+		try {
+			const { userId, appointmentId } = data
+			const res = await axios.put(
+				`/appointments/${appointmentId}/book`,
+				{
+					userId,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			console.log(res.data)
+			history.push('/appointments')
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: BOOK_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -289,6 +317,7 @@ export const AdminProvider = ({ children }) => {
 				createAppointment,
 				deleteAppointment,
 				getBarberAvailableAppointments,
+				bookAppointment,
 			}}
 		>
 			{children}

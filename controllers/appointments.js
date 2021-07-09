@@ -156,11 +156,14 @@ exports.updateAppointment = async (req, res) => {
 exports.bookAppointment = async (req, res) => {
 	try {
 		const { id } = req.params
+		const { userId } = req.body
 		const appointment = await Appointment.findById(id)
 		if (appointment) {
 			const bookedData = {
 				bookedAt: Date.now(),
-				bookedBy: req.user._id,
+				//FIXME: Fix user book appointment to pass the user id instead of the logged in user
+				// bookedBy: req.user._id,
+				bookedBy: userId,
 				booked: true,
 			}
 
