@@ -38,6 +38,7 @@ import {
 	BOOK_APPOINTMENT_REQUEST,
 	BOOK_APPOINTMENT_SUCCESS,
 	BOOK_APPOINTMENT_FAIL,
+	BOOK_APPOINTMENT_CLEAR,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -277,8 +278,9 @@ export const AdminProvider = ({ children }) => {
 					},
 				}
 			)
-			console.log(res.data)
 			history.push('/appointments')
+			dispatch({ type: BOOK_APPOINTMENT_CLEAR })
+			//TODO: Add more clear state actions where it makes sense.
 		} catch (error) {
 			console.error(error)
 			dispatch({
