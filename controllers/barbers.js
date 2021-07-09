@@ -176,7 +176,7 @@ exports.deleteBarber = async (req, res) => {
 
 exports.getBarberAvailableAppointments = async (req, res) => {
 	try {
-		const { id } = req.body
+		const { id } = req.params
 		const appointments = await Appointment.find({
 			barberId: id,
 			completed: false,
