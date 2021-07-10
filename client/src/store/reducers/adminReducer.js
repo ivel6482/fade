@@ -27,6 +27,8 @@ import {
 	GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS,
 	GET_BARBERS_AVAILABLE_APPOINTMENTS_FAIL,
 	BOOK_APPOINTMENT_CLEAR,
+	BOOK_APPOINTMENT_FAIL,
+	DELETE_USER_FAIL,
 } from '../actions/adminActions'
 
 export default function adminReducer(state, action) {
@@ -194,6 +196,20 @@ export default function adminReducer(state, action) {
 			return {
 				...state,
 				barberAppointments: [],
+				errors: [...state.errors, payload],
+				loading: false,
+			}
+
+		case DELETE_USER_FAIL:
+			return {
+				...state,
+				errors: [...state.errors, payload],
+				loading: false,
+			}
+
+		case BOOK_APPOINTMENT_FAIL:
+			return {
+				...state,
 				errors: [...state.errors, payload],
 				loading: false,
 			}

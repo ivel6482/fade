@@ -42,6 +42,9 @@ import {
 	CREATE_USER_REQUEST,
 	CREATE_USER_SUCCESS,
 	CREATE_USER_FAIL,
+	DELETE_USER_REQUEST,
+	DELETE_USER_SUCCESS,
+	DELETE_USER_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -303,6 +306,16 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const deleteUser = async (id, history) => {
+		try {
+			await axios.delete(`/users/${id}`)
+			history.push('/users')
+		} catch (error) {
+			console.error(error)
+			dispatch({ type: DELETE_USER_FAIL, payload: error.response.data.message })
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -334,6 +347,7 @@ export const AdminProvider = ({ children }) => {
 				getBarberAvailableAppointments,
 				bookAppointment,
 				createUser,
+				deleteUser,
 			}}
 		>
 			{children}

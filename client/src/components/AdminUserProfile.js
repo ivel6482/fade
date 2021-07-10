@@ -7,7 +7,8 @@ import DashboardLayout from './DashboardLayout'
 export default function AdminUserProfile() {
 	const { id } = useParams()
 	const history = useHistory()
-	const { loading, user, getUser, updateUser } = useContext(AdminContext)
+	const { loading, user, getUser, updateUser, deleteUser } =
+		useContext(AdminContext)
 	const { displayNotification } = useContext(NotificationContext)
 	//TODO: Get the user from the admin context, then do the same as below.
 	const [firstName, setFirstName] = useState('')
@@ -27,6 +28,11 @@ export default function AdminUserProfile() {
 		setRole(user.role)
 		setEmail(user.email)
 	}, [user])
+
+	const deleteHandler = (id) => {
+		deleteUser(id, history)
+		displayNotification('User deleted successfully.')
+	}
 
 	const onSubmitHandler = (e) => {
 		e.preventDefault()
@@ -59,9 +65,18 @@ export default function AdminUserProfile() {
 								<h3 className='text-lg font-medium leading-6 text-gray-900'>
 									Personal Information
 								</h3>
-								<p className='mt-1 text-sm text-gray-500'>
-									User Id: {user._id}
-								</p>
+								<div className='flex justify-between'>
+									<p className='mt-1 text-sm text-gray-500'>
+										User Id: {user._id}
+									</p>
+									<button
+										type='button'
+										className='px-3 py-1 text-white bg-gray-900 rounded-md'
+										onClick={() => deleteHandler(user._id)}
+									>
+										Delete
+									</button>
+								</div>
 							</div>
 							<div className='grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6'>
 								<div className='sm:col-span-3'>
