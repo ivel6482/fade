@@ -39,6 +39,9 @@ import {
 	BOOK_APPOINTMENT_SUCCESS,
 	BOOK_APPOINTMENT_FAIL,
 	BOOK_APPOINTMENT_CLEAR,
+	CREATE_USER_REQUEST,
+	CREATE_USER_SUCCESS,
+	CREATE_USER_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -290,6 +293,16 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const createUser = async (data, history) => {
+		try {
+			await axios.post('/auth/signup', data)
+			history.push('/users')
+		} catch (error) {
+			console.error(error)
+			dispatch({ type: CREATE_USER_FAIL, payload: error.response.data.message })
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -320,6 +333,7 @@ export const AdminProvider = ({ children }) => {
 				deleteAppointment,
 				getBarberAvailableAppointments,
 				bookAppointment,
+				createUser,
 			}}
 		>
 			{children}

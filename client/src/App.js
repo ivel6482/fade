@@ -20,6 +20,7 @@ import AdminUserProfile from './components/AdminUserProfile'
 import AdminBarbershop from './pages/AdminBarbershop'
 import AdminNewAppointment from './components/AdminNewAppointment'
 import AdminBookAppointment from './components/AdminBookAppointment'
+import AdminNewUser from './components/AdminNewUser'
 import { NotificationContext } from './store/contexts/notificationsContext'
 import NewBarbershop from './pages/NewBarbershop'
 
@@ -61,6 +62,9 @@ export default function App() {
 				</PrivateRoute>
 				<PrivateRoute path='/barbers'>
 					{user?.role === 'admin' ? <AdminBarbers /> : <h2>404</h2>}
+				</PrivateRoute>
+				<PrivateRoute path='/users/new'>
+					<AdminNewUser />
 				</PrivateRoute>
 				<PrivateRoute path='/users/:id'>
 					{user?.role === 'admin' ? <AdminUserProfile /> : <h2>404</h2>}
