@@ -29,6 +29,8 @@ import {
 	BOOK_APPOINTMENT_CLEAR,
 	BOOK_APPOINTMENT_FAIL,
 	DELETE_USER_FAIL,
+	CANCEL_APPOINTMENT_SUCCESS,
+	CANCEL_APPOINTMENT_FAIL,
 } from '../actions/adminActions'
 
 export default function adminReducer(state, action) {
@@ -118,6 +120,17 @@ export default function adminReducer(state, action) {
 				...state,
 				barberAppointments: payload,
 				loading: false,
+			}
+
+		case CANCEL_APPOINTMENT_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				appointments: state.appointments.map((appointment) =>
+					appointment._id === payload
+						? { ...appointment, booked: false, completed: false }
+						: appointment
+				),
 			}
 
 		case BOOK_APPOINTMENT_CLEAR:
@@ -212,6 +225,13 @@ export default function adminReducer(state, action) {
 				...state,
 				errors: [...state.errors, payload],
 				loading: false,
+			}
+
+		case CANCEL_APPOINTMENT_FAIL:
+			return {
+				...state,
+				loading: false,
+				errors: [...state.errors, payload],
 			}
 
 		default:

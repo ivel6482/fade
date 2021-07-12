@@ -1,11 +1,11 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { AdminContext } from '../store/contexts/adminContext'
+import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
-import ConfirmationModal from './ConfirmationModal'
 
 export default function AppointmentRow({ appointment }) {
-	const [open, setOpen] = useState(false)
-	const { deleteAppointment } = useContext(AdminContext)
+	const { token } = useContext(UserContext)
+	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
 	const { displayNotification } = useContext(NotificationContext)
 
 	const formattedDate = new Date(appointment.createdAt).toLocaleDateString(
@@ -23,15 +23,13 @@ export default function AppointmentRow({ appointment }) {
 		displayNotification('Appointment deleted successfully.')
 	}
 
+	const cancelHandler = (id) => {
+		cancelAppointment(id, token)
+		displayNotification('Appointment cancelled successfully.')
+	}
+
 	return (
 		<>
-			{open && (
-				<ConfirmationModal
-					open={open}
-					setOpen={setOpen}
-					appointmentId={appointment._id}
-				/>
-			)}
 			<tr
 				key={appointment._id}
 				className='transition even:bg-gray-50 hover:bg-indigo-50'
@@ -82,7 +80,7 @@ export default function AppointmentRow({ appointment }) {
 				<td className='px-6 py-4 text-sm font-medium text-right whitespace-nowrap'>
 					{!appointment.completed && appointment.booked && (
 						<button
-							onClick={() => setOpen(true)}
+							onClick={() => cancelHandler(appointment._id)}
 							type='button'
 							className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
 						>

@@ -56,9 +56,11 @@ export default function App() {
 					{user?.role === 'admin' && <AdminAppointments />}
 				</PrivateRoute>
 				<PrivateRoute path='/profile'>
-					{user?.role === 'costumer' && <UserProfile />}
+					{(user?.role === 'costumer' || user?.role === 'admin') && (
+						<UserProfile />
+					)}
 					{user?.role === 'barber' && <BarberProfile />}
-					{user?.role === 'admin' && <AdminProfile />}
+					{/* {user?.role === 'admin' && <AdminProfile />} */}
 				</PrivateRoute>
 				<PrivateRoute path='/barbers'>
 					{user?.role === 'admin' ? <AdminBarbers /> : <h2>404</h2>}

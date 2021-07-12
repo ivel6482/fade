@@ -45,6 +45,9 @@ import {
 	DELETE_USER_REQUEST,
 	DELETE_USER_SUCCESS,
 	DELETE_USER_FAIL,
+	CANCEL_APPOINTMENT_REQUEST,
+	CANCEL_APPOINTMENT_SUCCESS,
+	CANCEL_APPOINTMENT_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -316,6 +319,23 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const cancelAppointment = async (id, token) => {
+		try {
+			await axios.put(`/appointments/${id}/cancel`, null, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			dispatch({ type: CANCEL_APPOINTMENT_SUCCESS, payload: id })
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: CANCEL_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -348,6 +368,7 @@ export const AdminProvider = ({ children }) => {
 				bookAppointment,
 				createUser,
 				deleteUser,
+				cancelAppointment,
 			}}
 		>
 			{children}
