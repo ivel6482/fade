@@ -128,7 +128,13 @@ export default function adminReducer(state, action) {
 				loading: false,
 				appointments: state.appointments.map((appointment) =>
 					appointment._id === payload
-						? { ...appointment, booked: false, completed: false }
+						? {
+								...appointment,
+								booked: false,
+								completed: false,
+								bookedBy: null,
+								bookedAt: null,
+						  }
 						: appointment
 				),
 			}
