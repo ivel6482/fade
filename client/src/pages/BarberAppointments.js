@@ -10,8 +10,12 @@ import { UserContext } from '../store/contexts/userContext'
 
 export default function BarberAppointments() {
 	const [open, setOpen] = useState(false)
-	const { getAvailableAppointments, availableAppointments } =
-		useContext(BarbersContext)
+	const {
+		getAvailableAppointments,
+		availableAppointments,
+		getBookedAppointments,
+		bookedAppointments,
+	} = useContext(BarbersContext)
 	const { user } = useContext(UserContext)
 
 	const newAppointmentHandler = () => {
@@ -20,6 +24,7 @@ export default function BarberAppointments() {
 
 	useEffect(() => {
 		getAvailableAppointments(user._id)
+		getBookedAppointments(user._id)
 	}, [])
 
 	return (
@@ -34,12 +39,15 @@ export default function BarberAppointments() {
 			<Stats />
 			{/* //TODO: Rename UserAppointmentsList to something more generic for reusability. */}
 			{/* //TODO: Implement a filter to filter appointments by today, this week, this month, last 6 months, last year */}
-			<section className='mt-6 space-y-6'>
+			<section className='pb-5 mt-6 space-y-6'>
 				<UserAppointmentsList
 					title='Available Appointments'
 					appointments={availableAppointments}
 				/>
-				<UserAppointmentsList title='Booked Appointments' />
+				<UserAppointmentsList
+					title='Booked Appointments'
+					appointments={bookedAppointments}
+				/>
 				<UserAppointmentsList title='Completed Appointments' />
 			</section>
 		</DashboardLayout>

@@ -51,6 +51,13 @@ export default function barbersReducer(state, action) {
 				),
 			}
 
+		case GET_USER_BOOKED_APPOINTMENTS_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				bookedAppointments: payload,
+			}
+
 		case POST_APPOINTMENT_FAIL:
 			return {
 				...state,
@@ -59,6 +66,7 @@ export default function barbersReducer(state, action) {
 			}
 
 		case GET_USER_AVAILABLE_APPOINTMENTS_FAIL:
+		case GET_USER_BOOKED_APPOINTMENTS_FAIL:
 		case DELETE_APPOINTMENT_FAIL:
 			return {
 				...state,

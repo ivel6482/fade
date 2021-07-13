@@ -195,3 +195,22 @@ exports.getBarberAvailableAppointments = async (req, res) => {
 		res.status(500).json({ message: 'Server Error' })
 	}
 }
+
+exports.getBarberBookedAppointments = async (req, res) => {
+	try {
+		const { id } = req.params
+		const appointments = await Appointment.find({
+			barberId: id,
+			completed: false,
+			booked: true,
+		}).populate('barberId')
+
+		if (!appointments) {
+			return res.status(404).json({ message: 'No appointments found.' })
+		}
+
+		res.status(200).json({ appointments })
+	} catch (error) {
+		res.status(500).json({ message: 'Server Error.' })
+	}
+}

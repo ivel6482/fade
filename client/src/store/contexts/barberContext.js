@@ -93,6 +93,24 @@ export const BarbersProvider = ({ children }) => {
 		}
 	}
 
+	const getBookedAppointments = async (id) => {
+		try {
+			dispatch({ type: GET_USER_BOOKED_APPOINTMENTS_REQUEST })
+			const res = await axios.get(`/barbers/${id}/appointments/booked`)
+			console.log(res.data.appointments)
+			dispatch({
+				type: GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
+				payload: res.data.appointments,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_USER_BOOKED_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -104,6 +122,7 @@ export const BarbersProvider = ({ children }) => {
 				postAppointment,
 				getAvailableAppointments,
 				barberDeleteAppointment,
+				getBookedAppointments,
 			}}
 		>
 			{children}
