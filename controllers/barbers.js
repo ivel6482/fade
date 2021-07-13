@@ -181,7 +181,7 @@ exports.getBarberAvailableAppointments = async (req, res) => {
 			barberId: id,
 			completed: false,
 			booked: false,
-		})
+		}).populate('barberId')
 
 		if (!appointments) {
 			return res

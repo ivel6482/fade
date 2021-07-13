@@ -4,6 +4,15 @@ import {
 	POST_APPOINTMENT_REQUEST,
 	POST_APPOINTMENT_SUCCESS,
 	POST_APPOINTMENT_FAIL,
+	GET_USER_AVAILABLE_APPOINTMENTS_REQUEST,
+	GET_USER_AVAILABLE_APPOINTMENTS_SUCCESS,
+	GET_USER_AVAILABLE_APPOINTMENTS_FAIL,
+	GET_USER_BOOKED_APPOINTMENTS_REQUEST,
+	GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
+	GET_USER_BOOKED_APPOINTMENTS_FAIL,
+	GET_USER_COMPLETED_APPOINTMENTS_REQUEST,
+	GET_USER_COMPLETED_APPOINTMENTS_SUCCESS,
+	GET_USER_COMPLETED_APPOINTMENTS_FAIL,
 } from '../actions/barberActions'
 import barbersReducer from '../reducers/barbersReducer'
 
@@ -28,7 +37,7 @@ export const BarbersProvider = ({ children }) => {
 		loading,
 	} = state
 
-	const postAppointment = async (time, barberId) => {
+	const postAppointment = async (time, barberId, history) => {
 		try {
 			dispatch({ type: POST_APPOINTMENT_REQUEST })
 			const newAppointment = {
@@ -37,15 +46,33 @@ export const BarbersProvider = ({ children }) => {
 			}
 
 			const res = await axios.post('/appointments', newAppointment)
-			console.log(res.data)
-			// dispatch({
-			// 	type: POST_APPOINTMENT_SUCCESS,
-			// 	payload: res.data.appointment,
-			// })
+			dispatch({
+				type: POST_APPOINTMENT_SUCCESS,
+				payload: res.data,
+			})
 		} catch (error) {
 			console.error(error)
 			dispatch({
 				type: POST_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
+	const getAvailableAppointments = async (barberId) => {
+		try {
+			dispatch({
+				type: GET_USER_AVAILABLE_APPOINTMENTS_REQUEST,
+			})
+			const res = await axios.get(`/barbers/${barberId}/appointments/available`)
+			dispatch({
+				type: GET_USER_AVAILABLE_APPOINTMENTS_SUCCESS,
+				payload: res.data.appointments,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_USER_AVAILABLE_APPOINTMENTS_FAIL,
 				payload: error.response.data.message,
 			})
 		}
@@ -59,6 +86,7 @@ export const BarbersProvider = ({ children }) => {
 				errors,
 				loading,
 				postAppointment,
+				getAvailableAppointments,
 			}}
 		>
 			{children}

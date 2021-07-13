@@ -21,6 +21,7 @@ export default function NewAppointment({ open, setOpen }) {
 		if (user.role === 'barber' && valid) {
 			const newAppointment = `${hour} ${time}`
 			postAppointment(newAppointment, user._id)
+			setOpen(false)
 		}
 	}
 

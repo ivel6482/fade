@@ -2,16 +2,25 @@ import DashboardLayout from '../components/DashboardLayout'
 import Stats from '../components/Stats'
 import UserAppointmentsList from '../components/UserAppointmentsList'
 import PageHeaderWithButton from '../components/PageHeaderWithButton'
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { PlusIcon } from '@heroicons/react/outline'
 import NewAppointment from '../components/NewAppointment'
+import { BarbersContext } from '../store/contexts/barberContext'
+import { UserContext } from '../store/contexts/userContext'
 
 export default function BarberAppointments() {
 	const [open, setOpen] = useState(false)
+	const { getAvailableAppointments, availableAppointments } =
+		useContext(BarbersContext)
+	const { user } = useContext(UserContext)
 
 	const newAppointmentHandler = () => {
 		setOpen(true)
 	}
+
+	useEffect(() => {
+		getAvailableAppointments(user._id)
+	}, [])
 
 	return (
 		<DashboardLayout currentTab='appointments'>
@@ -26,7 +35,10 @@ export default function BarberAppointments() {
 			{/* //TODO: Rename UserAppointmentsList to something more generic for reusability. */}
 			{/* //TODO: Implement a filter to filter appointments by today, this week, this month, last 6 months, last year */}
 			<section className='mt-6 space-y-6'>
-				<UserAppointmentsList title='Available Appointments' />
+				<UserAppointmentsList
+					title='Available Appointments'
+					appointments={availableAppointments}
+				/>
 				<UserAppointmentsList title='Booked Appointments' />
 				<UserAppointmentsList title='Completed Appointments' />
 			</section>

@@ -109,7 +109,10 @@ exports.createAppointment = async (req, res) => {
 			barberId,
 		}
 
-		const appointment = await Appointment.create(newAppointment)
+		const createdAppointment = await Appointment.create(newAppointment)
+		const appointment = await Appointment.findOne(createdAppointment).populate(
+			'barberId'
+		)
 		res.status(200).json(appointment)
 	} catch (error) {
 		console.error(error)
