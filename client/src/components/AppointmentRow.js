@@ -7,7 +7,7 @@ import { BarbersContext } from '../store/contexts/barberContext'
 export default function AppointmentRow({ appointment }) {
 	const { token, user } = useContext(UserContext)
 	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
-	const { barberCancelAppointment } = useContext(BarbersContext)
+	const { barberDeleteAppointment } = useContext(BarbersContext)
 	const { displayNotification } = useContext(NotificationContext)
 
 	const formattedDate = new Date(appointment.createdAt).toLocaleDateString(
@@ -22,7 +22,7 @@ export default function AppointmentRow({ appointment }) {
 
 	const deleteHandler = (id) => {
 		if (user.role === 'barber') {
-			barberCancelAppointment(id)
+			barberDeleteAppointment(id)
 			displayNotification('Appointment deleted successfully.')
 		} else {
 			deleteAppointment(id)

@@ -80,7 +80,7 @@ export const BarbersProvider = ({ children }) => {
 		}
 	}
 
-	const barberCancelAppointment = async (id) => {
+	const barberDeleteAppointment = async (id) => {
 		try {
 			await axios.delete(`/appointments/${id}`)
 			dispatch({ type: DELETE_APPOINTMENT_SUCCESS, payload: id })
@@ -103,7 +103,7 @@ export const BarbersProvider = ({ children }) => {
 				loading,
 				postAppointment,
 				getAvailableAppointments,
-				barberCancelAppointment,
+				barberDeleteAppointment,
 			}}
 		>
 			{children}
