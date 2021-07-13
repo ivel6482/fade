@@ -13,6 +13,8 @@ import {
 	GET_USER_COMPLETED_APPOINTMENTS_REQUEST,
 	GET_USER_COMPLETED_APPOINTMENTS_SUCCESS,
 	GET_USER_COMPLETED_APPOINTMENTS_FAIL,
+	DELETE_APPOINTMENT_SUCCESS,
+	DELETE_APPOINTMENT_FAIL,
 } from '../actions/barberActions'
 import barbersReducer from '../reducers/barbersReducer'
 
@@ -77,6 +79,20 @@ export const BarbersProvider = ({ children }) => {
 			})
 		}
 	}
+
+	const barberCancelAppointment = async (id) => {
+		try {
+			await axios.delete(`/appointments/${id}`)
+			dispatch({ type: DELETE_APPOINTMENT_SUCCESS, payload: id })
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: DELETE_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -87,6 +103,7 @@ export const BarbersProvider = ({ children }) => {
 				loading,
 				postAppointment,
 				getAvailableAppointments,
+				barberCancelAppointment,
 			}}
 		>
 			{children}

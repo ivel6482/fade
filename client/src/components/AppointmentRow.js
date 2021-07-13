@@ -2,10 +2,12 @@ import { useContext } from 'react'
 import { AdminContext } from '../store/contexts/adminContext'
 import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
+import { BarbersContext } from '../store/contexts/barberContext'
 
 export default function AppointmentRow({ appointment }) {
-	const { token } = useContext(UserContext)
+	const { token, user } = useContext(UserContext)
 	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
+	const { barberCancelAppointment } = useContext(BarbersContext)
 	const { displayNotification } = useContext(NotificationContext)
 
 	const formattedDate = new Date(appointment.createdAt).toLocaleDateString(
@@ -19,8 +21,13 @@ export default function AppointmentRow({ appointment }) {
 	)
 
 	const deleteHandler = (id) => {
-		deleteAppointment(id)
-		displayNotification('Appointment deleted successfully.')
+		if (user.role === 'barber') {
+			barberCancelAppointment(id)
+			displayNotification('Appointment deleted successfully.')
+		} else {
+			deleteAppointment(id)
+			displayNotification('Appointment deleted successfully.')
+		}
 	}
 
 	const cancelHandler = (id) => {
