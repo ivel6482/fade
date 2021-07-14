@@ -93,14 +93,28 @@ exports.createAppointment = async (req, res) => {
 	//TODO: Check if time is greater than 12 return message only accepts 12 hour format.
 	try {
 		const { time, barberId } = req.body
-		const duplicateAppointmentExists = await Appointment.findOne({
+		const duplicateAvailable = await Appointment.findOne({
 			barberId,
 			time,
+			booked: false,
+			completed: false,
 		}).populate('barberId')
 
-		if (duplicateAppointmentExists) {
+		const duplicateBooked = await Appointment.findOne({
+			barberId,
+			time,
+			booked: true,
+			completed: false,
+		}).populate('barberId')
+
+		console.log({
+			available: !!duplicateAvailable,
+			booked: !!duplicateBooked,
+		})
+
+		if (duplicateAvailable || duplicateBooked) {
 			return res.status(400).json({
-				message: `An appointment at ${time} for ${duplicateAppointmentExists.barberId.firstName} ${duplicateAppointmentExists.barberId.lastName} already exists.`,
+				message: `An appointment at ${time} for the selected barber already exists.`,
 			})
 		}
 
