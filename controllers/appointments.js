@@ -202,7 +202,7 @@ exports.completeAppointment = async (req, res) => {
 				id,
 				bookedData,
 				{ new: true, runValidators: true }
-			)
+			).populate('barberId')
 
 			res.status(200).json({ appointment: completedAppointment })
 		} else {

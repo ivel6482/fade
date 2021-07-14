@@ -10,6 +10,7 @@ const {
 	deleteBarber,
 	getBarberAvailableAppointments,
 	getBarberBookedAppointments,
+	getBarberCompletedAppointments,
 } = require('../controllers/barbers')
 const { getBarberAppointments } = require('../controllers/appointments')
 
@@ -19,5 +20,6 @@ router.route('/:id/avatar').put(upload.single('image'), uploadAvatar)
 router.route('/:id/appointments').get(getBarberAppointments)
 router.route('/:id/appointments/available').get(getBarberAvailableAppointments)
 router.route('/:id/appointments/booked').get(getBarberBookedAppointments)
+router.route('/:id/appointments/complete').get(getBarberCompletedAppointments)
 
 module.exports = router

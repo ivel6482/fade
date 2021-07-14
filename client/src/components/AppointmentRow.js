@@ -7,7 +7,8 @@ import { BarbersContext } from '../store/contexts/barberContext'
 export default function AppointmentRow({ appointment }) {
 	const { token, user } = useContext(UserContext)
 	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
-	const { barberDeleteAppointment } = useContext(BarbersContext)
+	const { barberDeleteAppointment, completeAppointment } =
+		useContext(BarbersContext)
 	const { displayNotification } = useContext(NotificationContext)
 
 	const formattedDate = new Date(appointment.createdAt).toLocaleDateString(
@@ -33,6 +34,11 @@ export default function AppointmentRow({ appointment }) {
 	const cancelHandler = (id) => {
 		cancelAppointment(id, token)
 		displayNotification('Appointment cancelled successfully.')
+	}
+
+	const completeHandler = (id) => {
+		completeAppointment(id, token)
+		displayNotification('Appointment marked as completed successfully.')
 	}
 
 	return (
@@ -86,13 +92,22 @@ export default function AppointmentRow({ appointment }) {
 				</td>
 				<td className='px-6 py-4 text-sm font-medium text-right whitespace-nowrap'>
 					{!appointment.completed && appointment.booked && (
-						<button
-							onClick={() => cancelHandler(appointment._id)}
-							type='button'
-							className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
-						>
-							Cancel
-						</button>
+						<>
+							<button
+								onClick={() => cancelHandler(appointment._id)}
+								type='button'
+								className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
+							>
+								Cancel
+							</button>
+							<button
+								type='button'
+								onClick={() => completeHandler(appointment._id)}
+								className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
+							>
+								Complete
+							</button>
+						</>
 					)}
 					{!appointment.completed && !appointment.booked && (
 						<button

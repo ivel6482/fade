@@ -15,6 +15,8 @@ import {
 	GET_USER_COMPLETED_APPOINTMENTS_FAIL,
 	DELETE_APPOINTMENT_SUCCESS,
 	DELETE_APPOINTMENT_FAIL,
+	COMPLETE_APPOINTMENT_SUCCESS,
+	COMPLETE_APPOINTMENT_FAIL,
 } from '../actions/barberActions'
 import barbersReducer from '../reducers/barbersReducer'
 
@@ -97,7 +99,6 @@ export const BarbersProvider = ({ children }) => {
 		try {
 			dispatch({ type: GET_USER_BOOKED_APPOINTMENTS_REQUEST })
 			const res = await axios.get(`/barbers/${id}/appointments/booked`)
-			console.log(res.data.appointments)
 			dispatch({
 				type: GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
 				payload: res.data.appointments,
@@ -106,6 +107,44 @@ export const BarbersProvider = ({ children }) => {
 			console.error(error)
 			dispatch({
 				type: GET_USER_BOOKED_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
+	const getCompletedAppointments = async (id) => {
+		try {
+			dispatch({ type: GET_USER_COMPLETED_APPOINTMENTS_REQUEST })
+			const res = await axios.get(`/barbers/${id}/appointments/complete`)
+			dispatch({
+				type: GET_USER_COMPLETED_APPOINTMENTS_SUCCESS,
+				payload: res.data.appointments,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: GET_USER_COMPLETED_APPOINTMENTS_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
+	const completeAppointment = async (id, token) => {
+		try {
+			const res = await axios.put(`/appointments/${id}/complete`, null, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			console.log(res.data.appointment)
+			dispatch({
+				type: COMPLETE_APPOINTMENT_SUCCESS,
+				payload: res.data.appointment,
+			})
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: COMPLETE_APPOINTMENT_FAIL,
 				payload: error.response.data.message,
 			})
 		}
@@ -123,6 +162,8 @@ export const BarbersProvider = ({ children }) => {
 				getAvailableAppointments,
 				barberDeleteAppointment,
 				getBookedAppointments,
+				getCompletedAppointments,
+				completeAppointment,
 			}}
 		>
 			{children}

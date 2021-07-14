@@ -15,6 +15,8 @@ export default function BarberAppointments() {
 		availableAppointments,
 		getBookedAppointments,
 		bookedAppointments,
+		getCompletedAppointments,
+		completedAppointments,
 	} = useContext(BarbersContext)
 	const { user } = useContext(UserContext)
 
@@ -25,6 +27,7 @@ export default function BarberAppointments() {
 	useEffect(() => {
 		getAvailableAppointments(user._id)
 		getBookedAppointments(user._id)
+		getCompletedAppointments(user._id)
 	}, [])
 
 	return (
@@ -48,7 +51,10 @@ export default function BarberAppointments() {
 					title='Booked Appointments'
 					appointments={bookedAppointments}
 				/>
-				<UserAppointmentsList title='Completed Appointments' />
+				<UserAppointmentsList
+					title='Completed Appointments'
+					appointments={completedAppointments}
+				/>
 			</section>
 		</DashboardLayout>
 	)

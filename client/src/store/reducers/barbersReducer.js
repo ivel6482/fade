@@ -13,6 +13,8 @@ import {
 	GET_USER_COMPLETED_APPOINTMENTS_FAIL,
 	DELETE_APPOINTMENT_SUCCESS,
 	DELETE_APPOINTMENT_FAIL,
+	COMPLETE_APPOINTMENT_SUCCESS,
+	COMPLETE_APPOINTMENT_FAIL,
 } from '../actions/barberActions'
 
 export default function barbersReducer(state, action) {
@@ -58,16 +60,29 @@ export default function barbersReducer(state, action) {
 				bookedAppointments: payload,
 			}
 
-		case POST_APPOINTMENT_FAIL:
+		case GET_USER_COMPLETED_APPOINTMENTS_SUCCESS:
 			return {
 				...state,
 				loading: false,
-				errors: [...state.errors, payload],
+				completedAppointments: payload,
 			}
 
+		case COMPLETE_APPOINTMENT_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				completedAppointments: [...state.completedAppointments, payload],
+				bookedAppointments: state.bookedAppointments.filter(
+					(appointment) => appointment._id !== payload._id
+				),
+			}
+
+		case POST_APPOINTMENT_FAIL:
 		case GET_USER_AVAILABLE_APPOINTMENTS_FAIL:
 		case GET_USER_BOOKED_APPOINTMENTS_FAIL:
 		case DELETE_APPOINTMENT_FAIL:
+		case GET_USER_COMPLETED_APPOINTMENTS_FAIL:
+		case COMPLETE_APPOINTMENT_FAIL:
 			return {
 				...state,
 				loading: false,
