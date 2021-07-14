@@ -44,15 +44,7 @@ export default function DashboardLayout({
 		},
 	]
 
-	const barberNavigation = [
-		...userNavigation,
-		{
-			name: 'Stats',
-			to: '/appointments',
-			icon: ChartBarIcon,
-			current: currentTab === 'stats',
-		},
-	]
+	const barberNavigation = [...userNavigation]
 
 	const adminNavigation = [
 		{
