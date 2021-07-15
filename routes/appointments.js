@@ -14,6 +14,8 @@ const {
 } = require('../controllers/appointments')
 const { protect, authorize } = require('../middleware/auth')
 
+//TODO: I believe I can replace the /available and /booked to use query parameter for example /appointments?available=true
+
 router
 	.route('/')
 	.post(createAppointment)
