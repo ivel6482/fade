@@ -28,6 +28,13 @@ export default function App() {
 	const { user } = useContext(UserContext)
 	const { notifications } = useContext(NotificationContext)
 
+	const barbershopPage = {
+		admin: <AdminBarbershop />,
+		barber: <Barbershop />,
+		customer: <Barbershop />,
+	}
+
+	//TODO: Keep the returns as simple as possible
 	return (
 		//TODO: handle context migration from next to react
 		<Router>
@@ -42,7 +49,10 @@ export default function App() {
 					<NewBarbershop />
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>
-					{user?.role === 'admin' ? <AdminBarbershop /> : <Barbershop />}
+					{/* //TODO: Use enums instead of ternaries or logical &&s */}
+					{/* {user?.role === 'admin' ? <AdminBarbershop /> : <Barbershop />} */}
+					{/* // Use enum to render component based on user.role instead of doing the above */}
+					{barbershopPage[user.role]}
 				</PrivateRoute>
 				<PrivateRoute path='/appointments/new'>
 					{user?.role === 'admin' && <AdminNewAppointment />}
