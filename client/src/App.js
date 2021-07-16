@@ -34,6 +34,18 @@ export default function App() {
 		customer: <Barbershop />,
 	}
 
+	const appointmentsPage = {
+		admin: <UserAppointments />,
+		barber: <BarberAppointments />,
+		customer: <AdminAppointments />,
+	}
+
+	const profilePage = {
+		admin: <UserProfile />,
+		barber: <BarberProfile />,
+		customer: <UserProfile />,
+	}
+
 	//TODO: Keep the returns as simple as possible
 	return (
 		//TODO: handle context migration from next to react
@@ -49,29 +61,19 @@ export default function App() {
 					<NewBarbershop />
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>
-					{/* //TODO: Use enums instead of ternaries or logical &&s */}
-					{/* {user?.role === 'admin' ? <AdminBarbershop /> : <Barbershop />} */}
-					{/* // Use enum to render component based on user.role instead of doing the above */}
 					{barbershopPage[user.role]}
 				</PrivateRoute>
 				<PrivateRoute path='/appointments/new'>
-					{user?.role === 'admin' && <AdminNewAppointment />}
+					{/* //TODO: Create an access denied screeen and 404 screen */}
+					{user?.role === 'admin' ? <AdminNewAppointment /> : <h2>404</h2>}
 				</PrivateRoute>
 				<PrivateRoute path='/appointments/book'>
-					{user?.role === 'admin' && <AdminBookAppointment />}
+					{user?.role === 'admin' ? <AdminBookAppointment /> : <h2>404</h2>}
 				</PrivateRoute>
 				<PrivateRoute path='/appointments'>
-					{user?.role === 'costumer' && <UserAppointments />}
-					{user?.role === 'barber' && <BarberAppointments />}
-					{user?.role === 'admin' && <AdminAppointments />}
+					{appointmentsPage[user.role]}
 				</PrivateRoute>
-				<PrivateRoute path='/profile'>
-					{(user?.role === 'costumer' || user?.role === 'admin') && (
-						<UserProfile />
-					)}
-					{user?.role === 'barber' && <BarberProfile />}
-					{/* {user?.role === 'admin' && <AdminProfile />} */}
-				</PrivateRoute>
+				<PrivateRoute path='/profile'>{profilePage[user.role]}</PrivateRoute>
 				<PrivateRoute path='/barbers'>
 					{user?.role === 'admin' ? <AdminBarbers /> : <h2>404</h2>}
 				</PrivateRoute>
