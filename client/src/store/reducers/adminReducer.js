@@ -31,6 +31,8 @@ import {
 	DELETE_USER_FAIL,
 	CANCEL_APPOINTMENT_SUCCESS,
 	CANCEL_APPOINTMENT_FAIL,
+	UPDATE_BARBERS_SUCCESS,
+	UPDATE_BARBERS_FAIL,
 } from '../actions/adminActions'
 
 export default function adminReducer(state, action) {
@@ -139,6 +141,13 @@ export default function adminReducer(state, action) {
 				),
 			}
 
+		case UPDATE_BARBERS_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				user: payload,
+			}
+
 		case BOOK_APPOINTMENT_CLEAR:
 			return {
 				...state,
@@ -234,6 +243,13 @@ export default function adminReducer(state, action) {
 			}
 
 		case CANCEL_APPOINTMENT_FAIL:
+			return {
+				...state,
+				loading: false,
+				errors: [...state.errors, payload],
+			}
+
+		case UPDATE_BARBERS_FAIL:
 			return {
 				...state,
 				loading: false,

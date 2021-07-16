@@ -48,6 +48,8 @@ import {
 	CANCEL_APPOINTMENT_REQUEST,
 	CANCEL_APPOINTMENT_SUCCESS,
 	CANCEL_APPOINTMENT_FAIL,
+	UPDATE_BARBERS_SUCCESS,
+	UPDATE_BARBERS_FAIL,
 } from '../actions/adminActions'
 
 const inititalState = {
@@ -336,6 +338,16 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
+	const updateBarber = async (id, data) => {
+		try {
+			const res = await axios.put(`/barbers/${id}`, data)
+			dispatch({ type: UPDATE_BARBERS_SUCCESS, payload: res.data.barber })
+		} catch (error) {
+			console.error(error)
+			dispatch({ UPDATE_BARBERS_FAIL, payload: error.response.data.message })
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -369,6 +381,7 @@ export const AdminProvider = ({ children }) => {
 				createUser,
 				deleteUser,
 				cancelAppointment,
+				updateBarber,
 			}}
 		>
 			{children}

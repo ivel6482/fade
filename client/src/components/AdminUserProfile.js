@@ -2,23 +2,27 @@ import { useContext, useEffect, useState } from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
+import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import DashboardLayout from './DashboardLayout'
 
 export default function AdminUserProfile() {
 	const { id } = useParams()
 	const history = useHistory()
-	const { loading, user, getUser, updateUser, deleteUser } =
+	const { loading, user, getUser, updateUser, deleteUser, updateBarber } =
 		useContext(AdminContext)
 	const { displayNotification } = useContext(NotificationContext)
+	const { getBarbershops, barbershops } = useContext(BarbershopsContext)
 	//TODO: Get the user from the admin context, then do the same as below.
 	const [firstName, setFirstName] = useState('')
 	const [lastName, setLastName] = useState('')
 	const [avatar, setAvatar] = useState('')
 	const [role, setRole] = useState('')
 	const [email, setEmail] = useState('')
+	const [barbershop, setBarbershop] = useState('')
 
 	useEffect(() => {
 		getUser(id)
+		getBarbershops()
 	}, [])
 
 	useEffect(() => {
@@ -27,6 +31,7 @@ export default function AdminUserProfile() {
 		setAvatar(user.avatar)
 		setRole(user.role)
 		setEmail(user.email)
+		setBarbershop(user.barbershop)
 	}, [user])
 
 	const deleteHandler = (id) => {
@@ -40,13 +45,19 @@ export default function AdminUserProfile() {
 			firstName === user.firstName &&
 			lastName === user.lastName &&
 			email === user.email &&
-			role === user.role
+			role === user.role &&
+			barbershop === user.barbershop
 		) {
-			//FIXME: Notifications are currently not accepting custom messages like below, make it accept custom messages.
 			displayNotification('Please make some changes before saving.')
 		} else {
-			updateUser(user._id, { firstName, lastName, email, role }, history)
-			displayNotification('Profile has been updated.')
+			//TODO: use updateBarber if the user use a barber otherwise use updateUser
+			if (user.role === 'barber') {
+				updateBarber(user._id, { firstName, lastName, email, role, barbershop })
+				displayNotification('Barber has been updated.')
+			} else {
+				updateUser(user._id, { firstName, lastName, email, role }, history)
+				displayNotification('Profile has been updated.')
+			}
 		}
 	}
 
@@ -140,16 +151,16 @@ export default function AdminUserProfile() {
 
 								<div className='sm:col-span-3'>
 									<label
-										htmlFor='country'
+										htmlFor='role'
 										className='block text-sm font-medium text-gray-700'
 									>
 										Role
 									</label>
 									<div className='mt-1'>
 										<select
-											id='country'
-											name='country'
-											autoComplete='country'
+											id='role'
+											name='role'
+											autoComplete='role'
 											value={role}
 											onChange={(e) => setRole(e.target.value)}
 											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
@@ -160,29 +171,33 @@ export default function AdminUserProfile() {
 										</select>
 									</div>
 								</div>
-								<div className='sm:col-span-6'>
-									<label
-										htmlFor='photo'
-										className='block text-sm font-medium text-gray-700'
-									>
-										Photo
-									</label>
-									<div className='flex items-center mt-1'>
-										<span className='w-12 h-12 overflow-hidden bg-gray-100 rounded-full'>
-											<img
-												className='w-full h-full text-gray-300'
-												src={user.avatar}
-												alt='avatar'
-											/>
-										</span>
-										<button
-											type='button'
-											className='px-3 py-2 ml-5 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								{user.role === 'barber' && (
+									<div className='sm:col-span-3'>
+										<label
+											htmlFor='barbershop'
+											className='block text-sm font-medium text-gray-700'
 										>
-											Change
-										</button>
+											Barbershop
+										</label>
+										<div className='mt-1'>
+											<select
+												id='barbershop'
+												name='barbershop'
+												autoComplete='barbershop'
+												value={barbershop}
+												onChange={(e) => setBarbershop(e.target.value)}
+												className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											>
+												<option>Select barbershop</option>
+												{barbershops.map((barbershop) => (
+													<option key={barbershop._id} value={barbershop._id}>
+														{barbershop.name}
+													</option>
+												))}
+											</select>
+										</div>
 									</div>
-								</div>
+								)}
 							</div>
 						</div>
 					</div>
