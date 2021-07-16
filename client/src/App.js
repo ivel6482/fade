@@ -61,7 +61,7 @@ export default function App() {
 					<NewBarbershop />
 				</PrivateRoute>
 				<PrivateRoute path='/barbershops/:id'>
-					{barbershopPage[user.role]}
+					{barbershopPage[user?.role]}
 				</PrivateRoute>
 				<PrivateRoute path='/appointments/new'>
 					{/* //TODO: Create an access denied screeen and 404 screen */}
@@ -71,9 +71,9 @@ export default function App() {
 					{user?.role === 'admin' ? <AdminBookAppointment /> : <h2>404</h2>}
 				</PrivateRoute>
 				<PrivateRoute path='/appointments'>
-					{appointmentsPage[user.role]}
+					{appointmentsPage[user?.role]}
 				</PrivateRoute>
-				<PrivateRoute path='/profile'>{profilePage[user.role]}</PrivateRoute>
+				<PrivateRoute path='/profile'>{profilePage[user?.role]}</PrivateRoute>
 				<PrivateRoute path='/barbers'>
 					{user?.role === 'admin' ? <AdminBarbers /> : <h2>404</h2>}
 				</PrivateRoute>
