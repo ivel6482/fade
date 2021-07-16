@@ -31,19 +31,19 @@ export default function App() {
 	const barbershopPage = {
 		admin: <AdminBarbershop />,
 		barber: <Barbershop />,
-		customer: <Barbershop />,
+		costumer: <Barbershop />,
 	}
 
 	const appointmentsPage = {
-		admin: <UserAppointments />,
+		admin: <AdminAppointments />,
 		barber: <BarberAppointments />,
-		customer: <AdminAppointments />,
+		costumer: <UserAppointments />,
 	}
 
 	const profilePage = {
 		admin: <UserProfile />,
 		barber: <BarberProfile />,
-		customer: <UserProfile />,
+		costumer: <UserProfile />,
 	}
 
 	//TODO: Keep the returns as simple as possible
