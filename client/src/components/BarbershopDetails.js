@@ -52,28 +52,6 @@ export default function BarbershopDetails() {
 										{barbershop?.name}
 									</h1>
 								</div>
-								<div className='flex flex-col mt-6 space-y-3 justify-stretch sm:flex-row sm:space-y-0 sm:space-x-4'>
-									<button
-										type='button'
-										className='inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
-									>
-										<MailIcon
-											className='w-5 h-5 mr-2 -ml-1 text-gray-400'
-											aria-hidden='true'
-										/>
-										<span>Message</span>
-									</button>
-									<button
-										type='button'
-										className='inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
-									>
-										<PhoneIcon
-											className='w-5 h-5 mr-2 -ml-1 text-gray-400'
-											aria-hidden='true'
-										/>
-										<span>Call</span>
-									</button>
-								</div>
 							</div>
 						</div>
 						<div className='flex-1 hidden min-w-0 mt-6 sm:block md:hidden'>
@@ -84,6 +62,15 @@ export default function BarbershopDetails() {
 					</div>
 				</div>
 			)}
+
+			{barbershop.about && (
+				<BarbershopDetailSection title='About Us' barbershop={barbershop}>
+					<section>
+						<p className='flex items-center gap-2'>{barbershop?.about}</p>
+					</section>
+				</BarbershopDetailSection>
+			)}
+
 			<BarbershopDetailSection title='Contact Us' barbershop={barbershop}>
 				<section>
 					<p className='flex items-center gap-2'>
