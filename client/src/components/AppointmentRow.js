@@ -3,10 +3,13 @@ import { AdminContext } from '../store/contexts/adminContext'
 import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { BarbersContext } from '../store/contexts/barberContext'
+import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 
 export default function AppointmentRow({ appointment }) {
 	const { token, user } = useContext(UserContext)
 	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
+	const { cancelAppointment: userCancelAppointment } =
+		useContext(BarbershopsContext)
 	const { barberDeleteAppointment, completeAppointment } =
 		useContext(BarbersContext)
 	const { displayNotification } = useContext(NotificationContext)
@@ -32,8 +35,13 @@ export default function AppointmentRow({ appointment }) {
 	}
 
 	const cancelHandler = (id) => {
-		cancelAppointment(id, token)
-		displayNotification('Appointment cancelled successfully.')
+		if (user.role === 'admin') {
+			cancelAppointment(id, token)
+			displayNotification('Appointment cancelled successfully.')
+		} else {
+			userCancelAppointment(id, token)
+			displayNotification('Appointment cancelled successfully.')
+		}
 	}
 
 	const completeHandler = (id) => {
@@ -100,13 +108,15 @@ export default function AppointmentRow({ appointment }) {
 							>
 								Cancel
 							</button>
-							<button
-								type='button'
-								onClick={() => completeHandler(appointment._id)}
-								className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
-							>
-								Complete
-							</button>
+							{user.role === 'admin' && (
+								<button
+									type='button'
+									onClick={() => completeHandler(appointment._id)}
+									className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
+								>
+									Complete
+								</button>
+							)}
 						</>
 					)}
 					{!appointment.completed && !appointment.booked && (
