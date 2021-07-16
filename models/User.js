@@ -47,10 +47,21 @@ const UserSchema = new mongoose.Schema(
 			type: [mongoose.Schema.Types.ObjectId],
 			ref: 'Barbershop',
 		},
-		// appointments: {
-		// 	type: mongoose.Schema.Types.ObjectId,
-		// 	ref: 'Appointment',
-		// },
+		barbershop: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Barbershop',
+			default: null,
+		},
+		status: {
+			type: String,
+			enum: ['available', 'unavailable', null],
+			default: null,
+		},
+		specialties: {
+			type: [String],
+			enum: ['beard trimming', 'hair cut', 'fade', 'coloring', null],
+			default: null,
+		},
 	},
 	{ timestamps: true }
 )

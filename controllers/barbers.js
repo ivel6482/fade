@@ -1,4 +1,3 @@
-const Barber = require('../models/Barber')
 const User = require('../models/User')
 const Appointment = require('../models/Appointment')
 const cloudinary = require('../utils/cloudinary')
@@ -6,7 +5,6 @@ const cloudinary = require('../utils/cloudinary')
 //------------------------------------------------------------------------------
 //          - Get all barbers -
 //------------------------------------------------------------------------------
-
 exports.getAllBarbers = async (req, res) => {
 	try {
 		const barbers = await User.find({ role: 'barber' })
@@ -30,7 +28,10 @@ exports.getAllBarbers = async (req, res) => {
 exports.getBarber = async (req, res) => {
 	try {
 		const { id } = req.params
-		const barber = await Barber.findById(id).populate('barbershop', 'name')
+		const barber = await User.findOne({ _id: id, role: 'barber' }).populate(
+			'barbershop',
+			'name'
+		)
 		if (barber) {
 			res.status(200).json(barber)
 		} else {
@@ -48,7 +49,7 @@ exports.getBarber = async (req, res) => {
 exports.getBarbersFromBarbershop = async (req, res) => {
 	try {
 		const { id } = req.params
-		const barbers = await Barber.find({ barbershop: id })
+		const barbers = await User.find({ barbershop: id })
 
 		if (barbers) {
 			res.status(200).json({ barbers })
@@ -67,15 +68,17 @@ exports.getBarbersFromBarbershop = async (req, res) => {
 
 exports.createBarber = async (req, res) => {
 	try {
-		const { name, status, barbershop, specialties } = req.body
+		const { firstName, lastName, status, barbershop, specialties } = req.body
 		const newBarber = {
-			name,
+			firstName,
+			lastName,
 			status,
 			barbershop,
 			specialties,
+			role: 'barber',
 		}
 
-		const barber = await Barber.create(newBarber)
+		const barber = await User.create(newBarber)
 
 		res.status(200).json(barber)
 	} catch (error) {
@@ -90,15 +93,20 @@ exports.createBarber = async (req, res) => {
 exports.updateBarber = async (req, res) => {
 	try {
 		const { id } = req.params
-		const { name, status } = req.body
-		const barber = await Barber.findById(id)
+		const { firstName, lastName, email, specialties, status, barbershop } =
+			req.body
+		const barber = await User.findOne({ _id: id, role: 'barber' })
 		if (barber) {
 			const updatedData = {
-				name: name || barber.name,
+				firstName: firstName || barber.firstName,
+				lastName: lastName || barber.lastName,
+				email: email || barber.email,
 				status: status || barber.status,
+				specialties: specialties || barber.specialties,
+				barbershop: barbershop || barber.barbershop,
 			}
 
-			const updatedBarber = await Barber.findByIdAndUpdate(id, updatedData, {
+			const updatedBarber = await User.findByIdAndUpdate(id, updatedData, {
 				new: true,
 				runValidators: true,
 			})
@@ -119,7 +127,7 @@ exports.updateBarber = async (req, res) => {
 exports.uploadAvatar = async (req, res) => {
 	try {
 		const { id } = req.params
-		const barber = await Barber.findById(id)
+		const barber = await User.findOne({ _id: id, role: 'barber' })
 		if (barber) {
 			if (req.file === undefined) {
 				return res.status(400).json({ message: 'Image is required.' })
@@ -136,7 +144,7 @@ exports.uploadAvatar = async (req, res) => {
 				},
 			}
 
-			const updatedBarber = await Barber.findByIdAndUpdate(id, updatedData, {
+			const updatedBarber = await User.findByIdAndUpdate(id, updatedData, {
 				new: true,
 				runValidators: true,
 			})
@@ -157,13 +165,13 @@ exports.uploadAvatar = async (req, res) => {
 exports.deleteBarber = async (req, res) => {
 	try {
 		const { id } = req.params
-		const barber = await Barber.findById(id)
+		const barber = await User.findOne({ _id: id, role: 'barber' })
 		if (barber) {
 			if (barber.avatar.cloudinaryId) {
 				await cloudinary.uploader.destroy(barber.avatar.cloudinaryId)
 			}
 
-			await Barber.deleteOne({ _id: barber._id })
+			await User.deleteOne({ _id: barber._id })
 			res.status(200).json({ message: `${barber.name} has been removed.` })
 		} else {
 			res.status(404).json({ message: 'Barber not found.' })
