@@ -125,12 +125,14 @@ export const BarbershopsProvider = ({ children }) => {
 		}
 	}
 
-	const bookAppointment = async (id, token) => {
+	const bookAppointment = async (id, userId, token) => {
 		try {
 			dispatch({ type: BOOK_APPOINTMENT_REQUEST })
 			const res = await axios.put(
 				`/appointments/${id}/book`,
-				{},
+				{
+					userId,
+				},
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
