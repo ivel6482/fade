@@ -12,7 +12,7 @@ export default function Appointment({ appointment }) {
 	} = useContext(BarbershopsContext)
 
 	const [booked, setBooked] = useState(appointment.booked)
-	const { token } = useContext(UserContext)
+	const { token, user } = useContext(UserContext)
 
 	// const bookAppointmentHandler = (id) => {
 	// 	bookAppointment(id, token)
@@ -26,12 +26,10 @@ export default function Appointment({ appointment }) {
 
 	const handleAppointment = (id) => {
 		if (appointment.booked) {
-			console.log('Cancel')
 			cancelAppointment(id, token)
 			setBooked(!booked)
 		} else {
-			console.log('Book')
-			bookAppointment(id, token)
+			bookAppointment(id, user._id, token)
 			setBooked(!booked)
 		}
 	}

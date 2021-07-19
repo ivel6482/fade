@@ -279,6 +279,7 @@ exports.getUserBookedAppointments = async (req, res) => {
 		const appointments = await Appointment.find({
 			bookedBy: id,
 			completed: false,
+			booked: true,
 			// How to populate populated field, research nesting populate
 		}).populate(['barberId', 'barbershop'])
 
