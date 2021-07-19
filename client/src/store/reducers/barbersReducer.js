@@ -15,6 +15,8 @@ import {
 	DELETE_APPOINTMENT_FAIL,
 	COMPLETE_APPOINTMENT_SUCCESS,
 	COMPLETE_APPOINTMENT_FAIL,
+	CANCEL_APPOINTMENT_SUCCESS,
+	CANCEL_APPOINTMENT_FAIL,
 } from '../actions/barberActions'
 
 export default function barbersReducer(state, action) {
@@ -77,7 +79,16 @@ export default function barbersReducer(state, action) {
 				),
 			}
 
+		case CANCEL_APPOINTMENT_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				bookedAppointments: state.bookedAppointments.filter(
+					(appointment) => appointment._id !== payload
+				),
+			}
 		case POST_APPOINTMENT_FAIL:
+		case CANCEL_APPOINTMENT_FAIL:
 		case GET_USER_AVAILABLE_APPOINTMENTS_FAIL:
 		case GET_USER_BOOKED_APPOINTMENTS_FAIL:
 		case DELETE_APPOINTMENT_FAIL:

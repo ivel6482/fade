@@ -10,8 +10,11 @@ export default function AppointmentRow({ appointment }) {
 	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
 	const { cancelAppointment: userCancelAppointment } =
 		useContext(BarbershopsContext)
-	const { barberDeleteAppointment, completeAppointment } =
-		useContext(BarbersContext)
+	const {
+		barberDeleteAppointment,
+		completeAppointment,
+		barberCancelAppointment,
+	} = useContext(BarbersContext)
 	const { displayNotification } = useContext(NotificationContext)
 
 	const formattedDate = new Date(appointment.createdAt).toLocaleDateString(
@@ -37,6 +40,9 @@ export default function AppointmentRow({ appointment }) {
 	const cancelHandler = (id) => {
 		if (user.role === 'admin') {
 			cancelAppointment(id, token)
+			displayNotification('Appointment cancelled successfully.')
+		} else if (user.role === 'barber') {
+			barberCancelAppointment(id, token)
 			displayNotification('Appointment cancelled successfully.')
 		} else {
 			userCancelAppointment(id, token)

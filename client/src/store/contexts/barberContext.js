@@ -17,6 +17,8 @@ import {
 	DELETE_APPOINTMENT_FAIL,
 	COMPLETE_APPOINTMENT_SUCCESS,
 	COMPLETE_APPOINTMENT_FAIL,
+	CANCEL_APPOINTMENT_SUCCESS,
+	CANCEL_APPOINTMENT_FAIL,
 } from '../actions/barberActions'
 import barbersReducer from '../reducers/barbersReducer'
 
@@ -150,6 +152,23 @@ export const BarbersProvider = ({ children }) => {
 		}
 	}
 
+	const barberCancelAppointment = async (id, token) => {
+		try {
+			await axios.put(`/appointments/${id}/cancel`, null, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			dispatch({ type: CANCEL_APPOINTMENT_SUCCESS, payload: id })
+		} catch (error) {
+			console.error(error)
+			dispatch({
+				type: CANCEL_APPOINTMENT_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
 	return (
 		<Provider
 			value={{
@@ -164,6 +183,7 @@ export const BarbersProvider = ({ children }) => {
 				getBookedAppointments,
 				getCompletedAppointments,
 				completeAppointment,
+				barberCancelAppointment,
 			}}
 		>
 			{children}
