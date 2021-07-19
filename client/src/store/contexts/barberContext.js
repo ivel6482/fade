@@ -154,12 +154,15 @@ export const BarbersProvider = ({ children }) => {
 
 	const barberCancelAppointment = async (id, token) => {
 		try {
-			await axios.put(`/appointments/${id}/cancel`, null, {
+			const res = await axios.put(`/appointments/${id}/cancel`, null, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			})
-			dispatch({ type: CANCEL_APPOINTMENT_SUCCESS, payload: id })
+			dispatch({
+				type: CANCEL_APPOINTMENT_SUCCESS,
+				payload: res.data.appointment,
+			})
 		} catch (error) {
 			console.error(error)
 			dispatch({

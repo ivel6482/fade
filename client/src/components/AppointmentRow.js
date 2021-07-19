@@ -114,15 +114,16 @@ export default function AppointmentRow({ appointment }) {
 							>
 								Cancel
 							</button>
-							{user.role === 'admin' && (
-								<button
-									type='button'
-									onClick={() => completeHandler(appointment._id)}
-									className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
-								>
-									Complete
-								</button>
-							)}
+							{user.role === 'admin' ||
+								(user.role === 'barber' && (
+									<button
+										type='button'
+										onClick={() => completeHandler(appointment._id)}
+										className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
+									>
+										Complete
+									</button>
+								))}
 						</>
 					)}
 					{!appointment.completed && !appointment.booked && (

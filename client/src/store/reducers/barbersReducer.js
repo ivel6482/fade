@@ -84,8 +84,9 @@ export default function barbersReducer(state, action) {
 				...state,
 				loading: false,
 				bookedAppointments: state.bookedAppointments.filter(
-					(appointment) => appointment._id !== payload
+					(appointment) => appointment._id !== payload._id
 				),
+				availableAppointments: [...state.availableAppointments, payload],
 			}
 		case POST_APPOINTMENT_FAIL:
 		case CANCEL_APPOINTMENT_FAIL:

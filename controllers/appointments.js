@@ -137,14 +137,14 @@ exports.createAppointment = async (req, res) => {
 // TODO: Better handle duplicate key error
 exports.updateAppointment = async (req, res) => {
 	const { id } = req.params
-	const { time, day } = req.body
+	const { time } = req.body
 	try {
 		const appointment = await Appointment.findById(id)
 
 		if (appointment) {
 			const newData = {
 				time: time || appointment.time,
-				day: day || appointment.day,
+				// day: day || appointment.day,
 			}
 
 			const updatedAppointment = await Appointment.findByIdAndUpdate(
@@ -206,8 +206,6 @@ exports.completeAppointment = async (req, res) => {
 		const appointment = await Appointment.findById(id)
 		if (appointment) {
 			const bookedData = {
-				bookedAt: Date.now(),
-				bookedBy: req.user._id,
 				booked: false,
 				completed: true,
 			}
@@ -243,7 +241,7 @@ exports.cancelAppointment = async (req, res) => {
 				id,
 				cancelData,
 				{ new: true, runValidators: true }
-			)
+			).populate('barberId')
 
 			res.status(200).json({ appointment: canceledAppointment })
 		} else {
@@ -302,6 +300,8 @@ exports.getUserPastBookedAppointments = async (req, res) => {
 			bookedBy: id,
 			completed: true,
 		}).populate('barberId')
+
+		console.log(appointments)
 
 		if (appointments) {
 			res.status(200).json({ appointments })
