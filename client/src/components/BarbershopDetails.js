@@ -11,6 +11,7 @@ import Barber from './Barber'
 export default function BarbershopDetails() {
 	const { id } = useParams()
 	const history = useHistory()
+	//TODO: Create custom hooks like the ones in react-query with the contexet logic inside so I just need to call const { barbers, getBarbers } = useBarbers()
 	const { loading, errors, barbershop, barbers, getBarbershop, getBarbers } =
 		useContext(BarbershopsContext)
 
