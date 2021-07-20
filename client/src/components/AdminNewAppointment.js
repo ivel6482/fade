@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import DashboardLayout from './DashboardLayout'
@@ -41,6 +41,7 @@ export default function AdminNewAppointment() {
 
 	useEffect(() => {
 		getBarbers()
+		// eslint-disable-next-line
 	}, [])
 
 	const submitHandler = (e) => {
@@ -48,8 +49,7 @@ export default function AdminNewAppointment() {
 		if (barberId === '' || time === '') {
 			displayNotification('Please enter all the required information')
 		} else {
-			createAppointment({ barberId, time }, history)
-			displayNotification('Appointment created successfully.')
+			createAppointment({ barberId, time }, history, displayNotification)
 		}
 	}
 

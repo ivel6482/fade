@@ -21,7 +21,6 @@ import {
 	CREATE_BARBERSHOP_SUCCESS,
 	CREATE_BARBERSHOP_FAIL,
 	UPDATE_BARBERSHOP_REQUEST,
-	UPDATE_BARBERSHOP_SUCCESS,
 	UPDATE_BARBERSHOP_FAIL,
 	DELETE_BARBERSHOP_REQUEST,
 	DELETE_BARBERSHOP_SUCCESS,
@@ -29,23 +28,14 @@ import {
 	CREATE_APPOINTMENT_REQUEST,
 	CREATE_APPOINTMENT_SUCCESS,
 	CREATE_APPOINTMENT_FAIL,
-	DELETE_APPOINTMENT_REQUEST,
 	DELETE_APPOINTMENT_SUCCESS,
 	DELETE_APPOINTMENT_FAIL,
-	GET_BARBERS_AVAILABLE_APPOINTMENTS_REQUEST,
 	GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS,
 	GET_BARBERS_AVAILABLE_APPOINTMENTS_FAIL,
-	BOOK_APPOINTMENT_REQUEST,
-	BOOK_APPOINTMENT_SUCCESS,
 	BOOK_APPOINTMENT_FAIL,
 	BOOK_APPOINTMENT_CLEAR,
-	CREATE_USER_REQUEST,
-	CREATE_USER_SUCCESS,
 	CREATE_USER_FAIL,
-	DELETE_USER_REQUEST,
-	DELETE_USER_SUCCESS,
 	DELETE_USER_FAIL,
-	CANCEL_APPOINTMENT_REQUEST,
 	CANCEL_APPOINTMENT_SUCCESS,
 	CANCEL_APPOINTMENT_FAIL,
 	UPDATE_BARBERS_SUCCESS,
@@ -226,15 +216,17 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
-	const createAppointment = async (data, history) => {
+	const createAppointment = async (data, history, displayNotification) => {
 		try {
 			dispatch({ type: CREATE_APPOINTMENT_REQUEST })
 			const res = await axios.post('/appointments', data)
-			console.log(res.data)
+
 			dispatch({ type: CREATE_APPOINTMENT_SUCCESS, payload: res.data })
+			displayNotification('Appointment created successfully.')
 			history.push('/appointments')
 		} catch (error) {
 			console.error(error)
+			displayNotification(error.response.data.message)
 			dispatch({
 				type: CREATE_APPOINTMENT_FAIL,
 				payload: error.response.data.message,
@@ -278,7 +270,7 @@ export const AdminProvider = ({ children }) => {
 	const bookAppointment = async (data, history, token) => {
 		try {
 			const { userId, appointmentId } = data
-			const res = await axios.put(
+			await axios.put(
 				`/appointments/${appointmentId}/book`,
 				{
 					userId,

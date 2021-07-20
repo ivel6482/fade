@@ -43,7 +43,7 @@ export const BarbersProvider = ({ children }) => {
 		loading,
 	} = state
 
-	const postAppointment = async (time, barberId, history) => {
+	const postAppointment = async (time, barberId, displayNotification) => {
 		try {
 			dispatch({ type: POST_APPOINTMENT_REQUEST })
 			const newAppointment = {
@@ -56,8 +56,10 @@ export const BarbersProvider = ({ children }) => {
 				type: POST_APPOINTMENT_SUCCESS,
 				payload: res.data,
 			})
+			displayNotification('Appointment created successfully.')
 		} catch (error) {
 			console.error(error)
+			displayNotification(error.response.data.message)
 			dispatch({
 				type: POST_APPOINTMENT_FAIL,
 				payload: error.response.data.message,
