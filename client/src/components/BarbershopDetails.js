@@ -1,8 +1,12 @@
 import { useParams } from 'react-router-dom'
 import { useContext, useEffect } from 'react'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
-import { useHistory } from 'react-router-dom'
-import { MailIcon, PhoneIcon, LocationMarkerIcon } from '@heroicons/react/solid'
+import {
+	PhoneIcon,
+	LocationMarkerIcon,
+	CalendarIcon,
+	ClockIcon,
+} from '@heroicons/react/solid'
 import BarbershopDetailSection from './BarbershopDetailSection'
 import Barber from './Barber'
 
@@ -10,21 +14,23 @@ import Barber from './Barber'
 
 export default function BarbershopDetails() {
 	const { id } = useParams()
-	const history = useHistory()
-	//TODO: Create custom hooks like the ones in react-query with the contexet logic inside so I just need to call const { barbers, getBarbers } = useBarbers()
-	const { loading, errors, barbershop, barbers, getBarbershop, getBarbers } =
+	//TODO: Create custom hooks like the ones in react-query with the context logic inside so I just need to call const { barbers, getBarbers } = useBarbers()
+	const { loading, barbershop, barbers, getBarbershop, getBarbers } =
 		useContext(BarbershopsContext)
 
 	useEffect(() => {
 		getBarbershop(id)
+		// eslint-disable-next-line
 	}, [])
 
 	useEffect(() => {
 		getBarbers(id)
+		// eslint-disable-next-line
 	}, [])
 
+	console.log(barbershop)
 	//TODO: Fetch barbers that have the barbershopId of the selected barbershop
-
+	//TODO: Render weekdays, open and close times
 	return (
 		<section>
 			{loading && !barbershop && !barbers ? (
@@ -63,7 +69,6 @@ export default function BarbershopDetails() {
 					</div>
 				</div>
 			)}
-
 			{barbershop.about && (
 				<BarbershopDetailSection title='About Us' barbershop={barbershop}>
 					<section>
@@ -71,7 +76,6 @@ export default function BarbershopDetails() {
 					</section>
 				</BarbershopDetailSection>
 			)}
-
 			<BarbershopDetailSection title='Contact Us' barbershop={barbershop}>
 				<section>
 					<p className='flex items-center gap-2'>
@@ -92,6 +96,48 @@ export default function BarbershopDetails() {
 					</p>
 				</section>
 			</BarbershopDetailSection>
+			<BarbershopDetailSection title='Availability' barbershop={barbershop}>
+				<section className='space-y-3'>
+					<div>
+						<p className='flex items-center gap-2'>
+							<span>
+								<CalendarIcon width='20' />
+							</span>{' '}
+							{barbershop.available?.days.length === 0
+								? 'Barbershop has not provided working days'
+								: barbershop.available?.days.length === 7
+								? 'All days of the week'
+								: barbershop?.available?.days
+										.reduce((acc, day) => acc + day + ', ', '')
+										.slice(0, -2)}
+						</p>
+					</div>
+					<div>
+						<p className='flex items-center gap-2'>
+							<span>
+								<ClockIcon width='20' />
+							</span>{' '}
+							{barbershop.available?.hours?.open &&
+							barbershop.available?.hours?.close
+								? `
+							${barbershop.available?.hours.open} - 
+							${barbershop.available?.hours.close}
+							`
+								: 'Barbershop has not provided working hours'}
+						</p>
+					</div>
+					{/* {!barbershop.available &&
+						!barbershop.available.open &&
+						!barbershop.available.close && (
+							<p>Barbershop has not provided working hours</p>
+						)}
+					{barbershop.available &&
+						barbershop.available.open &&
+						barbershop.available.close && (
+						)} */}
+				</section>
+			</BarbershopDetailSection>
+
 			<BarbershopDetailSection title='Barbers' barbershop={barbershop}>
 				<ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
 					{barbers.length === 0 ? (
