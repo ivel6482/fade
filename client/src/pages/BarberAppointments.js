@@ -28,6 +28,7 @@ export default function BarberAppointments() {
 		getAvailableAppointments(user._id)
 		getBookedAppointments(user._id)
 		getCompletedAppointments(user._id)
+		// eslint-disable-next-line
 	}, [])
 
 	return (

@@ -17,6 +17,7 @@ export default function UserAppointments() {
 	useEffect(() => {
 		getActiveUserAppointments(user._id)
 		getCompletedUserAppointments(user._id)
+		// eslint-disable-next-line
 	}, [])
 
 	return (

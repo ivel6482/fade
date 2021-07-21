@@ -1,7 +1,6 @@
 import { useContext, useEffect } from 'react'
 import Barbershop from './Barbershop'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
-import ErrorList from '../components/ErrorList'
 import Stats from '../components/Stats'
 import { UserContext } from '../store/contexts/userContext'
 import { PlusIcon } from '@heroicons/react/outline'
@@ -9,11 +8,12 @@ import { Link } from 'react-router-dom'
 
 export default function BarbershopList() {
 	const { user } = useContext(UserContext)
-	const { barbershops, loading, errors, getBarbershops } =
+	const { barbershops, loading, getBarbershops } =
 		useContext(BarbershopsContext)
 
 	useEffect(() => {
 		getBarbershops()
+		// eslint-disable-next-line
 	}, [])
 
 	const stats = [

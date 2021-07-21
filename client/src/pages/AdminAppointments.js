@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 import UserAppointmentsList from '../components/UserAppointmentsList'
 import Stats from '../components/Stats'
@@ -14,6 +14,7 @@ export default function AdminAppointments() {
 
 	useEffect(() => {
 		getAppointments(token)
+		// eslint-disable-next-line
 	}, [])
 
 	const stats = [

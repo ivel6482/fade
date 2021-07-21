@@ -11,6 +11,7 @@ export default function AdminUsers() {
 
 	useEffect(() => {
 		getUsers()
+		// eslint-disable-next-line
 	}, [])
 
 	const stats = [

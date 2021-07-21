@@ -9,7 +9,6 @@ import {
 	MenuIcon,
 	XIcon,
 	LogoutIcon,
-	ChartBarIcon,
 } from '@heroicons/react/outline'
 import { UserCircleIcon, ScissorsIcon } from '@heroicons/react/solid'
 

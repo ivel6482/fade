@@ -26,6 +26,7 @@ export default function AdminBookAppointment() {
 	useEffect(() => {
 		getBarbers()
 		getUsers()
+		// eslint-disable-next-line
 	}, [])
 
 	const getAppointments = (id) => {

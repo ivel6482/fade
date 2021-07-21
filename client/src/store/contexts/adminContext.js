@@ -186,14 +186,14 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
-	const updateBarbershop = async (id, data) => {
+	const updateBarbershop = async (id, data, displayNotification) => {
 		try {
 			dispatch({ type: UPDATE_BARBERSHOP_REQUEST })
-			const res = await axios.put(`/barbershops/${id}`, data)
-			console.log(res.data)
-			// dispatch({ type: UPDATE_BARBERSHOP_SUCCESS, payload: res.data })
+			await axios.put(`/barbershops/${id}`, data)
+			displayNotification('Barbershop updated successfully.')
 		} catch (error) {
 			console.error(error)
+			displayNotification(error.response.data.message)
 			dispatch({
 				type: UPDATE_BARBERSHOP_FAIL,
 				payload: error.response.data.message,

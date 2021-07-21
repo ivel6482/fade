@@ -72,6 +72,7 @@ export default function NewBarbershop() {
 
 	useEffect(() => {
 		getUsers()
+		// eslint-disable-next-line
 	}, [])
 
 	const toggleCheckbox = (index) => {

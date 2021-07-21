@@ -10,6 +10,7 @@ export default function AdminBarbers() {
 
 	useEffect(() => {
 		getBarbers()
+		// eslint-disable-next-line
 	}, [])
 
 	const stats = [

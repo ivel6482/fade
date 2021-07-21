@@ -23,6 +23,7 @@ export default function AdminUserProfile() {
 	useEffect(() => {
 		getUser(id)
 		getBarbershops()
+		// eslint-disable-next-line
 	}, [])
 
 	useEffect(() => {
