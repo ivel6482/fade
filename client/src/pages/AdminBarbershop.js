@@ -19,7 +19,6 @@ export default function AdminBarbershop() {
 	const [phoneNumber, setPhoneNumber] = useState('')
 	const [openTime, setOpenTime] = useState('')
 	const [closeTime, setCloseTime] = useState('')
-	const [barbershopOwner, setBarbershopOwner] = useState('')
 
 	const days = [
 		'Monday',
@@ -38,7 +37,7 @@ export default function AdminBarbershop() {
 		false,
 		false,
 		false,
-		true,
+		false,
 		false,
 	])
 
@@ -76,17 +75,17 @@ export default function AdminBarbershop() {
 			setName('')
 			setAbout('')
 			setAddress('')
-			setBarbershopOwner('')
 			setAvailable([false, false, false, false, false, false, false])
 			setCloseTime('')
 			setOpenTime('')
 			setPhoneNumber('')
 		}
+		// eslint-disable-next-line
 	}, [])
 
 	useEffect(() => {
 		setName(barbershop?.name)
-		setAbout(barbershop?.about)
+		setAbout(barbershop?.about ? barbershop.about : '')
 		setAddress(barbershop?.location?.address)
 		setPhoneNumber(barbershop?.contact?.phoneNumber)
 		setOpenTime(barbershop?.available?.hours?.open)
@@ -96,6 +95,7 @@ export default function AdminBarbershop() {
 				barbershop?.available?.days.includes(day) ? true : false
 			)
 		)
+		// eslint-disable-next-line
 	}, [barbershop])
 
 	const toggleCheckbox = (index) => {
@@ -107,25 +107,41 @@ export default function AdminBarbershop() {
 	const submitHandler = (e) => {
 		e.preventDefault()
 		const selectedDays = days.filter((_, i) => available[i] === true)
-		updateBarbershop(id, {
-			name,
-			about,
-			location: {
-				address,
-			},
-			contact: {
-				phoneNumber,
-			},
-			// barbershopOwner: barbershopOwner._id,
-			available: {
-				hours: {
-					open: openTime,
-					close: closeTime,
+		//TODO: Better error validation, ensure all the necessary information is provided.
+
+		if (
+			name === barbershop.name &&
+			about === barbershop.about &&
+			address === barbershop.location.address &&
+			phoneNumber === barbershop.contact.phoneNumber &&
+			openTime === barbershop.available.hours.open &&
+			closeTime === barbershop.available.hours.close &&
+			barbershop.available.days.toString() === selectedDays.toString()
+		) {
+			displayNotification('Please make changes before updating.')
+		} else {
+			updateBarbershop(
+				id,
+				{
+					name,
+					about,
+					location: {
+						address,
+					},
+					contact: {
+						phoneNumber,
+					},
+					available: {
+						hours: {
+							open: openTime,
+							close: closeTime,
+						},
+						days: selectedDays,
+					},
 				},
-				days: selectedDays,
-			},
-		})
-		displayNotification('Barbershop updated successfully!')
+				displayNotification
+			)
+		}
 	}
 
 	const deleteHandler = () => {
@@ -339,8 +355,10 @@ export default function AdminBarbershop() {
 											autoComplete='open-time'
 											value={openTime}
 											onChange={(e) => setOpenTime(e.target.value)}
+											required
 											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
 										>
+											<option value=''>Select open time</option>
 											{hours.map((hour) => (
 												<option key={hour} value={hour}>
 													{hour}
@@ -363,8 +381,10 @@ export default function AdminBarbershop() {
 											autoComplete='close-time'
 											value={closeTime}
 											onChange={(e) => setCloseTime(e.target.value)}
+											required
 											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
 										>
+											<option value=''>Select close time</option>
 											{hours.map((hour) => (
 												<option key={hour} value={hour}>
 													{hour}
