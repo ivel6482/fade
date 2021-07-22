@@ -9,6 +9,7 @@ import {
 	MenuIcon,
 	XIcon,
 	LogoutIcon,
+	TicketIcon,
 } from '@heroicons/react/outline'
 import { UserCircleIcon, ScissorsIcon } from '@heroicons/react/solid'
 
@@ -135,13 +136,16 @@ export default function DashboardLayout({
 									</button>
 								</div>
 							</Transition.Child>
-							<div className='flex-1 h-0 pt-5 pb-4 overflow-y-auto'>
-								<div className='flex items-center flex-shrink-0 px-4'>
-									<img
-										className='w-auto h-8'
-										src='https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-900-text.svg'
-										alt='Workflow'
-									/>
+							<div className='flex-1 h-0 pb-4 overflow-y-auto '>
+								<div className='flex items-center flex-shrink-0 px-4 py-5 text-gray-200 transition bg-blue-900 hover:text-white'>
+									<Link to='/'>
+										<div className='flex gap-3'>
+											<TicketIcon width='30' className='transform rotate-45' />
+											<span className='text-3xl font-light tracking-wider'>
+												Fade
+											</span>
+										</div>
+									</Link>
 								</div>
 								<nav aria-label='Sidebar' className='mt-5'>
 									<div className='px-2 space-y-1'>
@@ -220,14 +224,17 @@ export default function DashboardLayout({
 				<div className='flex flex-col w-64'>
 					{/* Sidebar component, swap this element with another sidebar if you like */}
 					<div className='flex flex-col flex-1 h-0 bg-gray-100 border-r border-gray-200'>
+						<div className='flex items-center flex-shrink-0 px-4 py-5 text-gray-200 transition bg-blue-900 hover:text-white'>
+							<Link to='/'>
+								<div className='flex gap-3'>
+									<TicketIcon width='30' className='transform rotate-45' />
+									<span className='text-3xl font-light tracking-wider'>
+										Fade
+									</span>
+								</div>
+							</Link>
+						</div>{' '}
 						<div className='flex flex-col flex-1 pt-5 pb-4 overflow-y-auto'>
-							<div className='flex items-center flex-shrink-0 px-4'>
-								<img
-									className='w-auto h-8'
-									src='https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-900-text.svg'
-									alt='Workflow'
-								/>
-							</div>
 							<nav className='flex-1 mt-5' aria-label='Sidebar'>
 								<div className='px-2 space-y-1'>
 									{navigation.map((item) => (
@@ -298,13 +305,15 @@ export default function DashboardLayout({
 			<div className='flex flex-col flex-1 min-w-0 overflow-hidden'>
 				<div className='lg:hidden'>
 					<div className='flex items-center justify-between bg-gray-50 border-b border-gray-200 px-4 py-1.5'>
-						<div>
-							<img
-								className='w-auto h-8'
-								src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
-								alt='Workflow'
-							/>
-						</div>
+						<Link to='/'>
+							<div>
+								<TicketIcon
+									width='30'
+									className='text-blue-900 transform rotate-45'
+								/>
+							</div>
+						</Link>
+
 						<div>
 							<button
 								type='button'
