@@ -157,7 +157,7 @@ export default function NewBarbershop() {
 													Owner
 												</Listbox.Label>
 												<div className='relative mt-1'>
-													<Listbox.Button className='relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
+													<Listbox.Button className='relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none focus:ring-1 focus:ring-blue-700 focus:border-blue-700 sm:text-sm'>
 														<span className='block truncate'>
 															{barbershopOwner === '' && 'Select an owner'}
 															{barbershopOwner !== '' &&
@@ -190,7 +190,7 @@ export default function NewBarbershop() {
 																	className={({ active }) =>
 																		classNames(
 																			active
-																				? 'text-white bg-indigo-600'
+																				? 'text-white bg-blue-700'
 																				: 'text-gray-900',
 																			'cursor-default select-none relative py-2 pl-3 pr-9'
 																		)
@@ -215,7 +215,7 @@ export default function NewBarbershop() {
 																					className={classNames(
 																						active
 																							? 'text-white'
-																							: 'text-indigo-600',
+																							: 'text-blue-700',
 																						'absolute inset-y-0 right-0 flex items-center pr-4'
 																					)}
 																				>
@@ -252,7 +252,7 @@ export default function NewBarbershop() {
 												value={name}
 												onChange={(e) => setName(e.target.value)}
 												autoComplete='name'
-												className='flex-1 block w-full min-w-0 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+												className='flex-1 block w-full min-w-0 border-gray-300 rounded-md focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 											/>
 										</div>
 									</div>
@@ -270,7 +270,7 @@ export default function NewBarbershop() {
 											id='about'
 											name='about'
 											rows={3}
-											className='block w-full max-w-lg border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full max-w-lg border border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 											value={about}
 											onChange={(e) => setAbout(e.target.value)}
 										/>
@@ -307,7 +307,7 @@ export default function NewBarbershop() {
 											value={address}
 											onChange={(e) => setAddress(e.target.value)}
 											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -336,7 +336,7 @@ export default function NewBarbershop() {
 											value={phoneNumber}
 											onChange={(e) => setPhoneNumber(e.target.value)}
 											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -375,7 +375,7 @@ export default function NewBarbershop() {
 																	name={day}
 																	type='checkbox'
 																	value={day}
-																	className='w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'
+																	className='w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700'
 																	checked={available[index]}
 																	onChange={() => toggleCheckbox(index)}
 																/>
@@ -409,7 +409,7 @@ export default function NewBarbershop() {
 											autoComplete='open-time'
 											value={openTime}
 											onChange={(e) => setOpenTime(e.target.value)}
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										>
 											{hours.map((hour) => (
 												<option key={hour} value={hour}>
@@ -433,7 +433,7 @@ export default function NewBarbershop() {
 											autoComplete='close-time'
 											value={closeTime}
 											onChange={(e) => setCloseTime(e.target.value)}
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										>
 											{hours.map((hour) => (
 												<option value={hour}>{hour}</option>
@@ -449,13 +449,13 @@ export default function NewBarbershop() {
 						<div className='flex justify-end'>
 							<Link
 								to='/dashboard'
-								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700'
 							>
 								Cancel
 							</Link>
 							<button
 								type='submit'
-								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
 							>
 								Save
 							</button>
