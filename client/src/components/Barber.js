@@ -37,12 +37,15 @@ export default function Barber({ barber }) {
 				<div>
 					<div className='flex -mt-px divide-x divide-gray-200'>
 						{/* //TODO: When this is clicked show a modal with the appointments. */}
-						<div className='flex flex-1 w-0 transition hover:bg-blue-900 hover:text-gray-200'>
+						<div className='flex flex-1 w-0 transition group hover:bg-blue-900 hover:text-gray-200'>
 							<button
 								onClick={() => fetchBarberAppointments(barber._id)}
 								className='relative inline-flex items-center justify-center flex-1 w-0 py-4 -mr-px text-sm font-medium border border-transparent rounded-bl-lg '
 							>
-								<CalendarIcon className='w-5 h-5' aria-hidden='true' />
+								<CalendarIcon
+									className='w-5 h-5 group-hover:text-indigo-400'
+									aria-hidden='true'
+								/>
 								<span className='ml-3'>Book Appointment</span>
 							</button>
 						</div>
