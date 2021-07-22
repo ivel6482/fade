@@ -27,7 +27,7 @@ export default function Appointment({ appointment }) {
 
 	const disabledButton = (
 		<button
-			className='px-2 py-1 text-gray-200 transition bg-blue-900 bg-opacity-75 rounded-md'
+			className='px-2 py-1 text-gray-200 transition bg-blue-900 bg-opacity-75 rounded-md hover:bg-white hover:text-blue-900'
 			// disabled
 			onClick={() => handleAppointment(appointment._id)}
 		>
@@ -37,7 +37,7 @@ export default function Appointment({ appointment }) {
 
 	const availableButton = (
 		<button
-			className='px-2 py-1 text-gray-200 transition bg-blue-900 rounded-md hover:shadow-md hover:bg-blue-100 hover:text-blue-900 00 focus:ring focus:ring-indigo-300 focus:outline-none'
+			className='px-2 py-1 text-gray-200 transition bg-blue-900 rounded-md hover:shadow-md hover:bg-white hover:text-blue-900 focus:outline-none'
 			onClick={() => handleAppointment(appointment._id)}
 		>
 			Book Now
