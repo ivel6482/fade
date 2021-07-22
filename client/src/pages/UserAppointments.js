@@ -22,7 +22,7 @@ export default function UserAppointments() {
 
 	return (
 		<DashboardLayout currentTab='appointments'>
-			<h2 className='text-6xl font-bold text-gray-200 lg:text-8xl 2xl:text-9xl'>
+			<h2 className='text-6xl font-bold text-gray-200 lg:text-7xl 2xl:text-9xl'>
 				Your Appointments
 			</h2>
 			{loading ? (

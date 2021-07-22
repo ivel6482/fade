@@ -28,9 +28,6 @@ export default function Profile() {
 							<h3 className='text-lg font-semibold leading-6 text-gray-900'>
 								Personal Information
 							</h3>
-							<p className='mt-1 text-sm text-gray-500'>
-								Use a permanent address where you can receive mail.
-							</p>
 						</div>
 						<div className='grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6'>
 							<div className='sm:col-span-3'>
