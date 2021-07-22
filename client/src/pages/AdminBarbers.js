@@ -22,7 +22,7 @@ export default function AdminBarbers() {
 
 	return (
 		<DashboardLayout currentTab='barbers'>
-			<h3 className='font-bold text-gray-300 text-8xl'>Barbers</h3>
+			<h3 className='text-6xl font-bold text-gray-200 lg:text-7xl'>Barbers</h3>
 			{loading ? (
 				<p>Loading barbers...</p>
 			) : (

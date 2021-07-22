@@ -23,7 +23,7 @@ export default function AdminUsers() {
 
 	return (
 		<DashboardLayout currentTab='users'>
-			<h3 className='font-bold text-gray-300 text-8xl'>Users</h3>
+			<h3 className='text-6xl font-bold text-gray-200 lg:text-7xl'>Users</h3>
 			{loading ? (
 				<p>Loading users...</p>
 			) : (

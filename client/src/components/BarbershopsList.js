@@ -26,7 +26,7 @@ export default function BarbershopList() {
 	return (
 		<section className='h-4/5'>
 			<div className='flex flex-col justify-between sm:flex-row'>
-				<h3 className='text-6xl font-bold text-gray-200 lg:text-7xl '>
+				<h3 className='text-6xl font-bold text-gray-200 lg:text-7xl'>
 					Barbershops
 				</h3>
 				{/* {user?.role === 'admin' && <Stats stats={stats} />} */}
