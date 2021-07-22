@@ -48,7 +48,7 @@ export default function Profile() {
 										autoComplete='given-name'
 										value={firstName}
 										onChange={(e) => setFirstName(e.target.value)}
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 									/>
 								</div>
 							</div>
@@ -68,7 +68,7 @@ export default function Profile() {
 										autoComplete='family-name'
 										value={lastName}
 										onChange={(e) => setLastName(e.target.value)}
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 									/>
 								</div>
 							</div>
@@ -93,13 +93,13 @@ export default function Profile() {
 				<div className='flex justify-end'>
 					<Link
 						to='/dashboard'
-						className='px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+						className='px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
 					>
 						Cancel
 					</Link>
 					<button
 						type='submit'
-						className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+						className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-semibold text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
 					>
 						Save
 					</button>
