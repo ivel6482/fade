@@ -174,7 +174,7 @@ export default function AdminBarbershop() {
 									<button
 										onClick={deleteHandler}
 										type='button'
-										className='inline-flex items-center px-3 py-2 text-sm font-semibold leading-4 text-white bg-gray-400 border border-transparent rounded-md shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
+										className='inline-flex items-center px-3 py-2 text-sm font-semibold leading-4 text-gray-400 bg-white border border-gray-400 rounded-md shadow-sm rounde hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
 									>
 										Delete
 									</button>
@@ -198,7 +198,7 @@ export default function AdminBarbershop() {
 												value={name}
 												onChange={(e) => setName(e.target.value)}
 												autoComplete='name'
-												className='flex-1 block w-full min-w-0 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+												className='flex-1 block w-full min-w-0 border-gray-300 rounded-md focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 											/>
 										</div>
 									</div>
@@ -216,7 +216,7 @@ export default function AdminBarbershop() {
 											id='about'
 											name='about'
 											rows={3}
-											className='block w-full max-w-lg border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full max-w-lg border border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 											value={about}
 											onChange={(e) => setAbout(e.target.value)}
 										/>
@@ -253,7 +253,7 @@ export default function AdminBarbershop() {
 											value={address}
 											onChange={(e) => setAddress(e.target.value)}
 											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -282,7 +282,7 @@ export default function AdminBarbershop() {
 											value={phoneNumber}
 											onChange={(e) => setPhoneNumber(e.target.value)}
 											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -321,7 +321,7 @@ export default function AdminBarbershop() {
 																	name={day}
 																	type='checkbox'
 																	value={day}
-																	className='w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'
+																	className='w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700'
 																	checked={available[index]}
 																	onChange={() => toggleCheckbox(index)}
 																/>
@@ -356,7 +356,7 @@ export default function AdminBarbershop() {
 											value={openTime}
 											onChange={(e) => setOpenTime(e.target.value)}
 											required
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										>
 											<option value=''>Select open time</option>
 											{hours.map((hour) => (
@@ -382,7 +382,7 @@ export default function AdminBarbershop() {
 											value={closeTime}
 											onChange={(e) => setCloseTime(e.target.value)}
 											required
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										>
 											<option value=''>Select close time</option>
 											{hours.map((hour) => (
@@ -401,13 +401,13 @@ export default function AdminBarbershop() {
 						<div className='flex justify-end'>
 							<Link
 								to='/dashboard'
-								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700'
 							>
 								Cancel
 							</Link>
 							<button
 								type='submit'
-								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
 							>
 								Save
 							</button>
