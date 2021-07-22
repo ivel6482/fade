@@ -82,7 +82,7 @@ export default function AdminBookAppointment() {
 										autoComplete='barber'
 										value={barberId}
 										onChange={(e) => setBarberId(e.target.value)}
-										className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+										className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 									>
 										<option>Select a barber</option>
 										{barbers.map((barber) => (
@@ -115,7 +115,7 @@ export default function AdminBookAppointment() {
 											autoComplete='appointment'
 											value={appointmentId}
 											onChange={(e) => setAppointmentId(e.target.value)}
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 										>
 											<option>Select an appointment</option>
 											{barberAppointments.map((appointment) => (
@@ -146,7 +146,7 @@ export default function AdminBookAppointment() {
 										autoComplete='user'
 										value={userId}
 										onChange={(e) => setUserId(e.target.value)}
-										className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm'
+										className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 									>
 										<option>Select a user</option>
 										{users.map((user) => (
@@ -164,13 +164,13 @@ export default function AdminBookAppointment() {
 						<div className='flex justify-end'>
 							<Link
 								to='/appointments'
-								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700'
 							>
 								Cancel
 							</Link>
 							<button
 								type='submit'
-								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
 							>
 								Save
 							</button>
