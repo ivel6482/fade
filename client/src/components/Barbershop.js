@@ -19,14 +19,16 @@ export default function Barbershop({ barbershop }) {
 				<section>
 					<p className='font-semibold text-gray-900'>{barbershop?.name}</p>
 				</section>
-				<BarbershopItem
-					icon={<LocationMarkerIcon width='20' className='text-gray-400' />}
-					text={barbershop.location.address}
-				/>
-				<BarbershopItem
-					icon={<PhoneIcon width='20' className='text-gray-400' />}
-					text={barbershop.contact.phoneNumber}
-				/>
+				<section className='flex-1 flex-grow h-full'>
+					<BarbershopItem
+						icon={<LocationMarkerIcon width='20' className='text-gray-400' />}
+						text={barbershop.location.address}
+					/>
+					<BarbershopItem
+						icon={<PhoneIcon width='20' className='text-gray-400' />}
+						text={barbershop.contact.phoneNumber}
+					/>
+				</section>
 				<section className='flex justify-end'>
 					<Link
 						to={`/barbershops/${barbershop._id}`}

@@ -42,7 +42,7 @@ export default function BarbershopList() {
 					</Link>
 				</div>
 			)}
-			<section className='grid grid-cols-1 mt-8 sm:grid-cols-2 lg:grid-cols-3'>
+			<section className='grid grid-cols-1 mt-8 sm:grid-cols-2 2xl:grid-cols-3'>
 				{barbershops.length > 0 ? (
 					barbershops.map((barbershop) => (
 						<Barbershop key={barbershop._id} barbershop={barbershop} />
