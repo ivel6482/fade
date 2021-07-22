@@ -50,7 +50,7 @@ export default function Modal({ open, setOpen }) {
 							<div className='mt-5 sm:mt-6'>
 								<button
 									type='button'
-									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-600 border border-transparent rounded-md bg-opacity-80 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm'
+									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-600 border border-transparent rounded-md bg-opacity-80 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:text-sm'
 									onClick={() => setOpen(false)}
 								>
 									Go back to barbershop
