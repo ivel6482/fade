@@ -28,7 +28,7 @@ export default function Notification({ notification }) {
 						leaveFrom='opacity-100'
 						leaveTo='opacity-0'
 					>
-						<div className='w-full max-w-sm overflow-hidden rounded-lg shadow-lg pointer-events-auto bg-gradient-to-r from-green-400 to-blue-500 ring-1 ring-black ring-opacity-20'>
+						<div className='w-full max-w-sm overflow-hidden bg-blue-900 rounded-lg shadow-lg pointer-events-auto ring-black ring-opacity-20'>
 							<div className='p-4'>
 								<div className='flex items-center'>
 									<div className='flex-shrink-0'>
@@ -41,13 +41,10 @@ export default function Notification({ notification }) {
 										<p className='text-lg font-semibold text-white'>
 											{notification.message}
 										</p>
-										{/* <p className='mt-1 text-sm text-white'>
-											Anyone with a link can now view this file.
-										</p> */}
 									</div>
 									<div className='flex flex-shrink-0 ml-4'>
 										<button
-											className='inline-flex text-white rounded-md hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+											className='inline-flex text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white'
 											onClick={() => {
 												hideNotification()
 											}}
