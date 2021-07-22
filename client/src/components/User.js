@@ -3,7 +3,7 @@ import SquareBadge from './SquareBadge'
 
 export default function User({ user }) {
 	return (
-		<li className='flex flex-col col-span-1 text-center bg-white divide-y divide-gray-200 rounded-lg shadow'>
+		<li className='flex flex-col col-span-1 overflow-hidden text-center bg-white divide-y divide-gray-200 rounded-lg shadow'>
 			<div className='flex flex-col flex-1 p-8'>
 				<img
 					className='flex-shrink-0 w-32 h-32 mx-auto bg-black rounded-full'
@@ -44,10 +44,10 @@ export default function User({ user }) {
 			<div>
 				<div className='flex -mt-px divide-x divide-gray-200'>
 					{/* //TODO: When this is clicked show a modal with the appointments. */}
-					<div className='flex flex-1 w-0 transition hover:bg-gray-50'>
+					<div className='flex flex-1 w-0 text-gray-200 transition group hover:bg-blue-900'>
 						<Link
 							to={`/users/${user._id}`}
-							className='relative inline-flex items-center justify-center flex-1 w-0 py-4 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-lg hover:text-gray-500'
+							className='relative inline-flex items-center justify-center flex-1 w-0 py-4 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-lg group-hover:text-gray-200'
 						>
 							{/* <CalendarIcon
                 className='w-5 h-5 text-gray-400'
