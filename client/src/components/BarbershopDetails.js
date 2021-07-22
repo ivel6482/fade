@@ -126,30 +126,21 @@ export default function BarbershopDetails() {
 								: 'Barbershop has not provided working hours'}
 						</p>
 					</div>
-					{/* {!barbershop.available &&
-						!barbershop.available.open &&
-						!barbershop.available.close && (
-							<p>Barbershop has not provided working hours</p>
-						)}
-					{barbershop.available &&
-						barbershop.available.open &&
-						barbershop.available.close && (
-						)} */}
 				</section>
 			</BarbershopDetailSection>
 
 			<BarbershopDetailSection title='Barbers' barbershop={barbershop}>
-				<ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-					{barbers.length === 0 ? (
-						<p className='text-gray-500'>
-							This barbershop currently has no barbers.
-						</p>
-					) : (
-						barbers.map((barber) => {
-							return <Barber barber={barber} key={barber._id} />
-						})
-					)}
-				</ul>
+				{barbers.length === 0 ? (
+					<p className='text-gray-500 lg:text-lg'>
+						This barbershop currently has no barbers.
+					</p>
+				) : (
+					<ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+						{barbers.map((barber) => (
+							<Barber barber={barber} key={barber._id} />
+						))}
+					</ul>
+				)}
 			</BarbershopDetailSection>
 		</section>
 	)

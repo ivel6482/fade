@@ -6,7 +6,7 @@ export default function BarbershopDetailSection({ children, title }) {
 					{title}
 				</h3>
 			</div>
-			{children}
+			<div className='text-gray-500'>{children}</div>
 		</section>
 	)
 }
