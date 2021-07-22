@@ -26,28 +26,28 @@ export default function AdminAppointments() {
 
 	return (
 		<DashboardLayout currentTab='appointments'>
-			<h3 className='font-bold text-gray-300 text-8xl'>Appointments</h3>
 			{loading ? (
 				<p>Loading appointments...</p>
 			) : (
 				<>
-					<Stats stats={stats} />
-					<div className='flex justify-end gap-2'>
+					{/* <Stats stats={stats} /> */}
+					<div className='flex justify-between gap-2 mb-4 sm:justify-end'>
 						<Link
 							to='/appointments/new'
 							type='button'
-							className='flex items-center gap-2 px-3 py-2 text-white transition bg-gray-900 rounded-md hover:bg-gray-700'
+							className='flex items-center gap-2 px-3 py-2 text-blue-900 transition bg-white border border-blue-900 rounded-md hover:bg-gray-100'
 						>
 							<PlusIcon width='20' height='20' /> Create Appointment
 						</Link>
 						<Link
 							to='/appointments/book'
 							type='button'
-							className='flex items-center gap-2 px-3 py-2 text-white transition bg-gray-900 rounded-md hover:bg-gray-700'
+							className='flex items-center gap-2 px-3 py-2 text-gray-200 transition bg-blue-900 rounded-md hover:bg-blue-800'
 						>
 							<PlusIcon width='20' height='20' /> Book Appointment
 						</Link>
 					</div>
+
 					<UserAppointmentsList
 						title='Appointments'
 						appointments={appointments}
