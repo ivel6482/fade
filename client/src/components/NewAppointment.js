@@ -76,7 +76,7 @@ export default function NewAppointment({ open, setOpen }) {
 							<div className='absolute top-0 right-0 hidden pt-4 pr-4 sm:block'>
 								<button
 									type='button'
-									className='text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+									className='text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
 									onClick={() => setOpen(false)}
 								>
 									<span className='sr-only'>Close</span>
@@ -158,14 +158,14 @@ export default function NewAppointment({ open, setOpen }) {
 								<button
 									type='button'
 									disabled={!valid}
-									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm'
+									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900 sm:ml-3 sm:w-auto sm:text-sm'
 									onClick={() => newAppointmentHandler()}
 								>
 									Post
 								</button>
 								<button
 									type='button'
-									className='inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm'
+									className='inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:w-auto sm:text-sm'
 									onClick={() => setOpen(false)}
 								>
 									Cancel

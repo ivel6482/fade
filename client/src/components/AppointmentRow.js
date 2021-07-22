@@ -119,7 +119,7 @@ export default function AppointmentRow({ appointment }) {
 									<button
 										type='button'
 										onClick={() => completeHandler(appointment._id)}
-										className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
+										className='px-4 py-2 font-semibold text-blue-700 transition rounded-md hover:text-gray-200 hover:bg-blue-900'
 									>
 										Complete
 									</button>
@@ -130,7 +130,7 @@ export default function AppointmentRow({ appointment }) {
 						<button
 							onClick={() => deleteHandler(appointment._id)}
 							type='button'
-							className='px-4 py-2 font-semibold text-indigo-600 transition rounded-md hover:text-indigo-900 hover:bg-indigo-300'
+							className='px-4 py-2 font-semibold text-blue-700 transition rounded-md hover:text-gray-200 hover:bg-blue-900'
 						>
 							Delete
 						</button>

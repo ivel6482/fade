@@ -1,5 +1,4 @@
 import DashboardLayout from '../components/DashboardLayout'
-import Stats from '../components/Stats'
 import UserAppointmentsList from '../components/UserAppointmentsList'
 import PageHeaderWithButton from '../components/PageHeaderWithButton'
 import { useState, useEffect, useContext } from 'react'
@@ -40,7 +39,6 @@ export default function BarberAppointments() {
 				icon={<PlusIcon className='w-6 h-6 mr-2' />}
 				onClick={newAppointmentHandler}
 			/>
-			<Stats />
 			{/* //TODO: Rename UserAppointmentsList to something more generic for reusability. */}
 			{/* //TODO: Implement a filter to filter appointments by today, this week, this month, last 6 months, last year */}
 			<section className='pb-5 mt-6 space-y-6'>
