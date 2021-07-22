@@ -83,7 +83,7 @@ export default function AdminUserProfile() {
 									</p>
 									<button
 										type='button'
-										className='px-3 py-1 text-white bg-gray-900 rounded-md'
+										className='inline-flex items-center px-3 py-2 text-sm font-semibold leading-4 text-gray-400 bg-white border border-gray-400 rounded-md shadow-sm rounde hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
 										onClick={() => deleteHandler(user._id)}
 									>
 										Delete
@@ -106,7 +106,7 @@ export default function AdminUserProfile() {
 											value={firstName}
 											onChange={(e) => setFirstName(e.target.value)}
 											autoComplete='given-name'
-											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -125,7 +125,7 @@ export default function AdminUserProfile() {
 											value={lastName}
 											onChange={(e) => setLastName(e.target.value)}
 											autoComplete='family-name'
-											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -145,7 +145,7 @@ export default function AdminUserProfile() {
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
 											autoComplete='email'
-											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -164,7 +164,7 @@ export default function AdminUserProfile() {
 											autoComplete='role'
 											value={role}
 											onChange={(e) => setRole(e.target.value)}
-											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 										>
 											<option value='costumer'>Costumer</option>
 											<option value='barber'>Barber</option>
@@ -187,7 +187,7 @@ export default function AdminUserProfile() {
 												autoComplete='barbershop'
 												value={barbershop}
 												onChange={(e) => setBarbershop(e.target.value)}
-												className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+												className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 											>
 												<option>Select barbershop</option>
 												{barbershops.map((barbershop) => (
@@ -207,13 +207,13 @@ export default function AdminUserProfile() {
 						<div className='flex justify-end'>
 							<Link
 								to='/users'
-								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700'
 							>
 								Cancel
 							</Link>
 							<button
 								type='submit'
-								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm bg--600 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
 							>
 								Save
 							</button>
