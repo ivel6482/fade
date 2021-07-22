@@ -19,7 +19,6 @@ export default function BarberProfile() {
 	}
 	return (
 		<DashboardLayout>
-			<h3 className='font-bold text-gray-300 text-8xl'>Barber</h3>
 			<form
 				onSubmit={onSubmitHandler}
 				className='pb-8 space-y-8 divide-y divide-gray-200'
@@ -51,7 +50,7 @@ export default function BarberProfile() {
 											autoComplete='given-name'
 											value={firstName}
 											onChange={(e) => setFirstName(e.target.value)}
-											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 										/>
 									</div>
 								</div>
@@ -71,7 +70,7 @@ export default function BarberProfile() {
 											autoComplete='family-name'
 											value={lastName}
 											onChange={(e) => setLastName(e.target.value)}
-											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+											className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
 										/>
 									</div>
 								</div>
