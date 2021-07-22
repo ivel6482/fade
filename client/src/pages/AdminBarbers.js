@@ -27,8 +27,8 @@ export default function AdminBarbers() {
 				<p>Loading barbers...</p>
 			) : (
 				<>
-					<Stats stats={stats} />
-					<ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+					{/* <Stats stats={stats} /> */}
+					<ul className='grid grid-cols-1 gap-6 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-4'>
 						{barbers.map((barber) => (
 							//TODO: This component has to be more reusable or make a new one exclusively for admins.
 							<Barber barber={barber} key={barber._id} />
