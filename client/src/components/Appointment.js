@@ -37,7 +37,7 @@ export default function Appointment({ appointment }) {
 
 	const availableButton = (
 		<button
-			className='px-2 py-1 text-white transition bg-indigo-600 rounded-md hover:shadow-md hover:bg-indigo-700 focus:ring focus:ring-indigo-300 focus:outline-none'
+			className='px-2 py-1 text-gray-200 transition bg-blue-900 rounded-md hover:shadow-md hover:bg-blue-100 hover:text-blue-900 00 focus:ring focus:ring-indigo-300 focus:outline-none'
 			onClick={() => handleAppointment(appointment._id)}
 		>
 			Book Now
@@ -45,7 +45,7 @@ export default function Appointment({ appointment }) {
 	)
 
 	return (
-		<li className='flex items-center justify-between p-3 text-gray-200 bg-blue-900 rounded-md hover:ring'>
+		<li className='flex items-center justify-between p-3 text-gray-200 bg-blue-900 rounded-md'>
 			<section className='flex space-x-2'>
 				<CalendarIcon width='20' className='text-indigo-400' />
 				<p>{appointment.time}</p>
