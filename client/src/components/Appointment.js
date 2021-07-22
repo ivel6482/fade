@@ -27,7 +27,7 @@ export default function Appointment({ appointment }) {
 
 	const disabledButton = (
 		<button
-			className='px-2 py-1 text-indigo-400 transition bg-indigo-200 rounded-md'
+			className='px-2 py-1 text-gray-200 transition bg-blue-900 bg-opacity-75 rounded-md'
 			// disabled
 			onClick={() => handleAppointment(appointment._id)}
 		>
@@ -37,7 +37,7 @@ export default function Appointment({ appointment }) {
 
 	const availableButton = (
 		<button
-			className='px-2 py-1 text-white transition bg-indigo-500 rounded-md hover:shadow-md hover:bg-indigo-600'
+			className='px-2 py-1 text-white transition bg-indigo-600 rounded-md hover:shadow-md hover:bg-indigo-700 focus:ring focus:ring-indigo-300 focus:outline-none'
 			onClick={() => handleAppointment(appointment._id)}
 		>
 			Book Now
@@ -45,7 +45,7 @@ export default function Appointment({ appointment }) {
 	)
 
 	return (
-		<li className='flex items-center justify-between p-3 text-indigo-600 bg-indigo-100 border border-indigo-100 rounded-md hover:border-indigo-400'>
+		<li className='flex items-center justify-between p-3 text-gray-200 bg-blue-900 rounded-md hover:ring'>
 			<section className='flex space-x-2'>
 				<CalendarIcon width='20' className='text-indigo-400' />
 				<p>{appointment.time}</p>

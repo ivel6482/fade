@@ -12,7 +12,7 @@ export default function AppointmentList() {
 				These are my current appointments
 			</h2>
 			{appointments.length === 0 ? (
-				<section className='flex p-3 space-x-4 font-semibold text-indigo-600 bg-indigo-100 rounded-md'>
+				<section className='flex p-3 space-x-4 font-semibold text-gray-200 bg-blue-900 rounded-md'>
 					<EmojiSadIcon width='140' className='text-indigo-400' />
 					<p>
 						Sorry, I do not have any more appointments today. Come back
