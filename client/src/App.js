@@ -25,12 +25,9 @@ import NewBarbershop from './pages/NewBarbershop'
 import axios from 'axios'
 
 export default function App() {
-	const { user, token } = useContext(UserContext)
+	const { user } = useContext(UserContext)
 
 	axios.defaults.baseURL = 'http://localhost:5000/api/v1'
-	axios.defaults.headers.post['Content-type'] = 'application/json'
-	axios.defaults.headers.put['Content-type'] = 'application/json'
-	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 	const { notifications } = useContext(NotificationContext)
 
