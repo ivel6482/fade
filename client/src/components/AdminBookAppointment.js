@@ -30,6 +30,7 @@ export default function AdminBookAppointment() {
 	}, [])
 
 	const getAppointments = (id) => {
+		setBarberId(id)
 		getBarberAvailableAppointments(id)
 	}
 
@@ -81,16 +82,12 @@ export default function AdminBookAppointment() {
 										name='barber'
 										autoComplete='barber'
 										value={barberId}
-										onChange={(e) => setBarberId(e.target.value)}
+										onChange={(e) => getAppointments(e.target.value)}
 										className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
 									>
 										<option>Select a barber</option>
 										{barbers.map((barber) => (
-											<option
-												onClick={() => getAppointments(barber._id)}
-												key={barber._id}
-												value={barber._id}
-											>
+											<option key={barber._id} value={barber._id}>
 												{barber.firstName} {barber.lastName}
 											</option>
 										))}
