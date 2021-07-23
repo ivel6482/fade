@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 require('dotenv').config()
 const connectDB = require('./config/db')
+const path = require('path')
 
 const barbershopRoutes = require('./routes/barbershops')
 const authRoutes = require('./routes/auth')
@@ -26,6 +27,13 @@ app.use('/api/v1/users', usersRoutes)
 app.use('/api/v1/barbershops', barbershopRoutes)
 app.use('/api/v1/barbers', barberRoutes)
 app.use('/api/v1/appointments', appointmentRoutes)
+
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('client/build'))
+	app.get('*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+	})
+}
 
 const PORT = process.env.PORT || 5000
 
