@@ -11,8 +11,9 @@ const usersRoutes = require('./routes/users')
 const barberRoutes = require('./routes/barbers')
 const appointmentRoutes = require('./routes/appointments')
 
+// FIXME: cors errors in production
 const app = express()
-app.use(cors())
+app.use(cors({ origin: ['https://fadeapp.herokuapp.com/'] }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
