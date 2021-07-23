@@ -27,7 +27,11 @@ import axios from 'axios'
 export default function App() {
 	const { user } = useContext(UserContext)
 
-	axios.defaults.baseURL = 'https://fadeapp.herokuapp.com/api/v1'
+	if (process.env.NODE_ENV === 'production') {
+		axios.defaults.baseURL = 'https://fadeapp.herokuapp.com/api/v1' // use this in prod along side with "proxy": "https://fadeapp.herokuapp.com/" in package.json
+	} else {
+		axios.defaults.baseURL = 'http://localhost:5000/api/v1' // use this in dev along side with "proxy": "http://localhost:5000" in package.json
+	}
 
 	const { notifications } = useContext(NotificationContext)
 
