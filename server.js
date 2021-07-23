@@ -26,10 +26,12 @@ app.use('/api/v1/barbershops', barbershopRoutes)
 app.use('/api/v1/barbers', barberRoutes)
 app.use('/api/v1/appointments', appointmentRoutes)
 
-app.use(express.static(path.join(__dirname, 'client', 'build')))
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
-})
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'client/build')))
+	app.get('/*', (_, res) => {
+		res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
+	})
+}
 
 const PORT = process.env.PORT || 5000
 
