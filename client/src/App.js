@@ -22,9 +22,16 @@ import AdminBookAppointment from './components/AdminBookAppointment'
 import AdminNewUser from './components/AdminNewUser'
 import { NotificationContext } from './store/contexts/notificationsContext'
 import NewBarbershop from './pages/NewBarbershop'
+import axios from 'axios'
 
 export default function App() {
-	const { user } = useContext(UserContext)
+	const { user, token } = useContext(UserContext)
+
+	axios.defaults.baseURL = 'http://localhost:5000/api/v1'
+	axios.defaults.headers.post['Content-type'] = 'application/json'
+	axios.defaults.headers.put['Content-type'] = 'application/json'
+	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
 	const { notifications } = useContext(NotificationContext)
 
 	const barbershopPage = {
