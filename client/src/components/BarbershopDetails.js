@@ -28,7 +28,6 @@ export default function BarbershopDetails() {
 		// eslint-disable-next-line
 	}, [])
 
-	console.log(barbershop)
 	//TODO: Fetch barbers that have the barbershopId of the selected barbershop
 	//TODO: Render weekdays, open and close times
 	return (

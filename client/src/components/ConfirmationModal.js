@@ -9,7 +9,6 @@ export default function ConfirmationModal({ open, setOpen, appointmentId }) {
 	const { token } = useContext(UserContext)
 
 	const cancelHandler = (id) => {
-		console.log(`I want to cancel the appointment with the id of ${id}`)
 		cancelAppointment(id, token)
 		setOpen(false)
 	}

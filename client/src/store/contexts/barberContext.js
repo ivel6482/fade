@@ -140,7 +140,6 @@ export const BarbersProvider = ({ children }) => {
 					Authorization: `Bearer ${token}`,
 				},
 			})
-			console.log(res.data.appointment)
 			dispatch({
 				type: COMPLETE_APPOINTMENT_SUCCESS,
 				payload: res.data.appointment,

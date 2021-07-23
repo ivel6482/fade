@@ -124,10 +124,8 @@ exports.uploadBanner = async (req, res) => {
 
 			if (barbershop.banner.cloudinaryId) {
 				await cloudinary.uploader.destroy(barbershop.banner.cloudinaryId)
-				console.log('Delete Image')
 			}
 			const result = await cloudinary.uploader.upload(req.file.path)
-			console.log('Upload Image')
 			const newData = {
 				banner: {
 					cloudinaryId: result.public_id,
@@ -204,12 +202,10 @@ exports.deleteBarbershop = async (req, res) => {
 		if (barbershop) {
 			if (barbershop.banner.cloudinaryId) {
 				await cloudinary.uploader.destroy(barbershop.banner.cloudinaryId)
-				console.log('Deleted banner image')
 			}
 
 			if (barbershop.avatar.cloudinaryId) {
 				await cloudinary.uploader.destroy(barbershop.avatar.cloudinaryId)
-				console.log('Deleted avatar image')
 			}
 			await Barbershop.deleteOne({ _id: id }) // replaced remove with deleteOne.
 			res.status(200).json({ message: `${barbershop.name} has been removed.` })

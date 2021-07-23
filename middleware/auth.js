@@ -30,12 +30,9 @@ exports.protect = async (req, res, next) => {
 exports.authorize = (...roles) => {
 	return (req, res, next) => {
 		const allowedRoles = [...roles]
-		console.log(allowedRoles)
 		if (req.user && allowedRoles.includes(req.user.role)) {
-			console.log('Access Granted')
 			next()
 		} else {
-			console.log('Access Denied')
 			res.status(403).json({ message: 'Not authorized' })
 		}
 	}

@@ -253,7 +253,6 @@ export const AdminProvider = ({ children }) => {
 			// dispatch({ type: GET_BARBERS_AVAILABLE_APPOINTMENTS_REQUEST })
 			//TODO: Create a controller that fetches the barbers available appointments.
 			const res = await axios.get(`/barbers/${id}/appointments/available`)
-			console.log(res.data.appointments)
 			dispatch({
 				type: GET_BARBERS_AVAILABLE_APPOINTMENTS_SUCCESS,
 				payload: res.data.appointments,

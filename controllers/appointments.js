@@ -107,11 +107,6 @@ exports.createAppointment = async (req, res) => {
 			completed: false,
 		}).populate('barberId')
 
-		console.log({
-			available: !!duplicateAvailable,
-			booked: !!duplicateBooked,
-		})
-
 		if (duplicateAvailable || duplicateBooked) {
 			return res.status(400).json({
 				message: `An appointment at ${time} for the selected barber already exists.`,
