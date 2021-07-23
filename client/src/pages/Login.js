@@ -25,6 +25,8 @@ export default function Login() {
 		setPassword('')
 	}
 
+	// FIXME: Add display notification for errors, like user already exists in signup
+
 	return (
 		<>
 			{history.location.pathname === '/login' ? (

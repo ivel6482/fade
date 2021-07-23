@@ -30,7 +30,7 @@ export default function Signup() {
 		setLastName('')
 		setPassword('')
 	}
-
+	// FIXME: Add a confirm password field
 	return (
 		<Layout>
 			<div className='w-full max-w-sm mx-auto lg:w-96'>
