@@ -20,12 +20,7 @@ connectDB()
 
 app.use(morgan('dev'))
 
-app.use(
-	cors({
-		origin: '*',
-		credentials: true,
-	})
-)
+app.use(cors())
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', usersRoutes)
 app.use('/api/v1/barbershops', barbershopRoutes)
