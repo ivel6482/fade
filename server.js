@@ -13,7 +13,7 @@ const appointmentRoutes = require('./routes/appointments')
 
 // FIXME: cors errors in production
 const app = express()
-app.use(cors({ origin: ['https://fadeapp.herokuapp.com/'] }))
+app.use(cors({ origin: ['https://fadeapp.herokuapp.com/'], credentials: true }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
