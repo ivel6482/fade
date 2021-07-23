@@ -28,6 +28,7 @@ export default function App() {
 	const { user } = useContext(UserContext)
 
 	axios.defaults.baseURL = 'http://localhost:5000/api/v1'
+	axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 
 	const { notifications } = useContext(NotificationContext)
 
