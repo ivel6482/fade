@@ -13,12 +13,6 @@ const appointmentRoutes = require('./routes/appointments')
 
 // FIXME: cors errors in production
 const app = express()
-app.use(
-	cors({
-		origin: ['https://fadeapp.herokuapp.com', 'http://localhost:5000'],
-		credentials: true,
-	})
-)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
@@ -26,6 +20,12 @@ connectDB()
 
 app.use(morgan('dev'))
 
+app.use(
+	cors({
+		origin: '*',
+		credentials: true,
+	})
+)
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', usersRoutes)
 app.use('/api/v1/barbershops', barbershopRoutes)
