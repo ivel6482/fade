@@ -27,8 +27,7 @@ import axios from 'axios'
 export default function App() {
 	const { user } = useContext(UserContext)
 
-	axios.defaults.baseURL = 'http://localhost:5000/api/v1'
-	axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+	axios.defaults.baseURL = 'https://fadeapp.herokuapp.com/api/v1'
 
 	const { notifications } = useContext(NotificationContext)
 
