@@ -20,14 +20,7 @@ connectDB()
 
 app.use(morgan('dev'))
 
-app.use(function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', 'YOUR-DOMAIN.TLD') // update to match the domain you will make the request from
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	)
-	next()
-})
+app.use(cors({ origin: true }))
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', usersRoutes)
 app.use('/api/v1/barbershops', barbershopRoutes)
