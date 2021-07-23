@@ -18,9 +18,7 @@ app.use(express.json())
 
 connectDB()
 
-if (process.env.NODE_ENV === 'development') {
-	app.use(morgan('dev'))
-}
+app.use(morgan('dev'))
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/users', usersRoutes)
