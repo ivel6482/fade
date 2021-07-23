@@ -62,7 +62,7 @@ export const UserProvider = ({ children }) => {
 		}
 	}
 
-	const login = async (email, password, history) => {
+	const login = async (email, password, history, displayNotification) => {
 		try {
 			dispatch({ type: LOGIN_USER_REQUEST })
 			const res = await axios.post(
@@ -87,11 +87,19 @@ export const UserProvider = ({ children }) => {
 			history.push('/dashboard')
 		} catch (error) {
 			console.error(error)
+			displayNotification(error.response.data.message)
 			dispatch({ type: LOGIN_USER_FAIL, payload: error.message })
 		}
 	}
-	// TODO: Fix signup
-	const signup = async (firstName, lastName, email, password, history) => {
+
+	const signup = async (
+		firstName,
+		lastName,
+		email,
+		password,
+		history,
+		displayNotification
+	) => {
 		try {
 			dispatch({ type: SIGNUP_USER_REQUEST })
 			const newUser = {
@@ -105,6 +113,7 @@ export const UserProvider = ({ children }) => {
 			login(email, password, history)
 		} catch (error) {
 			console.error(error.response.data.message)
+			displayNotification(error.response.data.message)
 			dispatch({
 				type: SIGNUP_USER_FAIL,
 				payload: error.response.data.message,

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../store/contexts/userContext'
-import ErrorList from '../components/ErrorList'
+import { NotificationContext } from '../store/contexts/notificationsContext'
 import Layout from '../components/Layout'
 import { useHistory } from 'react-router-dom'
 import { TicketIcon } from '@heroicons/react/outline'
@@ -13,6 +13,7 @@ export default function Signup() {
 	const [password, setPassword] = useState('')
 
 	const { signup, loading, user, isAuthenticated } = useContext(UserContext)
+	const { displayNotification } = useContext(NotificationContext)
 
 	const history = useHistory()
 
@@ -24,7 +25,7 @@ export default function Signup() {
 
 	const submitHandler = (e) => {
 		e.preventDefault()
-		signup(firstName, lastName, email, password, history)
+		signup(firstName, lastName, email, password, history, displayNotification)
 		setEmail('')
 		setFirstName('')
 		setLastName('')

@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { UserContext } from '../store/contexts/userContext'
+import { NotificationContext } from '../store/contexts/notificationsContext'
 
 export default function Login() {
 	const [email, setEmail] = useState('')
@@ -11,6 +12,7 @@ export default function Login() {
 	const history = useHistory()
 
 	const { login, loading, user, isAuthenticated } = useContext(UserContext)
+	const { displayNotification } = useContext(NotificationContext)
 
 	useEffect(() => {
 		if (user && isAuthenticated) {
@@ -20,7 +22,7 @@ export default function Login() {
 
 	const submitHandler = (e) => {
 		e.preventDefault()
-		login(email, password, history)
+		login(email, password, history, displayNotification)
 		setEmail('')
 		setPassword('')
 	}
