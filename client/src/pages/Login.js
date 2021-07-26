@@ -27,8 +27,6 @@ export default function Login() {
 		setPassword('')
 	}
 
-	// FIXME: Add display notification for errors, like user already exists in signup
-
 	return (
 		<>
 			{history.location.pathname === '/login' ? (
@@ -39,6 +37,15 @@ export default function Login() {
 							<h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
 								Log in to your account
 							</h2>
+							<p className='mt-2 text-sm text-gray-600'>
+								Are you a barber?{' '}
+								<Link
+									to='/signup/barber'
+									className='font-medium text-blue-600 hover:text-blue-500'
+								>
+									sign up for a barber account
+								</Link>
+							</p>
 							<p className='mt-2 text-sm text-gray-600'>
 								Don't have an account?{' '}
 								<Link
@@ -115,6 +122,15 @@ export default function Login() {
 						<h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
 							Log in to your account
 						</h2>
+						<p className='mt-2 text-sm text-gray-600'>
+							Are you a barber?{' '}
+							<Link
+								to='/signup/barber'
+								className='font-medium text-blue-600 hover:text-blue-500'
+							>
+								sign up for a barber account
+							</Link>
+						</p>
 						<p className='mt-2 text-sm text-gray-600'>
 							Don't have an account?{' '}
 							<Link

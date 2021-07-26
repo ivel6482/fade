@@ -6,11 +6,9 @@ import {
 	LOGIN_USER_FAIL,
 	LOGIN_USER_SUCCESS,
 	LOGOUT_USER_REQUEST,
-	// LOGOUT_USER_FAIL,
 	LOGOUT_USER_SUCCESS,
 	SIGNUP_USER_REQUEST,
 	SIGNUP_USER_FAIL,
-	// SIGNUP_USER_SUCCESS,
 	GET_LOGGED_IN_USER_REQUEST,
 	GET_LOGGED_IN_USER_FAIL,
 	GET_LOGGED_IN_USER_SUCCESS,
@@ -107,9 +105,40 @@ export const UserProvider = ({ children }) => {
 				lastName,
 				email,
 				password,
+				role: 'customer',
 			}
-			const res = await axios.post('/auth/signup', newUser)
-			console.log(res.data.user)
+			await axios.post('/auth/signup', newUser)
+			login(email, password, history)
+		} catch (error) {
+			console.error(error.response.data.message)
+			displayNotification(error.response.data.message)
+			dispatch({
+				type: SIGNUP_USER_FAIL,
+				payload: error.response.data.message,
+			})
+		}
+	}
+
+	const barberSignup = async (
+		firstName,
+		lastName,
+		email,
+		password,
+		barbershopId,
+		history,
+		displayNotification
+	) => {
+		try {
+			dispatch({ type: SIGNUP_USER_REQUEST })
+			const newUser = {
+				firstName,
+				lastName,
+				email,
+				password,
+				barbershopId,
+				role: 'barber',
+			}
+			await axios.post('/auth/signup', newUser)
 			login(email, password, history)
 		} catch (error) {
 			console.error(error.response.data.message)
@@ -140,7 +169,6 @@ export const UserProvider = ({ children }) => {
 				type: UPDATE_USER_INFORMATION_SUCCESS,
 				payload: res.data,
 			})
-			//TODO: Show an alert when the user has been updated.
 		} catch (error) {
 			console.error(error)
 			dispatch({
@@ -163,6 +191,7 @@ export const UserProvider = ({ children }) => {
 				logout,
 				getLoggedInUser,
 				updateUserInformation,
+				barberSignup,
 			}}
 		>
 			{children}

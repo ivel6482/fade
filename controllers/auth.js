@@ -5,7 +5,8 @@ const cloudinary = require('../utils/cloudinary')
 exports.signup = async (req, res) => {
 	try {
 		// get the user information sent from the form
-		const { firstName, lastName, email, password } = req.body
+		const { firstName, lastName, email, password, role, barbershopId } =
+			req.body
 		// see if the user already exists
 		const userExists = await User.findOne({ email })
 
@@ -22,6 +23,8 @@ exports.signup = async (req, res) => {
 			lastName,
 			email,
 			password,
+			role,
+			barbershop: barbershopId,
 		}
 
 		const newUser = await User.create(userToAdd)

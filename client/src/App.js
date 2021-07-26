@@ -20,6 +20,7 @@ import AdminBarbershop from './pages/AdminBarbershop'
 import AdminNewAppointment from './components/AdminNewAppointment'
 import AdminBookAppointment from './components/AdminBookAppointment'
 import AdminNewUser from './components/AdminNewUser'
+import BarberSignup from './pages/BarberSignup'
 import { NotificationContext } from './store/contexts/notificationsContext'
 import NewBarbershop from './pages/NewBarbershop'
 import axios from 'axios'
@@ -59,6 +60,7 @@ export default function App() {
 		<Router>
 			<Switch>
 				<Route path='/' exact component={Homepage} />
+				<Route path='/signup/barber' component={BarberSignup} />
 				<Route path='/signup' component={Signup} />
 				<Route path='/login' component={Login} />
 				<PrivateRoute path='/dashboard'>
