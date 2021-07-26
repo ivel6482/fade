@@ -1,28 +1,31 @@
-# Fade (Back-end/API)
-** This repository is for Fade's API **
+# Fade
 
-Fade is a appointment/social media application for barbershops and their customers. In this application the barber can post their available appointments and the user can make an appointment or cancel them. Customer have the ability to see the haircut price and make payments using the application. Barbers can post their haircut pictures and users can make comments and upvote them.
+Fade is a fullstack web application that barbers can use to post and manage their appointments and their customers can book them.
 
-**Link to project:** http://recruiters-love-seeing-live-demos.com/
+## Inspiration
 
-![alt tag](http://placecorgi.com/1200/650)
+The barber I currently go takes phone calls to book their appointment. I made this app to save the barber time by not having to answer calls and keep a log on paper, and saving time for the customer which instead of calling the barber which can take a couple of minutes, they can use this application and book their appointment with a single click in seconds.
+
+**Link to project:** https://fadeapp.herokuapp.com/
+
+## Demo Accounts
+
+password is **12345678** for all of the accounts below
+
+- `carolinetodd@example.com` (customer account)
+- `fran@example.com` (barber account)
+- `bev@example.com` (admin account)
+
+<img src='./showcase.gif' alt='application showcase'>
 
 ## How It's Made:
 
-**Tech used:** Javascript, Node.js, Express, Mongoose, MongoDB, JsonWebTokens, Passport.js, TODO: Add more.
+**Tech used:** Javascript, Node.js, Express, Mongoose, MongoDB, JsonWebTokens, React, Tailwind, Cloudinary
 
-The server uses Express to handle request and communicated via controllers to a MongDB database using Mongoose. Authentication and authorization are handled by Passport.js.
+The backend is a server done in Node.js, Express built using the MVC pattern that talks with a MongoDB database using mongoose and handle image upload using Multer to Cloudinary. Authentication is handled using JsonWebTokens.
 
-## Optimizations
-*(optional)*
-
-You don't have to include this section but interviewers *love* that you can not only deliver a final product that looks great but also functions efficiently. Did you write something then refactor it later and the result was 5x faster than the original implementation? Did you cache your assets? Things that you write in this section are **GREAT** to bring up in interviews and you can use this section as reference when studying for technical interviews!
+The frontend is a React Single Page Application that provides the user with a dynamic interface. The styling is done using Tailwindcss. The state management is done using React's Context API.
 
 ## Lessons Learned:
 
-Learned how to use Passport for authentication and authorization using jwt and Facebook OAuth as well as Google OAuth.
-
-## Examples:
-Take a look at these couple examples that I have in my own portfolio:
-
-TODO: Add project links
+While creating this application I learned about data modeling, database querying, authentication using JsonWebToken, state management using React's Context API and how to keep the two parts in sync.
