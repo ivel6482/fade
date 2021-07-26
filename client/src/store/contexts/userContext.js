@@ -105,7 +105,7 @@ export const UserProvider = ({ children }) => {
 				lastName,
 				email,
 				password,
-				role: 'customer',
+				role: 'costumer',
 			}
 			await axios.post('/auth/signup', newUser)
 			login(email, password, history)
