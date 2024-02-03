@@ -1,18 +1,10 @@
 const mongoose = require('mongoose')
 
 const connectDB = async () => {
-	const prodUri = process.env.MONGO_URI_PROD
-	const devUri = process.env.MONGO_URI_DEV
+	const connectionString = process.env.MONGO_URI
+
 	try {
-		const conn = await mongoose.connect(
-			process.env.NODE_ENV === 'development' ? devUri : prodUri,
-			{
-				useFindAndModify: false,
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-				useCreateIndex: true,
-			}
-		)
+		const conn = await mongoose.connect(connectionString);
 
 		console.log(`Database connected: ${conn.connection.host}`)
 	} catch (error) {
