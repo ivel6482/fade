@@ -35,7 +35,7 @@ import {
 	UPDATE_BARBERS_FAIL,
 } from '../actions/adminActions'
 
-export default function adminReducer(state, action) {
+export const adminReducer = (state, action) => {
 	const { type, payload } = action
 
 	switch (type) {
@@ -131,12 +131,12 @@ export default function adminReducer(state, action) {
 				appointments: state.appointments.map((appointment) =>
 					appointment._id === payload
 						? {
-								...appointment,
-								booked: false,
-								completed: false,
-								bookedBy: null,
-								bookedAt: null,
-						  }
+							...appointment,
+							booked: false,
+							completed: false,
+							bookedBy: null,
+							bookedAt: null,
+						}
 						: appointment
 				),
 			}

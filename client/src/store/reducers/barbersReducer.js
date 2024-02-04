@@ -19,7 +19,7 @@ import {
 	CANCEL_APPOINTMENT_FAIL,
 } from '../actions/barberActions'
 
-export default function barbersReducer(state, action) {
+export const barbersReducer = (state, action) => {
 	const { type, payload } = action
 
 	switch (type) {

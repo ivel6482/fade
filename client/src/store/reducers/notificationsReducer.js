@@ -3,7 +3,7 @@ import {
 	HIDE_NOTIFICATION,
 } from '../actions/notificationsActions'
 
-export default function notificationsReducer(state, action) {
+export const notificationsReducer = (state, action) => {
 	const { type, payload } = action
 	switch (type) {
 		case SHOW_NOTIFICATION:
