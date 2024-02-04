@@ -10,6 +10,7 @@ export const Signup = () => {
 	const [lastName, setLastName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
 
 	const { signup, loading, user, isAuthenticated } = useContext(UserContext)
 	const { displayNotification } = useContext(NotificationContext)
@@ -24,6 +25,11 @@ export const Signup = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault()
+		if (password !== confirmPassword) {
+			displayNotification("Password does not match.")
+			return;
+		}
+
 		signup(firstName, lastName, email, password, navigate, displayNotification)
 		setEmail('')
 		setFirstName('')
@@ -131,6 +137,26 @@ export const Signup = () => {
 								</div>
 							</div>
 
+							<div className='space-y-1'>
+								<label
+									htmlFor='confirm-password'
+									className='block text-sm font-medium text-gray-700'
+								>
+									Confirm Password
+								</label>
+								<div className='mt-1'>
+									<input
+										id='confirm-password'
+										name='confirm-password'
+										type='password'
+										autoComplete='current-password'
+										required
+										onChange={(e) => setConfirmPassword(e.target.value)}
+										value={confirmPassword}
+										className='block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
+									/>
+								</div>
+							</div>
 							<div>
 								<button
 									type='submit'
