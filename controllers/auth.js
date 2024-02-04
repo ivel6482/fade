@@ -24,7 +24,6 @@ exports.signup = async (req, res) => {
 			email,
 			password,
 			role,
-			barbershop: barbershopId,
 		}
 
 		const newUser = await User.create(userToAdd)

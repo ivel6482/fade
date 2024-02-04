@@ -11,7 +11,7 @@ export const BarberSignup = () => {
 	const [lastName, setLastName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [barbershopId, setBarbershopId] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const { barberSignup, loading, user, isAuthenticated } =
 		useContext(UserContext)
@@ -33,12 +33,16 @@ export const BarberSignup = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault()
+		if (password !== confirmPassword) {
+			displayNotification("Password must match.");
+			return;
+		}
+
 		barberSignup(
 			firstName,
 			lastName,
 			email,
 			password,
-			barbershopId,
 			navigate,
 			displayNotification
 		)
@@ -46,7 +50,6 @@ export const BarberSignup = () => {
 		setFirstName('')
 		setLastName('')
 		setPassword('')
-		setBarbershopId('')
 	}
 
 	return (
@@ -148,30 +151,27 @@ export const BarberSignup = () => {
 									/>
 								</div>
 							</div>
-
-							<div>
+							<div className='space-y-1'>
 								<label
-									htmlFor='barbershop'
+									htmlFor='confirm-password'
 									className='block text-sm font-medium text-gray-700'
 								>
-									Barbershop
+									Confirm Password
 								</label>
-								<select
-									id='barbershop'
-									name='barbershop'
-									autoComplete='barbershop'
-									value={barbershopId}
-									onChange={(e) => setBarbershopId(e.target.value)}
-									className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-								>
-									<option>Select barbershop</option>
-									{barbershops.map((barbershop) => (
-										<option key={barbershop._id} value={barbershop._id}>
-											{barbershop.name}
-										</option>
-									))}
-								</select>
+								<div className='mt-1'>
+									<input
+										id='confirm-password'
+										name='confirm-password'
+										type='password'
+										autoComplete='current-password'
+										required
+										onChange={(e) => setConfirmPassword(e.target.value)}
+										value={confirmPassword}
+										className='block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
+									/>
+								</div>
 							</div>
+
 							<div>
 								<button
 									type='submit'

@@ -124,7 +124,6 @@ export const UserProvider = ({ children }) => {
 		lastName,
 		email,
 		password,
-		barbershopId,
 		navigate,
 		displayNotification
 	) => {
@@ -135,7 +134,6 @@ export const UserProvider = ({ children }) => {
 				lastName,
 				email,
 				password,
-				barbershopId,
 				role: 'barber',
 			}
 			await fadeApi.post('/auth/signup', newUser)
