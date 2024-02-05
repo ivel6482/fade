@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
@@ -6,16 +6,32 @@ import { Layout } from '../components/Layout'
 import { TicketIcon } from '@heroicons/react/24/outline'
 import { useForm } from "react-hook-form";
 import { Input } from "../components/Form/Input"
+import { Button } from "../components/Buttons/Button"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const Signup = () => {
-	const { register, handleSubmit, reset, formState: { errors } } = useForm({
+	const validationSchema = z.object({
+		firstName: z.string().min(1),
+		lastName: z.string().min(1),
+		email: z.string().email().min(1),
+		password: z.string().min(1),
+		confirmPassword: z.string().min(1),
+	})
+		.refine(({ confirmPassword, password }) => confirmPassword === password, {
+			message: "Passwords must match.",
+			path: ["confirmPassword"]
+		});
+
+	const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
 		defaultValues: {
 			firstName: '',
 			lastName: '',
 			email: '',
 			password: '',
 			confirmPassword: ''
-		}
+		},
+		resolver: zodResolver(validationSchema)
 	});
 
 	const { signup, loading, user, isAuthenticated } = useContext(UserContext)
@@ -29,18 +45,14 @@ export const Signup = () => {
 		}
 	}, [user, isAuthenticated, navigate])
 
-	const submitHandler = (e) => {
-		e.preventDefault()
-		if (password !== confirmPassword) {
-			displayNotification("Password does not match.")
-			return;
+	const submitHandler = async (data, error) => {
+		try {
+			const { firstName, lastName, email, password } = data;
+			await signup(firstName, lastName, email, password, navigate, displayNotification);
+			reset();
+		} catch (error) {
+			console.error(error);
 		}
-
-		signup(firstName, lastName, email, password, navigate, displayNotification)
-		setEmail('')
-		setFirstName('')
-		setLastName('')
-		setPassword('')
 	}
 	return (
 		<Layout>
@@ -64,24 +76,12 @@ export const Signup = () => {
 				<div className='mt-8'>
 					<div className='mt-6'>
 						<form onSubmit={handleSubmit(submitHandler)} className='space-y-6'>
-							<Input label="First name" name="firstName" required={true} register={register} />
-							<Input label="Last name" name="lastName" required={true} register={register} />
-							<Input label="Email" name="email" required={true} register={register} />
-							<Input type="password" label="Password" name="password" required={true} register={register} />
-							<Input type="password" label="Confirm password" name="confirmPassword" required={true} register={register} validate={{
-								samePassword: (confirmPassword, formData) => {
-									return confirmPassword === formData.password || "Passwords should match."
-								}
-							}}
-								errors={errors} />
-							<div>
-								<button
-									type='submit'
-									className='flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
-								>
-									{loading ? 'Authenticating...' : 'Sign up'}
-								</button>
-							</div>
+							<Input label="First name" name="firstName" register={register} errors={errors} />
+							<Input label="Last name" name="lastName" register={register} errors={errors} />
+							<Input label="Email" name="email" register={register} errors={errors} />
+							<Input type="password" label="Password" name="password" register={register} errors={errors} />
+							<Input type="password" label="Confirm password" name="confirmPassword" register={register} errors={errors} />
+							<Button label="Sign up" loading={loading} loadingText="Signing up..." type="submit" />
 						</form>
 					</div>
 				</div>
