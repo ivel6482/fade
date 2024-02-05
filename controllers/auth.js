@@ -12,7 +12,7 @@ exports.signup = async (req, res) => {
 
 		// if the user already exists response with a message
 		if (userExists) {
-			return res.status(400).json({ message: 'User already exists.' })
+			return res.status(400).json({ message: 'Error signing up, please try again.' })
 		}
 
 		// Makes the image upload optional
