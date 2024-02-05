@@ -5,7 +5,7 @@ const cloudinary = require('../utils/cloudinary')
 exports.signup = async (req, res) => {
 	try {
 		// get the user information sent from the form
-		const { firstName, lastName, email, password, role, barbershopId } =
+		const { firstName, lastName, email, password, role } =
 			req.body
 		// see if the user already exists
 		const userExists = await User.findOne({ email })
@@ -24,7 +24,6 @@ exports.signup = async (req, res) => {
 			email,
 			password,
 			role,
-			barbershop: barbershopId,
 		}
 
 		const newUser = await User.create(userToAdd)
@@ -57,10 +56,10 @@ exports.login = async (req, res) => {
 				},
 			})
 		} else {
-			res.status(401).json({ message: 'Invalid email or password' })
+			res.status(400).json({ message: 'Invalid email or password' })
 		}
 	} else {
-		res.status(400).json({ message: 'Account does not exist.' })
+		res.status(400).json({ message: 'Invalid email or password' })
 	}
 	// If there's  a user and the password matches send the user information and token
 }
