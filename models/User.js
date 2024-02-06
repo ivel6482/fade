@@ -40,8 +40,8 @@ const UserSchema = new mongoose.Schema(
 		role: {
 			type: String,
 			required: [true, 'Please provide a valid user role, instead got {VALUE}'],
-			enum: ['admin', 'barber', 'costumer'],
-			default: 'costumer',
+			enum: ['admin', 'barber', 'customer'],
+			default: 'customer',
 		},
 		favoriteBarbershops: {
 			type: [mongoose.Schema.Types.ObjectId],
