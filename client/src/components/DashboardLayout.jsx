@@ -1,5 +1,4 @@
-import { useContext, useEffect } from 'react'
-import { UserContext } from '../store/contexts/userContext'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
@@ -12,19 +11,21 @@ import {
 	TicketIcon,
 } from '@heroicons/react/24/outline'
 import { UserCircleIcon, ScissorsIcon } from '@heroicons/react/24/solid'
+import { useAuthStore } from "../store/authStore"
 
 export const DashboardLayout = ({
 	children,
 	currentTab = 'barbershops',
 }) => {
-	const { user, isAuthenticated, logout } = useContext(UserContext)
+	const user = useAuthStore(state => state.user);
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!isAuthenticated) {
 			navigate('/login')
 		}
-	}, [navigate, user, isAuthenticated])
+	}, [navigate, isAuthenticated])
 
 	const { firstName, lastName, avatar } = user
 
