@@ -86,6 +86,14 @@ export const DashboardLayout = ({
 
 	const [sidebarOpen, setSidebarOpen] = useState(false)
 
+	const logout = () => {
+		sessionStorage.removeItem('token')
+		sessionStorage.removeItem('user')
+		sessionStorage.removeItem('isAuthenticated')
+
+		navigate('/login')
+	}
+
 	return (
 		<div className='flex h-screen overflow-hidden bg-white'>
 			<Transition.Root show={sidebarOpen} as={Fragment}>
@@ -181,7 +189,7 @@ export const DashboardLayout = ({
 								<button
 									className='flex items-center px-2 py-2 text-sm font-medium rounded-md group'
 									onClick={() => {
-										logout(navigate)
+										logout()
 									}}
 								>
 									<ArrowRightEndOnRectangleIcon className='w-6 h-6 ml-1 mr-3 text-gray-400 group-hover:text-gray-500' />
@@ -269,7 +277,7 @@ export const DashboardLayout = ({
 							<button
 								className='flex items-center w-full px-2 py-2 text-sm text-gray-600 rounded-md font-sm group hover:bg-gray-50 hover:text-gray-900'
 								onClick={() => {
-									logout(navigate)
+									logout()
 								}}
 							>
 								<ArrowRightEndOnRectangleIcon className='w-6 h-6 ml-1 mr-3 text-gray-400 group-hover:text-gray-500' />
