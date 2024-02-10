@@ -33,3 +33,24 @@ export const useLogin = () => {
     },
   });
 }
+
+export const useRegisterBarber = () => {
+  return useMutation({
+    mutationKey: ["register-barber"],
+    mutationFn: async ({
+      firstName,
+      lastName,
+      email,
+      password,
+    }) => {
+      const res = await fadeApi.post("/auth/signup", {
+        firstName,
+        lastName,
+        email,
+        password,
+        role: "barber"
+      });
+      return res.data;
+    }
+  })
+}
