@@ -25,7 +25,7 @@ export const Login = () => {
 		resolver: zodResolver(loginValidationSchema)
 	});
 
-	const { mutate: login, isLoading: isLoggingIn } = useLogin();
+	const { mutate: login, isPending: isLoggingIn } = useLogin();
 
 	const navigate = useNavigate()
 

@@ -19,8 +19,8 @@ export const Signup = () => {
 	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
 	const setToken = useAuthStore(state => state.setToken);
 
-	const { mutate: registerUser, isLoading: isRegistering } = useRegisterUser();
-	const { mutate: login, isLoading: isLoggingIn } = useLogin();
+	const { mutate: registerUser, isPending: isRegistering } = useRegisterUser();
+	const { mutate: login, isPending: isLoggingIn } = useLogin();
 
 	const validationSchema = z.object({
 		firstName: z.string().min(1),
