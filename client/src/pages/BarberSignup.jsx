@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "../components/Form/Input"
 import { Button } from "../components/Buttons/Button"
 import { useLogin, useRegisterBarber } from "../mutations/authMutations"
-import { useAuthStore } from "../store/authStore"
+import { useAuthActions, useIsAuthenticated, useUser } from "../store/authStore"
 
 export const BarberSignup = () => {
 	const barberSignupValidationSchema = z.object({
@@ -37,12 +37,9 @@ export const BarberSignup = () => {
 	const { mutate: registerBarber, isPending: isRegistering } = useRegisterBarber();
 	const { mutate: login, isPending: isLoggingIn } = useLogin();
 
-	const user = useAuthStore(state => state.user);
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-
-	const setUser = useAuthStore(state => state.setUser);
-	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
-	const setToken = useAuthStore(state => state.setToken);
+	const user = useUser();
+	const isAuthenticated = useIsAuthenticated();
+	const { setUser, setIsAuthenticated, setToken } = useAuthActions();
 
 	const { displayNotification } = useContext(NotificationContext)
 

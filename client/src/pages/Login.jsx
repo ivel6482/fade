@@ -6,7 +6,7 @@ import { NotificationContext } from '../store/contexts/notificationsContext'
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuthStore } from "../store/authStore";
+import { useAuthActions, useIsAuthenticated, useUser } from "../store/authStore";
 import { Button } from "../components/Buttons/Button";
 import { Input } from "../components/Form/Input";
 import { useLogin } from "../mutations/authMutations";
@@ -29,12 +29,9 @@ export const Login = () => {
 
 	const navigate = useNavigate()
 
-	const user = useAuthStore(state => state.user);
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-
-	const setUser = useAuthStore(state => state.setUser);
-	const setToken = useAuthStore(state => state.setToken);
-	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
+	const user = useUser();
+	const isAuthenticated = useIsAuthenticated();
+	const { setUser, setToken, setIsAuthenticated } = useAuthActions();
 
 	const { displayNotification } = useContext(NotificationContext)
 
@@ -58,12 +55,6 @@ export const Login = () => {
 				setToken(data.token);
 				setUser(data.user);
 				setIsAuthenticated(true);
-
-				navigate("/aaaa");
-
-				return;
-
-
 
 				navigate("/dashboard");
 			},

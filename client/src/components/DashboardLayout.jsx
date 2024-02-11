@@ -11,17 +11,15 @@ import {
 	TicketIcon,
 } from '@heroicons/react/24/outline'
 import { UserCircleIcon, ScissorsIcon } from '@heroicons/react/24/solid'
-import { useAuthStore } from "../store/authStore"
+import { useAuthActions, useIsAuthenticated, useUser } from "../store/authStore"
 
 export const DashboardLayout = ({
 	children,
 	currentTab = 'barbershops',
 }) => {
-	const user = useAuthStore(state => state.user);
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-	const setToken = useAuthStore(state => state.setToken);
-	const setUser = useAuthStore(state => state.setUser);
-	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
+	const user = useUser();
+	const isAuthenticated = useIsAuthenticated();
+	const { setToken, setUser, setIsAuthenticated } = useAuthActions();
 	const navigate = useNavigate();
 
 	useEffect(() => {

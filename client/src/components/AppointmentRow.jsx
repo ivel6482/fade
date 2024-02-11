@@ -4,9 +4,10 @@ import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { BarbersContext } from '../store/contexts/barberContext'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
+import { useUser } from "../store/authStore"
 
 export const AppointmentRow = ({ appointment }) => {
-	const { token, user } = useContext(UserContext)
+	const user = useUser();
 	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
 	const { cancelAppointment: userCancelAppointment } =
 		useContext(BarbershopsContext)
@@ -39,19 +40,19 @@ export const AppointmentRow = ({ appointment }) => {
 
 	const cancelHandler = (id) => {
 		if (user.role === 'admin') {
-			cancelAppointment(id, token)
+			cancelAppointment(id)
 			displayNotification('Appointment cancelled successfully.')
 		} else if (user.role === 'barber') {
-			barberCancelAppointment(id, token)
+			barberCancelAppointment(id)
 			displayNotification('Appointment cancelled successfully.')
 		} else {
-			userCancelAppointment(id, token)
+			userCancelAppointment(id)
 			displayNotification('Appointment cancelled successfully.')
 		}
 	}
 
 	const completeHandler = (id) => {
-		completeAppointment(id, token)
+		completeAppointment(id)
 		displayNotification('Appointment marked as completed successfully.')
 	}
 

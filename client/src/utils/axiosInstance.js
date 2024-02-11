@@ -6,3 +6,8 @@ export const fadeApi = axios.create({
 
 fadeApi.defaults.headers.post["Content-Type"] = "application/json";
 
+fadeApi.interceptors.request.use((request) => {
+  request.headers.Authorization = `Bearer ${sessionStorage.getItem("token")?.replaceAll('"', "",)}`
+
+  return request;
+});

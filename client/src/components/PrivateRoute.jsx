@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom'
-import { useAuthStore } from "../store/authStore"
+import { useIsAuthenticated, useUser } from "../store/authStore"
 
 export const RequireAuth = ({ children, redirectTo = "/login" }) => {
-	const user = useAuthStore(state => state.user);
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+	const user = useUser();
+	const isAuthenticated = useIsAuthenticated();
 
 	return user && isAuthenticated ? children : <Navigate to={redirectTo} />;
 }
