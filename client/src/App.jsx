@@ -23,6 +23,16 @@ import { AdminNewUser } from './components/AdminNewUser'
 import { BarberSignup } from './pages/BarberSignup'
 import { NotificationContext } from './store/contexts/notificationsContext'
 import { NewBarbershop } from './pages/NewBarbershop'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 1_000 * 7
+		}
+	}
+});
 
 export const App = () => {
 	const { user } = useContext(UserContext)
@@ -47,7 +57,7 @@ export const App = () => {
 	}
 
 	return (
-		<>
+		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
 				<Routes>
 					<Route path='/' element={<Homepage />} />
@@ -116,6 +126,7 @@ export const App = () => {
 					<Notification notification={notification} key={notification.id} />
 				))
 			}
-		</>
+			<ReactQueryDevtools initialIsOpen={false} />
+		</QueryClientProvider>
 	)
 }

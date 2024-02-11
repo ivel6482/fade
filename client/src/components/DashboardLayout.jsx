@@ -1,5 +1,4 @@
-import { useContext, useEffect } from 'react'
-import { UserContext } from '../store/contexts/userContext'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
@@ -12,19 +11,24 @@ import {
 	TicketIcon,
 } from '@heroicons/react/24/outline'
 import { UserCircleIcon, ScissorsIcon } from '@heroicons/react/24/solid'
+import { useAuthStore } from "../store/authStore"
 
 export const DashboardLayout = ({
 	children,
 	currentTab = 'barbershops',
 }) => {
-	const { user, isAuthenticated, logout } = useContext(UserContext)
+	const user = useAuthStore(state => state.user);
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+	const setToken = useAuthStore(state => state.setToken);
+	const setUser = useAuthStore(state => state.setUser);
+	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!isAuthenticated) {
 			navigate('/login')
 		}
-	}, [navigate, user, isAuthenticated])
+	}, [navigate, isAuthenticated])
 
 	const { firstName, lastName, avatar } = user
 
@@ -84,6 +88,18 @@ export const DashboardLayout = ({
 	}
 
 	const [sidebarOpen, setSidebarOpen] = useState(false)
+
+	const logout = () => {
+		sessionStorage.removeItem('token')
+		sessionStorage.removeItem('user')
+		sessionStorage.removeItem('isAuthenticated')
+
+		setToken(null);
+		setUser(null);
+		setIsAuthenticated(false);
+
+		navigate('/login');
+	}
 
 	return (
 		<div className='flex h-screen overflow-hidden bg-white'>
@@ -180,7 +196,7 @@ export const DashboardLayout = ({
 								<button
 									className='flex items-center px-2 py-2 text-sm font-medium rounded-md group'
 									onClick={() => {
-										logout(navigate)
+										logout()
 									}}
 								>
 									<ArrowRightEndOnRectangleIcon className='w-6 h-6 ml-1 mr-3 text-gray-400 group-hover:text-gray-500' />
@@ -268,7 +284,7 @@ export const DashboardLayout = ({
 							<button
 								className='flex items-center w-full px-2 py-2 text-sm text-gray-600 rounded-md font-sm group hover:bg-gray-50 hover:text-gray-900'
 								onClick={() => {
-									logout(navigate)
+									logout()
 								}}
 							>
 								<ArrowRightEndOnRectangleIcon className='w-6 h-6 ml-1 mr-3 text-gray-400 group-hover:text-gray-500' />

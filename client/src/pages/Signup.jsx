@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Layout } from '../components/Layout'
 import { TicketIcon } from '@heroicons/react/24/outline'
@@ -9,8 +8,20 @@ import { Input } from "../components/Form/Input"
 import { Button } from "../components/Buttons/Button"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLogin, useRegisterUser } from "../mutations/authMutations"
+import { useAuthStore } from "../store/authStore"
 
 export const Signup = () => {
+	const user = useAuthStore(state => state.user);
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+
+	const setUser = useAuthStore(state => state.setUser);
+	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
+	const setToken = useAuthStore(state => state.setToken);
+
+	const { mutate: registerUser, isLoading: isRegistering } = useRegisterUser();
+	const { mutate: login, isLoading: isLoggingIn } = useLogin();
+
 	const validationSchema = z.object({
 		firstName: z.string().min(1),
 		lastName: z.string().min(1),
@@ -34,7 +45,6 @@ export const Signup = () => {
 		resolver: zodResolver(validationSchema)
 	});
 
-	const { signup, loading, user, isAuthenticated } = useContext(UserContext)
 	const { displayNotification } = useContext(NotificationContext)
 
 	const navigate = useNavigate()
@@ -46,13 +56,33 @@ export const Signup = () => {
 	}, [user, isAuthenticated, navigate])
 
 	const submitHandler = async (data, error) => {
-		try {
-			const { firstName, lastName, email, password } = data;
-			await signup(firstName, lastName, email, password, navigate, displayNotification);
-			reset();
-		} catch (error) {
-			console.error(error);
-		}
+		const { firstName, lastName, email, password } = data;
+
+		registerUser({ firstName, lastName, email, password }, {
+			onSuccess: () => {
+				reset();
+
+				login({ email, password }, {
+					onSuccess: (data) => {
+						sessionStorage.setItem('token', JSON.stringify(data.token))
+						sessionStorage.setItem('user', JSON.stringify(data.user))
+						sessionStorage.setItem('isAuthenticated', JSON.stringify(true))
+
+						setToken(data.token);
+						setUser(data.user);
+						setIsAuthenticated(true);
+
+						navigate("/dashboard");
+					},
+					onError: (error) => {
+						displayNotification(error.message);
+					}
+				});
+			},
+			onError: (error) => {
+				displayNotification(error.message);
+			}
+		});
 	}
 	return (
 		<Layout>
@@ -81,7 +111,7 @@ export const Signup = () => {
 							<Input label="Email" name="email" register={register} errors={errors} />
 							<Input type="password" label="Password" name="password" register={register} errors={errors} />
 							<Input type="password" label="Confirm password" name="confirmPassword" register={register} errors={errors} />
-							<Button label="Sign up" loading={loading} loadingText="Signing up..." type="submit" />
+							<Button label="Sign up" loading={isLoggingIn || isRegistering} loadingText="Signing up..." type="submit" />
 						</form>
 					</div>
 				</div>
