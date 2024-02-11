@@ -24,6 +24,7 @@ import { NotificationContext } from './store/contexts/notificationsContext'
 import { NewBarbershop } from './pages/NewBarbershop'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { useUser } from "./store/authStore"
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -34,7 +35,7 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
-	const { user } = useContext(UserContext)
+	const user = useUser();
 	const { notifications } = useContext(NotificationContext)
 
 	const barbershopPage = {

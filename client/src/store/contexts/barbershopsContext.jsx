@@ -125,18 +125,13 @@ export const BarbershopsProvider = ({ children }) => {
 		}
 	}
 
-	const bookAppointment = async (id, userId, token) => {
+	const bookAppointment = async (id, userId) => {
 		try {
 			dispatch({ type: BOOK_APPOINTMENT_REQUEST })
 			const res = await fadeApi.put(
 				`/appointments/${id}/book`,
 				{
 					userId,
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
 				}
 			)
 			dispatch({
@@ -152,7 +147,7 @@ export const BarbershopsProvider = ({ children }) => {
 		}
 	}
 
-	const cancelAppointment = async (id, token) => {
+	const cancelAppointment = async (id) => {
 		try {
 			dispatch({
 				type: CANCEL_APPOINTMENT_REQUEST,
@@ -160,11 +155,6 @@ export const BarbershopsProvider = ({ children }) => {
 			const res = await fadeApi.put(
 				`/appointments/${id}/cancel`,
 				{},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
 			)
 			dispatch({
 				type: CANCEL_APPOINTMENT_SUCCESS,

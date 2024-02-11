@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Layout } from '../components/Layout'
@@ -9,15 +9,10 @@ import { Button } from "../components/Buttons/Button"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin, useRegisterUser } from "../mutations/authMutations"
-import { useAuthStore } from "../store/authStore"
+import { useAuthActions, useIsAuthenticated, useUser } from "../store/authStore"
 
 export const Signup = () => {
-	const user = useAuthStore(state => state.user);
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-
-	const setUser = useAuthStore(state => state.setUser);
-	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
-	const setToken = useAuthStore(state => state.setToken);
+	const { setUser, setIsAuthenticated, setToken } = useAuthActions();
 
 	const { mutate: registerUser, isPending: isRegistering } = useRegisterUser();
 	const { mutate: login, isPending: isLoggingIn } = useLogin();
@@ -48,12 +43,6 @@ export const Signup = () => {
 	const { displayNotification } = useContext(NotificationContext)
 
 	const navigate = useNavigate()
-
-	useEffect(() => {
-		if (user && isAuthenticated) {
-			navigate('/dashboard')
-		}
-	}, [user, isAuthenticated, navigate])
 
 	const submitHandler = async (data, error) => {
 		const { firstName, lastName, email, password } = data;

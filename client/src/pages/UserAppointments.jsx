@@ -1,11 +1,11 @@
 import { useContext, useEffect } from 'react'
 import { DashboardLayout } from '../components/DashboardLayout'
-import { UserContext } from '../store/contexts/userContext'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { UserAppointmentsList } from '../components/UserAppointmentsList'
+import { useUser } from "../store/authStore"
 
 export const UserAppointments = () => {
-	const { user } = useContext(UserContext)
+	const user = useUser();
 	const {
 		getActiveUserAppointments,
 		getCompletedUserAppointments,

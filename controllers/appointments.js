@@ -274,7 +274,7 @@ exports.getUserBookedAppointments = async (req, res) => {
 			completed: false,
 			booked: true,
 			// How to populate populated field, research nesting populate
-		}).populate(['barberId', 'barbershop'])
+		}).populate(['barberId'])
 
 		if (appointments) {
 			res.status(200).json({ appointments })
