@@ -19,6 +19,9 @@ export const DashboardLayout = ({
 }) => {
 	const user = useAuthStore(state => state.user);
 	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+	const setToken = useAuthStore(state => state.setToken);
+	const setUser = useAuthStore(state => state.setUser);
+	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -91,7 +94,11 @@ export const DashboardLayout = ({
 		sessionStorage.removeItem('user')
 		sessionStorage.removeItem('isAuthenticated')
 
-		navigate('/login')
+		setToken(null);
+		setUser(null);
+		setIsAuthenticated(false);
+
+		navigate('/login');
 	}
 
 	return (
