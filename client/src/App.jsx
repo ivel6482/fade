@@ -41,19 +41,19 @@ export const App = () => {
 	const barbershopPage = {
 		admin: <AdminBarbershop />,
 		barber: <Barbershop />,
-		costumer: <Barbershop />,
+		customer: <Barbershop />,
 	}
 
 	const appointmentsPage = {
 		admin: <AdminAppointments />,
 		barber: <BarberAppointments />,
-		costumer: <UserAppointments />,
+		customer: <UserAppointments />,
 	}
 
 	const profilePage = {
 		admin: <UserProfile />,
 		barber: <BarberProfile />,
-		costumer: <UserProfile />,
+		customer: <UserProfile />,
 	}
 
 	return (
