@@ -1,18 +1,41 @@
 import { TicketIcon } from '@heroicons/react/24/outline'
-import { useState, useEffect, useContext } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Layout } from '../components/Layout'
-import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthStore } from "../store/authStore";
+import { Button } from "../components/Buttons/Button";
+import { Input } from "../components/Form/Input";
+import { useLogin } from "../mutations/authMutations";
 
 export const Login = () => {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	const loginValidationSchema = z.object({
+		email: z.string().email().min(1),
+		password: z.string().min(1)
+	});
+
+	const { handleSubmit, register, reset, formState: { errors } } = useForm({
+		defaultValues: {
+			email: "",
+			password: ""
+		},
+		resolver: zodResolver(loginValidationSchema)
+	});
+
+	const { mutate: login, isLoading: isLoggingIn } = useLogin();
 
 	const navigate = useNavigate()
-	const { pathname } = useLocation()
 
-	const { login, loading, user, isAuthenticated } = useContext(UserContext)
+	const user = useAuthStore(state => state.user);
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+
+	const setUser = useAuthStore(state => state.setUser);
+	const setToken = useAuthStore(state => state.setToken);
+	const setIsAuthenticated = useAuthStore(state => state.setIsAuthenticated);
+
 	const { displayNotification } = useContext(NotificationContext)
 
 	useEffect(() => {
@@ -21,186 +44,73 @@ export const Login = () => {
 		}
 	}, [navigate, user, isAuthenticated])
 
-	const submitHandler = (e) => {
-		e.preventDefault()
-		login(email, password, navigate, displayNotification)
-		setEmail('')
-		setPassword('')
+	const submitHandler = (data) => {
+		const { email, password } = data;
+
+		reset();
+
+		login({ email, password }, {
+			onSuccess: (data) => {
+				sessionStorage.setItem('token', JSON.stringify(data.token))
+				sessionStorage.setItem('user', JSON.stringify(data.user))
+				sessionStorage.setItem('isAuthenticated', JSON.stringify(true))
+
+				setToken(data.token);
+				setUser(data.user);
+				setIsAuthenticated(true);
+
+				navigate("/aaaa");
+
+				return;
+
+
+
+				navigate("/dashboard");
+			},
+			onError: (error) => {
+				displayNotification(error.response.data.message);
+			}
+		})
 	}
 
 	return (
-		<>
-			{pathname === '/login' ? (
-				<Layout>
-					<div className='w-full max-w-sm mx-auto lg:w-96'>
-						<div>
-							<TicketIcon width='30' className='transform rotate-45' />
-							<h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
-								Log in to your account
-							</h2>
-							<p className='mt-2 text-sm text-gray-600'>
-								Are you a barber?{' '}
-								<Link
-									to='/signup/barber'
-									className='font-medium text-blue-600 hover:text-blue-500'
-								>
-									sign up for a barber account
-								</Link>
-							</p>
-							<p className='mt-2 text-sm text-gray-600'>
-								Don't have an account?{' '}
-								<Link
-									to='/signup'
-									className='font-medium text-blue-600 hover:text-blue-500'
-								>
-									sign up for free
-								</Link>
-							</p>
-						</div>
+		<Layout>
+			<div className='w-full max-w-sm mx-auto lg:w-96'>
+				<div>
+					<TicketIcon width='30' className='transform rotate-45' />
+					<h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
+						Log in to your account
+					</h2>
+					<p className='mt-2 text-sm text-gray-600'>
+						Are you a barber?{' '}
+						<Link
+							to='/signup/barber'
+							className='font-medium text-blue-600 hover:text-blue-500'
+						>
+							sign up for a barber account
+						</Link>
+					</p>
+					<p className='mt-2 text-sm text-gray-600'>
+						Don't have an account?{' '}
+						<Link
+							to='/signup'
+							className='font-medium text-blue-600 hover:text-blue-500'
+						>
+							sign up for free
+						</Link>
+					</p>
+				</div>
 
-						<div className='mt-8'>
-							<div className='mt-6'>
-								<form onSubmit={submitHandler} className='space-y-6'>
-									<div>
-										<label
-											htmlFor='email'
-											className='block text-sm font-medium text-gray-700'
-										>
-											Email address
-										</label>
-										<div className='mt-1'>
-											<input
-												id='email'
-												name='email'
-												type='email'
-												autoComplete='email'
-												required
-												onChange={(e) => setEmail(e.target.value)}
-												value={email}
-												className='block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-											/>
-										</div>
-									</div>
-
-									<div className='space-y-1'>
-										<label
-											htmlFor='password'
-											className='block text-sm font-medium text-gray-700'
-										>
-											Password
-										</label>
-										<div className='mt-1'>
-											<input
-												id='password'
-												name='password'
-												type='password'
-												autoComplete='current-password'
-												required
-												onChange={(e) => setPassword(e.target.value)}
-												value={password}
-												className='block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-											/>
-										</div>
-									</div>
-
-									<div>
-										<button
-											type='submit'
-											className='flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
-										>
-											{loading ? 'Authenticating...' : 'Log in'}
-										</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</Layout>
-			) : (
-				<div className='w-full max-w-sm mx-auto lg:w-96'>
-					<div>
-						<TicketIcon width='30' className='transform rotate-45' />
-						<h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
-							Log in to your account
-						</h2>
-						<p className='mt-2 text-sm text-gray-600'>
-							Are you a barber?{' '}
-							<Link
-								to='/signup/barber'
-								className='font-medium text-blue-600 hover:text-blue-500'
-							>
-								sign up for a barber account
-							</Link>
-						</p>
-						<p className='mt-2 text-sm text-gray-600'>
-							Don't have an account?{' '}
-							<Link
-								to='/signup'
-								className='font-medium text-blue-600 hover:text-blue-500'
-							>
-								sign up for free
-							</Link>
-						</p>
-					</div>
-
-					<div className='mt-8'>
-						<div className='mt-6'>
-							<form onSubmit={submitHandler} className='space-y-6'>
-								<div>
-									<label
-										htmlFor='email'
-										className='block text-sm font-medium text-gray-700'
-									>
-										Email address
-									</label>
-									<div className='mt-1'>
-										<input
-											id='email'
-											name='email'
-											type='email'
-											autoComplete='email'
-											required
-											onChange={(e) => setEmail(e.target.value)}
-											value={email}
-											className='block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-										/>
-									</div>
-								</div>
-
-								<div className='space-y-1'>
-									<label
-										htmlFor='password'
-										className='block text-sm font-medium text-gray-700'
-									>
-										Password
-									</label>
-									<div className='mt-1'>
-										<input
-											id='password'
-											name='password'
-											type='password'
-											autoComplete='current-password'
-											required
-											onChange={(e) => setPassword(e.target.value)}
-											value={password}
-											className='block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-										/>
-									</div>
-								</div>
-
-								<div>
-									<button
-										type='submit'
-										className='flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
-									>
-										{loading ? 'Authenticating...' : 'Log in'}
-									</button>
-								</div>
-							</form>
-						</div>
+				<div className='mt-8'>
+					<div className='mt-6'>
+						<form onSubmit={handleSubmit(submitHandler)} className='space-y-6'>
+							<Input label="Email" name="email" register={register} errors={errors} />
+							<Input label="Password" name="password" type="password" register={register} errors={errors} />
+							<Button label="Log in" loading={isLoggingIn} loadingText="Logging in..." type="submit" />
+						</form>
 					</div>
 				</div>
-			)}
-		</>
+			</div>
+		</Layout>
 	)
 }
