@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { UserContext } from './store/contexts/userContext'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Homepage } from './pages/Homepage'
 import { Signup } from './pages/Signup'
 import { Login } from './pages/Login'
 import { Barbershops } from './pages/Barbershops'
@@ -60,7 +59,7 @@ export const App = () => {
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
 				<Routes>
-					<Route path='/' element={<Homepage />} />
+					<Route path='/' element={<Login />} />
 					<Route path='/signup/barber' element={<BarberSignup />} />
 					<Route path='/signup' element={<Signup />} />
 					<Route path='/login' element={<Login />} />

@@ -34,8 +34,8 @@ export const BarberSignup = () => {
 		resolver: zodResolver(barberSignupValidationSchema)
 	});
 
-	const { mutate: registerBarber, isLoading: isRegistering } = useRegisterBarber();
-	const { mutate: login, isLoading: isLoggingIn } = useLogin();
+	const { mutate: registerBarber, isPending: isRegistering } = useRegisterBarber();
+	const { mutate: login, isPending: isLoggingIn } = useLogin();
 
 	const user = useAuthStore(state => state.user);
 	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
