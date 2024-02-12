@@ -169,41 +169,6 @@ export const BarbershopsProvider = ({ children }) => {
 		}
 	}
 
-	//TODO: Implement this route on the backend.
-	const getActiveUserAppointments = async (id) => {
-		try {
-			dispatch({ type: GET_ACTIVE_USER_APPOINTMENTS_REQUEST })
-			const res = await fadeApi.get(`/users/${id}/appointments`)
-			dispatch({
-				type: GET_ACTIVE_USER_APPOINTMENTS_SUCCESS,
-				payload: res.data.appointments,
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: GET_ACTIVE_USER_APPOINTMENTS_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
-	const getCompletedUserAppointments = async (id) => {
-		try {
-			dispatch({ type: GET_COMPLETED_USER_APPOINTMENTS_REQUEST })
-			const res = await fadeApi.get(`/users/${id}/appointments/complete`)
-			dispatch({
-				type: GET_COMPLETED_USER_APPOINTMENTS_SUCCESS,
-				payload: res.data.appointments,
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: GET_COMPLETED_USER_APPOINTMENTS_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
 	return (
 		<Provider
 			value={{
@@ -211,8 +176,6 @@ export const BarbershopsProvider = ({ children }) => {
 				barbershop,
 				appointments,
 				userAppointments,
-				activeUserAppointments,
-				completedUserAppointments,
 				barbers,
 				loading,
 				errors,
@@ -222,8 +185,6 @@ export const BarbershopsProvider = ({ children }) => {
 				getBarberAppointments,
 				bookAppointment,
 				cancelAppointment,
-				getActiveUserAppointments,
-				getCompletedUserAppointments,
 			}}
 		>
 			{children}
