@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
-import { UserContext } from '../store/contexts/userContext'
 import { DashboardLayout } from './DashboardLayout'
 
 export const AdminBookAppointment = () => {
@@ -17,7 +16,6 @@ export const AdminBookAppointment = () => {
 		barberAppointments,
 		getBarberAvailableAppointments,
 	} = useContext(AdminContext)
-	const { token } = useContext(UserContext)
 	const { displayNotification } = useContext(NotificationContext)
 	const [barberId, setBarberId] = useState('')
 	const [userId, setUserId] = useState('')
@@ -39,7 +37,7 @@ export const AdminBookAppointment = () => {
 		if (barberId === '' || userId === '' || appointmentId === '') {
 			displayNotification('Please enter all the required information')
 		} else {
-			bookAppointment({ userId, appointmentId }, navigate, token)
+			bookAppointment({ userId, appointmentId }, navigate)
 			displayNotification('Appointment booked successfully.')
 		}
 	}

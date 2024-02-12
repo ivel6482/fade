@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { AdminContext } from '../store/contexts/adminContext'
-import { UserContext } from '../store/contexts/userContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { BarbersContext } from '../store/contexts/barberContext'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
@@ -133,7 +132,7 @@ export const AppointmentRow = ({ appointment }) => {
 							type='button'
 							className='px-4 py-2 font-semibold text-blue-700 transition rounded-md hover:text-gray-200 hover:bg-blue-900'
 						>
-							Delete
+							Cancel
 						</button>
 					)}
 				</td>

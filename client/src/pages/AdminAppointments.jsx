@@ -1,19 +1,16 @@
 import { useContext, useEffect } from 'react'
 import { DashboardLayout } from '../components/DashboardLayout'
 import { UserAppointmentsList } from '../components/UserAppointmentsList'
-import { Stats } from '../components/Stats'
 import { AdminContext } from '../store/contexts/adminContext'
-import { UserContext } from '../store/contexts/userContext'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { Link } from 'react-router-dom'
 
 export const AdminAppointments = () => {
-	const { token } = useContext(UserContext)
 	const { loading, appointmentsCount, appointments, getAppointments } =
 		useContext(AdminContext)
 
 	useEffect(() => {
-		getAppointments(token)
+		getAppointments()
 		// eslint-disable-next-line
 	}, [])
 

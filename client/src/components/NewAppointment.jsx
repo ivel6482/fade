@@ -1,6 +1,4 @@
 import { Fragment, useContext, useState } from 'react'
-import { UserContext } from '../store/contexts/userContext'
-import { BarbersContext } from '../store/contexts/barberContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -29,7 +27,6 @@ export const NewAppointment = ({ open, setOpen }) => {
 			createAppointment({ time: newAppointment, barberId: user._id }, {
 				onSuccess: () => {
 					displayNotification('Appointment created successfully.')
-					console.log("what");
 				},
 				onError: (error) => {
 					console.error(error);

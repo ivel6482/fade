@@ -6,12 +6,11 @@ import {
 } from '@heroicons/react/24/solid'
 
 import { BarbershopItem } from './BarbershopItem' //TODO: Rename this better
-import { useContext } from 'react'
-import { UserContext } from '../store/contexts/userContext'
+import { useUser } from "../store/authStore";
 
 //TODO: Make responsive
 export const Barbershop = ({ barbershop }) => {
-	const { user } = useContext(UserContext)
+	const user = useUser();
 
 	return (
 		<section className='col-span-1 p-4'>
