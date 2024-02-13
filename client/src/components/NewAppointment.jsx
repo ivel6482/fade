@@ -30,14 +30,14 @@ export const NewAppointment = ({ open, setOpen }) => {
 				onSuccess: () => {
 					displayNotification('Appointment created successfully.')
 					queryClient.invalidateQueries(["user-active-appointments"]);
+					queryClient.invalidateQueries(["barber-available-appointments"]);
+					setOpen(false);
 				},
 				onError: (error) => {
 					console.error(error);
 					displayNotification(error.response.data.message)
 				}
 			});
-
-			setOpen(false)
 		}
 	}
 
