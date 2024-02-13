@@ -2,19 +2,22 @@ import { useContext } from 'react'
 import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { BarbersContext } from '../store/contexts/barberContext'
-import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { useUser } from "../store/authStore"
+import { useCancelAppointment } from "../mutations/appointmentMutations"
+import { useQueryClient } from "@tanstack/react-query"
 
 export const AppointmentRow = ({ appointment }) => {
 	const user = useUser();
-	const { deleteAppointment, cancelAppointment } = useContext(AdminContext)
-	const { cancelAppointment: userCancelAppointment } =
-		useContext(BarbershopsContext)
+	const queryClient = useQueryClient();
+	const { deleteAppointment } = useContext(AdminContext)
 	const {
 		barberDeleteAppointment,
 		completeAppointment,
 		barberCancelAppointment,
 	} = useContext(BarbersContext)
+
+	const { mutate: cancelAppointment } = useCancelAppointment();
+
 	const { displayNotification } = useContext(NotificationContext)
 
 	const formattedDate = new Date(appointment.createdAt).toLocaleDateString(
@@ -45,8 +48,15 @@ export const AppointmentRow = ({ appointment }) => {
 			barberCancelAppointment(id)
 			displayNotification('Appointment cancelled successfully.')
 		} else {
-			userCancelAppointment(id)
-			displayNotification('Appointment cancelled successfully.')
+			cancelAppointment({ appointmentId: id }, {
+				onSuccess: () => {
+					displayNotification('Appointment cancelled successfully.')
+					queryClient.invalidateQueries(["user-active-appointments"]);
+				},
+				onError: (error) => {
+					console.error(error);
+				}
+			});
 		}
 	}
 
