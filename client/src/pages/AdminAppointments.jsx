@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { DashboardLayout } from '../components/DashboardLayout'
-import { UserAppointmentsList } from '../components/UserAppointmentsList'
+import { AppointmentsList } from '../components/AppointmentsList'
 import { AdminContext } from '../store/contexts/adminContext'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { Link } from 'react-router-dom'
@@ -45,7 +45,7 @@ export const AdminAppointments = () => {
 						</Link>
 					</div>
 
-					<UserAppointmentsList
+					<AppointmentsList
 						title='Appointments'
 						appointments={appointments}
 					/>
