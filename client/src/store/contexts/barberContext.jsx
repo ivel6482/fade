@@ -43,30 +43,6 @@ export const BarbersProvider = ({ children }) => {
 		loading,
 	} = state
 
-	const postAppointment = async (time, barberId, displayNotification) => {
-		try {
-			dispatch({ type: POST_APPOINTMENT_REQUEST })
-			const newAppointment = {
-				time,
-				barberId,
-			}
-
-			const res = await fadeApi.post('/appointments', newAppointment)
-			dispatch({
-				type: POST_APPOINTMENT_SUCCESS,
-				payload: res.data,
-			})
-			displayNotification('Appointment created successfully.')
-		} catch (error) {
-			console.error(error)
-			displayNotification(error.response.data.message)
-			dispatch({
-				type: POST_APPOINTMENT_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
 	const getAvailableAppointments = async (barberId) => {
 		try {
 			dispatch({
@@ -181,7 +157,6 @@ export const BarbersProvider = ({ children }) => {
 				bookedAppointments,
 				errors,
 				loading,
-				postAppointment,
 				getAvailableAppointments,
 				barberDeleteAppointment,
 				getBookedAppointments,

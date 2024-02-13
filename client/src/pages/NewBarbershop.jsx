@@ -5,7 +5,6 @@ import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/24/solid'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserContext } from '../store/contexts/userContext'
 
 //TODO: Change ids, values, names, labels
 
@@ -14,7 +13,6 @@ export const NewBarbershop = () => {
 	const { loading, getUsers, users, createBarbershop } =
 		useContext(AdminContext)
 	const { displayNotification } = useContext(NotificationContext)
-	const { token } = useContext(UserContext)
 	const [name, setName] = useState('')
 	const [about, setAbout] = useState('') //TODO: Add an about to the barbershop model.
 	const [address, setAddress] = useState('')
@@ -118,7 +116,6 @@ export const NewBarbershop = () => {
 						days: selectedDays,
 					},
 				},
-				token,
 				navigate
 			)
 		}

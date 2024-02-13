@@ -1,6 +1,4 @@
 import { Fragment, useContext, useState } from 'react'
-import { UserContext } from '../store/contexts/userContext'
-import { BarbersContext } from '../store/contexts/barberContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -8,21 +6,34 @@ import {
 	ExclamationTriangleIcon,
 	XMarkIcon,
 } from '@heroicons/react/24/outline'
+import { useUser } from "../store/authStore"
+import { useCreateAppointment } from "../mutations/barberMutations"
 
 export const NewAppointment = ({ open, setOpen }) => {
 	const [hour, setHour] = useState('')
 	const [time, setTime] = useState('AM')
 	const [valid, setValid] = useState()
-	const { user } = useContext(UserContext)
-	const { postAppointment } = useContext(BarbersContext)
+	const user = useUser();
 	const { displayNotification } = useContext(NotificationContext)
+
+	const { mutate: createAppointment, isPending: isCreatingAppointment } = useCreateAppointment();
 
 	// * FIXME: Barbers are not currently accounts that can log in, add a barbershop field to the user model and set it to null by default, check if the role is barber then we can modify barbershop field.
 	//   TODO: Make a route to get barbers, this has to be changed from getting barbers collection to use the user collection and filter by role: 'barber' instead.
 	const newAppointmentHandler = () => {
 		if (user.role === 'barber' && valid) {
 			const newAppointment = `${hour} ${time}`
-			postAppointment(newAppointment, user._id, displayNotification)
+
+			createAppointment({ time: newAppointment, barberId: user._id }, {
+				onSuccess: () => {
+					displayNotification('Appointment created successfully.')
+				},
+				onError: (error) => {
+					console.error(error);
+					displayNotification(error.response.data.message)
+				}
+			});
+
 			setOpen(false)
 		}
 	}
@@ -160,7 +171,7 @@ export const NewAppointment = ({ open, setOpen }) => {
 									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900 sm:ml-3 sm:w-auto sm:text-sm'
 									onClick={() => newAppointmentHandler()}
 								>
-									Post
+									{isCreatingAppointment ? "Creating..." : "Create"}
 								</button>
 								<button
 									type='button'

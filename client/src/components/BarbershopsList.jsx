@@ -1,13 +1,12 @@
 import { useContext, useEffect } from 'react'
 import { Barbershop } from './Barbershop'
 import { BarbershopsContext } from '../store/contexts/barbershopsContext'
-import { Stats } from '../components/Stats'
-import { UserContext } from '../store/contexts/userContext'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import { useUser } from "../store/authStore"
 
 export const BarbershopList = () => {
-	const { user } = useContext(UserContext)
+	const user = useUser();
 	const { barbershops, loading, getBarbershops } =
 		useContext(BarbershopsContext)
 

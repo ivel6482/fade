@@ -44,7 +44,6 @@
 			"last 1 safari version"
 		]
 	},
-	"proxy": "https://fadeapp.herokuapp.com/",
 	"devDependencies": {
 		"@tanstack/eslint-plugin-query": "^5.18.1",
 		"@vitejs/plugin-react": "^4.2.1",

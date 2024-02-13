@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from 'react'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { NewAppointment } from '../components/NewAppointment'
 import { BarbersContext } from '../store/contexts/barberContext'
-import { UserContext } from '../store/contexts/userContext'
+import { useUser } from "../store/authStore"
 
 export const BarberAppointments = () => {
 	const [open, setOpen] = useState(false)
@@ -17,7 +17,7 @@ export const BarberAppointments = () => {
 		getCompletedAppointments,
 		completedAppointments,
 	} = useContext(BarbersContext)
-	const { user } = useContext(UserContext)
+	const user = useUser();
 
 	const newAppointmentHandler = () => {
 		setOpen(true)

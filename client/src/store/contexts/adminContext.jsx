@@ -122,14 +122,10 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
-	const getAppointments = async (token) => {
+	const getAppointments = async () => {
 		try {
 			dispatch({ type: GET_APPOINTMENTS_REQUEST })
-			const res = await fadeApi.get('/appointments', {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
+			const res = await fadeApi.get('/appointments');
 			dispatch({
 				type: GET_APPOINTMENTS_SUCCESS,
 				payload: {
