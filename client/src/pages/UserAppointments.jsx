@@ -1,7 +1,7 @@
 import { DashboardLayout } from '../components/DashboardLayout'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { useUser } from "../store/authStore"
-import { useUserActiveAppointments, useUserCompletedAppointments } from "../queries/appointmentQueries"
+import { useUserActiveAppointments, useUserCompletedAppointments } from "../queries/userQueries";
 
 export const UserAppointments = () => {
 	const user = useUser();
