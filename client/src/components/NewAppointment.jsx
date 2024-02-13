@@ -8,12 +8,14 @@ import {
 } from '@heroicons/react/24/outline'
 import { useUser } from "../store/authStore"
 import { useCreateAppointment } from "../mutations/barberMutations"
+import { useQueryClient } from "@tanstack/react-query"
 
 export const NewAppointment = ({ open, setOpen }) => {
 	const [hour, setHour] = useState('')
 	const [time, setTime] = useState('AM')
 	const [valid, setValid] = useState()
 	const user = useUser();
+	const queryClient = useQueryClient();
 	const { displayNotification } = useContext(NotificationContext)
 
 	const { mutate: createAppointment, isPending: isCreatingAppointment } = useCreateAppointment();
@@ -27,6 +29,7 @@ export const NewAppointment = ({ open, setOpen }) => {
 			createAppointment({ time: newAppointment, barberId: user._id }, {
 				onSuccess: () => {
 					displayNotification('Appointment created successfully.')
+					queryClient.invalidateQueries(["user-active-appointments"]);
 				},
 				onError: (error) => {
 					console.error(error);
