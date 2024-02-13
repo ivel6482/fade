@@ -3,20 +3,19 @@ import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { BarbersContext } from '../store/contexts/barberContext'
 import { useUser } from "../store/authStore"
-import { useCancelAppointment } from "../mutations/appointmentMutations"
+import { useCancelAppointment, useDeleteAppointment } from "../mutations/appointmentMutations"
 import { useQueryClient } from "@tanstack/react-query"
 
 export const AppointmentRow = ({ appointment }) => {
 	const user = useUser();
 	const queryClient = useQueryClient();
-	const { deleteAppointment } = useContext(AdminContext)
+
 	const {
-		barberDeleteAppointment,
 		completeAppointment,
-		barberCancelAppointment,
 	} = useContext(BarbersContext)
 
 	const { mutate: cancelAppointment } = useCancelAppointment();
+	const { mutate: deleteAppointment } = useDeleteAppointment();
 
 	const { displayNotification } = useContext(NotificationContext)
 
@@ -32,11 +31,18 @@ export const AppointmentRow = ({ appointment }) => {
 
 	const deleteHandler = (id) => {
 		if (user.role === 'barber') {
-			barberDeleteAppointment(id)
-			displayNotification('Appointment deleted successfully.')
+			deleteAppointment({ appointmentId: id }, {
+				onSuccess: () => {
+					displayNotification('Appointment deleted successfully.');
+					queryClient.invalidateQueries(["barber-available-appointments"]);
+				}
+			});
 		} else {
-			deleteAppointment(id)
-			displayNotification('Appointment deleted successfully.')
+			deleteAppointment({ appointmentId: id }, {
+				onSuccess: () => {
+					displayNotification('Appointment deleted successfully.');
+				}
+			});
 		}
 	}
 
@@ -45,8 +51,15 @@ export const AppointmentRow = ({ appointment }) => {
 			cancelAppointment(id)
 			displayNotification('Appointment cancelled successfully.')
 		} else if (user.role === 'barber') {
-			barberCancelAppointment(id)
-			displayNotification('Appointment cancelled successfully.')
+			cancelAppointment({ appointmentId: id }, {
+				onSuccess: () => {
+					displayNotification('Appointment cancelled successfully.')
+					queryClient.invalidateQueries(["barber-available-appointments"]);
+				},
+				onError: (error) => {
+					console.error(error);
+				}
+			});
 		} else {
 			cancelAppointment({ appointmentId: id }, {
 				onSuccess: () => {
@@ -142,7 +155,7 @@ export const AppointmentRow = ({ appointment }) => {
 							type='button'
 							className='px-4 py-2 font-semibold text-blue-700 transition rounded-md hover:text-gray-200 hover:bg-blue-900'
 						>
-							Cancel
+							Delete
 						</button>
 					)}
 				</td>
