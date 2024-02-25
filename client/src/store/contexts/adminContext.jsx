@@ -11,9 +11,6 @@ import {
 	UPDATE_USER_REQUEST,
 	UPDATE_USER_SUCCESS,
 	UPDATE_USER_FAIL,
-	GET_APPOINTMENTS_REQUEST,
-	GET_APPOINTMENTS_SUCCESS,
-	GET_APPOINTMENTS_FAIL,
 	GET_BARBERS_REQUEST,
 	GET_BARBERS_SUCCESS,
 	GET_BARBERS_FAIL,
@@ -119,26 +116,6 @@ export const AdminProvider = ({ children }) => {
 		} catch (error) {
 			console.error(error)
 			dispatch({ type: UPDATE_USER_FAIL, payload: error.response.data.message })
-		}
-	}
-
-	const getAppointments = async () => {
-		try {
-			dispatch({ type: GET_APPOINTMENTS_REQUEST })
-			const res = await fadeApi.get('/appointments');
-			dispatch({
-				type: GET_APPOINTMENTS_SUCCESS,
-				payload: {
-					count: res.data.count,
-					appointments: res.data.appointments,
-				},
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: GET_APPOINTMENTS_FAIL,
-				payload: error.response.data.message,
-			})
 		}
 	}
 
@@ -356,7 +333,6 @@ export const AdminProvider = ({ children }) => {
 				getUsers,
 				getUser,
 				updateUser,
-				getAppointments,
 				getBarbers,
 				createBarbershop,
 				updateBarbershop,
