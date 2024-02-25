@@ -30,47 +30,24 @@ export const AppointmentRow = ({ appointment }) => {
 	)
 
 	const deleteHandler = (id) => {
-		if (user.role === 'barber') {
-			deleteAppointment({ appointmentId: id }, {
-				onSuccess: () => {
-					displayNotification('Appointment deleted successfully.');
-					queryClient.invalidateQueries(["barber-available-appointments"]);
-				}
-			});
-		} else {
-			deleteAppointment({ appointmentId: id }, {
-				onSuccess: () => {
-					displayNotification('Appointment deleted successfully.');
-				}
-			});
-		}
+		deleteAppointment({ appointmentId: id }, {
+			onSuccess: () => {
+				displayNotification('Appointment deleted successfully.');
+				queryClient.invalidateQueries(["barber-available-appointments", "appointments"]);
+			}
+		});
 	}
 
 	const cancelHandler = (id) => {
-		if (user.role === 'admin') {
-			cancelAppointment(id)
-			displayNotification('Appointment cancelled successfully.')
-		} else if (user.role === 'barber') {
-			cancelAppointment({ appointmentId: id }, {
-				onSuccess: () => {
-					displayNotification('Appointment cancelled successfully.')
-					queryClient.invalidateQueries(["barber-available-appointments"]);
-				},
-				onError: (error) => {
-					console.error(error);
-				}
-			});
-		} else {
-			cancelAppointment({ appointmentId: id }, {
-				onSuccess: () => {
-					displayNotification('Appointment cancelled successfully.')
-					queryClient.invalidateQueries(["user-active-appointments"]);
-				},
-				onError: (error) => {
-					console.error(error);
-				}
-			});
-		}
+		cancelAppointment({ appointmentId: id }, {
+			onSuccess: () => {
+				displayNotification('Appointment cancelled successfully.')
+				queryClient.invalidateQueries(["barber-available-appointments", "user-active-appointments", "appointments"]);
+			},
+			onError: (error) => {
+				console.error(error);
+			}
+		});
 	}
 
 	const completeHandler = (id) => {

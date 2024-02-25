@@ -1,33 +1,18 @@
-import { useContext, useEffect } from 'react'
 import { DashboardLayout } from '../components/DashboardLayout'
 import { AppointmentsList } from '../components/AppointmentsList'
-import { AdminContext } from '../store/contexts/adminContext'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { Link } from 'react-router-dom'
+import { useAppointments } from '../queries/appointmentQueries'
 
 export const AdminAppointments = () => {
-	const { loading, appointmentsCount, appointments, getAppointments } =
-		useContext(AdminContext)
-
-	useEffect(() => {
-		getAppointments()
-		// eslint-disable-next-line
-	}, [])
-
-	const stats = [
-		{
-			name: 'Total Appointments',
-			stat: appointmentsCount,
-		},
-	]
+	const { data, isLoading } = useAppointments();
 
 	return (
 		<DashboardLayout currentTab='appointments'>
-			{loading ? (
+			{isLoading ? (
 				<p>Loading appointments...</p>
 			) : (
 				<>
-					{/* <Stats stats={stats} /> */}
 					<div className='flex justify-between gap-2 mb-4 sm:justify-end'>
 						<Link
 							to='/appointments/new'
@@ -47,7 +32,7 @@ export const AdminAppointments = () => {
 
 					<AppointmentsList
 						title='Appointments'
-						appointments={appointments}
+						appointments={data.appointments}
 					/>
 				</>
 			)}
