@@ -1,5 +1,4 @@
 import { useContext } from 'react'
-import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { BarbersContext } from '../store/contexts/barberContext'
 import { useUser } from "../store/authStore"
