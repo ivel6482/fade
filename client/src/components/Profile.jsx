@@ -5,9 +5,10 @@ import { useAuthActions, useUser } from "../store/authStore";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../components/Form/Input";
+import { TextInput } from "../components/Form/TextInput";
 import { Button } from "../components/Buttons/Button";
 import { useUserUpdate } from "../mutations/userMutations";
+import { Label } from './Form/Label';
 
 export const Profile = () => {
 	const user = useUser();
@@ -67,10 +68,12 @@ export const Profile = () => {
 						</div>
 						<div className='grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6'>
 							<div className='sm:col-span-3'>
-								<Input label="First name" name="firstName" register={register} errors={errors} />
+								<Label value="First name" htmlFor="firstName" />
+								<TextInput name="firstName" register={register} errors={errors} />
 							</div>
 							<div className='sm:col-span-3'>
-								<Input label="Last name" name="lastName" register={register} errors={errors} />
+								<Label value="Last name" htmlFor="lastName" />
+								<TextInput label="Last name" name="lastName" register={register} errors={errors} />
 							</div>
 							<div className='sm:col-span-3'>
 								<label

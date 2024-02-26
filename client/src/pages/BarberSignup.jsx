@@ -6,10 +6,11 @@ import { TicketIcon } from '@heroicons/react/24/outline'
 import { useForm } from "react-hook-form"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Input } from "../components/Form/Input"
+import { TextInput } from "../components/Form/TextInput"
 import { Button } from "../components/Buttons/Button"
 import { useLogin, useRegisterBarber } from "../mutations/authMutations"
 import { useAuthActions, useIsAuthenticated, useUser } from "../store/authStore"
+import { Label } from '../components/Form/Label'
 
 export const BarberSignup = () => {
 	const barberSignupValidationSchema = z.object({
@@ -108,11 +109,26 @@ export const BarberSignup = () => {
 				<div className='mt-8'>
 					<div className='mt-6'>
 						<form onSubmit={handleSubmit(submitHandler)} className='space-y-6'>
-							<Input label="First name" name="firstName" register={register} errors={errors} />
-							<Input label="Last name" name="lastName" register={register} errors={errors} />
-							<Input label="Email address" name="email" register={register} errors={errors} />
-							<Input label="Password" name="password" type="password" register={register} errors={errors} />
-							<Input label="Confirm password" name="confirmPassword" type="password" register={register} errors={errors} />
+							<div>
+								<Label value="First name" htmlFor="firstName" />
+								<TextInput name="firstName" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Last name" htmlFor="lastName" />
+								<TextInput name="lastName" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Email address" htmlFor="email" />
+								<TextInput name="email" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Password" htmlFor="password" />
+								<TextInput name="password" type="password" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Confirm password" htmlFor="confirmPassword" />
+								<TextInput name="confirmPassword" type="password" register={register} errors={errors} />
+							</div>
 							<Button label="Sign up" loading={isLoggingIn || isRegistering} loadingText="Signing up..." type="submit" />
 						</form>
 					</div>
