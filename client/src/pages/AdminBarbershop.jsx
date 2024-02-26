@@ -79,17 +79,14 @@ export const AdminBarbershop = () => {
 			phoneNumber: barbershop?.contact?.phoneNumber,
 			openTime: barbershop?.available?.hours?.open,
 			closeTime: barbershop?.available?.hours?.close,
-			// available: days.map((day) =>
-			// 	barbershop?.available?.days.includes(day) ? true : false
-			// )
 			available: barbershop?.available?.days
-		}
-		// resolver: zodResolver(updateBarbershopValidationSchema)
+		},
+		resolver: zodResolver(updateBarbershopValidationSchema)
 	});
 
 	const submitHandler = (data) => {
 		const { name, about, address, phoneNumber, openTime, closeTime, available } = data;
-		console.log(data);
+
 		console.log(available);
 
 		return;
@@ -252,15 +249,13 @@ export const AdminBarbershop = () => {
 											</div>
 											<div className='mt-4 space-y-3 sm:mt-0 sm:col-span-2'>
 												<div className='max-w-lg space-y-4'>
-													{days.map((day, index) => (
+													{days.map((day) => (
 														<div
 															key={day}
 															className='relative flex items-start'
 														>
 															<div className='flex items-center h-5'>
-																<Checkbox id={day} name="available" register={register} errors={errors} />
-																{/* checked={available[index]}
-																	onChange={() => toggleCheckbox(index)} */}
+																<Checkbox id={day} name={"available"} register={register} errors={errors} value={day} />
 															</div>
 															<div className='ml-3 text-sm'>
 																<Label value={day} htmlFor={day} />
