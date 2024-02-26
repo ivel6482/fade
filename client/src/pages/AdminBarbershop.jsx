@@ -62,19 +62,19 @@ export const AdminBarbershop = () => {
 	const { updateBarbershop, deleteBarbershop } = useContext(AdminContext)
 
 	const updateBarbershopValidationSchema = z.object({
-		name: z.string().min(1),
+		name: z.string().min(1, { message: "Required" }),
 		about: z.string(),
-		address: z.string().min(1),
-		phoneNumber: z.string().min(10), // @@@TODO: Is there a phone number validation in zod?
+		address: z.string().min(1, { message: "Required " }),
+		phoneNumber: z.string().min(10, { message: "Required" }), // @@@TODO: Is there a phone number validation in zod?
 		// openTime: z.date(), // @@@ TODO: time validator in zod
 		// closeTime: z.date(), // @@@ TODO: Has to be greater than open time
 		// available: z.array() // @@@ TODO: Array validator in zod
-		openTime: z.string().min(1),
-		closeTime: z.string().min(1),
-		available: z.string().array().nonempty()
+		openTime: z.string().min(1, { message: "Required" }),
+		closeTime: z.string().min(1, { message: "Required" }),
+		operationDays: z.string().array().nonempty({ message: "Must select at least one day" })
 	});
 
-	const { handleSubmit, formState: { errors }, register } = useForm({
+	const { handleSubmit, formState: { errors, isDirty }, register } = useForm({
 		values: {
 			name: barbershop?.name,
 			about: barbershop?.about ? barbershop.about : '',
@@ -82,30 +82,15 @@ export const AdminBarbershop = () => {
 			phoneNumber: barbershop?.contact?.phoneNumber,
 			openTime: barbershop?.available?.hours?.open,
 			closeTime: barbershop?.available?.hours?.close,
-			available: barbershop?.available?.days
+			operationDays: barbershop?.available?.days
 		},
 		resolver: zodResolver(updateBarbershopValidationSchema)
 	});
 
 	const submitHandler = (data) => {
-		const { name, about, address, phoneNumber, openTime, closeTime, available } = data;
+		const { name, about, address, phoneNumber, openTime, closeTime, operationDays } = data;
 
-		console.log(available);
-
-		return;
-
-		const selectedDays = days.filter((_, i) => available[i] === true)
-		//TODO: Better error validation, ensure all the necessary information is provided.
-
-		if (
-			name === barbershop.name &&
-			about === barbershop.about &&
-			address === barbershop.location.address &&
-			phoneNumber === barbershop.contact.phoneNumber &&
-			openTime === barbershop.available.hours.open &&
-			closeTime === barbershop.available.hours.close &&
-			barbershop.available.days.toString() === selectedDays.toString()
-		) {
+		if (!isDirty) {
 			displayNotification('Please make changes before updating.')
 		} else {
 			updateBarbershop(
@@ -124,7 +109,7 @@ export const AdminBarbershop = () => {
 							open: openTime,
 							close: closeTime,
 						},
-						days: selectedDays,
+						days: operationDays
 					},
 				},
 				displayNotification
@@ -258,7 +243,7 @@ export const AdminBarbershop = () => {
 															className='relative flex items-start'
 														>
 															<div className='flex items-center h-5'>
-																<Checkbox id={day} name={"available"} register={register} errors={errors} value={day} />
+																<Checkbox id={day} name="operationDays" register={register} errors={errors} value={day} />
 															</div>
 															<div className='ml-3 text-sm'>
 																<Label value={day} htmlFor={day} />
@@ -266,6 +251,7 @@ export const AdminBarbershop = () => {
 														</div>
 													))}
 												</div>
+												{errors["available"]?.message && <small className="text-red-500">{errors["available"]?.message}</small>}
 											</div>
 										</div>
 									</div>
@@ -297,6 +283,7 @@ export const AdminBarbershop = () => {
 							<button
 								type='submit'
 								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
+								disabled={!isDirty}
 							>
 								Save
 							</button>

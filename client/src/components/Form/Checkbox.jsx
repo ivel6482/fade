@@ -1,4 +1,4 @@
-export const Checkbox = ({ id, name, register, errors, ...rest }) => {
+export const Checkbox = ({ id, name, register, ...rest }) => {
   return (
     <input
       id={id}
