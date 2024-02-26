@@ -2,9 +2,6 @@ import { createContext, useReducer } from 'react'
 import { fadeApi } from "../../utils/axiosInstance"
 import { barbershopsReducer } from '../reducers/barbershopsReducer'
 import {
-	GET_BARBERSHOP_REQUEST,
-	GET_BARBERSHOP_SUCCESS,
-	GET_BARBERSHOP_FAIL,
 	GET_BARBERSHOP_BARBER_REQUEST,
 	GET_BARBERSHOP_BARBER_SUCCESS,
 	GET_BARBERSHOP_BARBER_FAIL,
@@ -45,23 +42,6 @@ export const BarbershopsProvider = ({ children }) => {
 		loading,
 		errors,
 	} = state
-
-	const getBarbershop = async (id) => {
-		try {
-			dispatch({ type: GET_BARBERSHOP_REQUEST })
-			const res = await fadeApi.get(`/barbershops/${id}`)
-			dispatch({
-				type: GET_BARBERSHOP_SUCCESS,
-				payload: res.data,
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: GET_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
 
 	const getBarbers = async (id) => {
 		try {
@@ -151,7 +131,6 @@ export const BarbershopsProvider = ({ children }) => {
 				barbers,
 				loading,
 				errors,
-				getBarbershop,
 				getBarbers,
 				getBarberAppointments,
 				bookAppointment,
