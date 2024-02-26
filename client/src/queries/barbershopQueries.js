@@ -10,3 +10,14 @@ export const useBarbershops = () => {
     }
   });
 }
+
+export const useBarbershop = (id) => {
+  return useQuery({
+    queryKey: ["barbershop", id],
+    queryFn: async () => {
+      const res = await fadeApi.get(`/barbershops/${id}`);
+      return res.data;
+    },
+    enabled: !!id
+  });
+}
