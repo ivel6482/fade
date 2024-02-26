@@ -11,6 +11,7 @@ import { TextAreaInput } from '../components/Form/TextAreaInput';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from '../components/Form/Checkbox'
+import { SelectInput } from '../components/Form/SelectInput'
 
 const days = [
 	'Monday',
@@ -48,6 +49,8 @@ const hours = [
 	'10:00 PM',
 	'11:00 PM',
 ];
+
+const hoursOptions = hours.map(hour => ({ text: hour, value: hour }));
 
 export const AdminBarbershop = () => {
 	const { id } = useParams()
@@ -268,55 +271,15 @@ export const AdminBarbershop = () => {
 									</div>
 								</div>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='country'
-										className='block pt-6 text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Time that your barbershop will open to the public
-									</label>
+									<Label value="Time that your barbershop will open to the public" htmlFor="openTime" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										{/* <select
-											id='open-time'
-											name='open-time'
-											autoComplete='open-time'
-											value={openTime}
-											onChange={(e) => setOpenTime(e.target.value)}
-											required
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										>
-											<option value=''>Select open time</option>
-											{hours.map((hour) => (
-												<option key={hour} value={hour}>
-													{hour}
-												</option>
-											))}
-										</select> */}
+										<SelectInput id="openTime" name="openTime" register={register} errors={errors} defaultOptionText="Select open time" defaultOptionValue="" options={hoursOptions} />
 									</div>
 								</div>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='close-time'
-										className='block pt-6 text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Time that your barbershop will close to the public
-									</label>
+									<Label value="Time that your barbershop will close to the public" htmlFor="closeTime" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										{/* <select
-											id='close-time'
-											name='close-time'
-											autoComplete='close-time'
-											value={closeTime}
-											onChange={(e) => setCloseTime(e.target.value)}
-											required
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										>
-											<option value=''>Select close time</option>
-											{hours.map((hour) => (
-												<option key={hour} value={hour}>
-													{hour}
-												</option>
-											))}
-										</select> */}
+										<SelectInput id="closeTime" name="closeTime" register={register} errors={errors} defaultOptionText="Select close time" defaultOptionValue="" options={hoursOptions} />
 									</div>
 								</div>
 							</div>
