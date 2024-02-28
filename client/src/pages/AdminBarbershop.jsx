@@ -12,6 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from '../components/Form/Checkbox'
 import { SelectInput } from '../components/Form/SelectInput'
+import { useUpdateBarbershop, useDeleteBarbershop } from "../mutations/barbershopMutations";
 
 const days = [
 	'Monday',
@@ -59,7 +60,6 @@ export const AdminBarbershop = () => {
 	const { data: barbershop, isLoading } = useBarbershop(id);
 
 	const { displayNotification } = useContext(NotificationContext)
-	const { updateBarbershop, deleteBarbershop } = useContext(AdminContext)
 
 	const updateBarbershopValidationSchema = z.object({
 		name: z.string().min(1, { message: "Required" }),
@@ -87,39 +87,63 @@ export const AdminBarbershop = () => {
 		resolver: zodResolver(updateBarbershopValidationSchema)
 	});
 
+	const { mutate: updateBarbershop } = useUpdateBarbershop();
+	const { mutate: deleteAppointment } = useDeleteBarbershop();
+
 	const submitHandler = (data) => {
 		const { name, about, address, phoneNumber, openTime, closeTime, operationDays } = data;
 
 		if (!isDirty) {
 			displayNotification('Please make changes before updating.')
 		} else {
-			updateBarbershop(
-				id,
-				{
-					name,
-					about,
-					location: {
-						address,
-					},
-					contact: {
-						phoneNumber,
-					},
-					available: {
-						hours: {
-							open: openTime,
-							close: closeTime,
-						},
-						days: operationDays
-					},
+			const updatedBarbershop = {
+				name,
+				about,
+				location: {
+					address,
 				},
-				displayNotification
-			)
+				contact: {
+					phoneNumber,
+				},
+				available: {
+					hours: {
+						open: openTime,
+						close: closeTime,
+					},
+					days: operationDays
+				},
+
+			}
+
+			updateBarbershop({
+				id,
+				barbershop: updatedBarbershop
+			}, {
+				onSuccess: () => {
+					displayNotification('Barbershop updated successfully.')
+				},
+				onError: (error) => {
+					displayNotification(error.response.data.message)
+					console.error(error);
+				}
+			});
 		}
 	}
 
 	const deleteHandler = () => {
-		deleteBarbershop(id, navigate)
-		displayNotification('Barbershop deleted successfully.')
+		// @@@ TODO: Add confirmation modal to delete barbershop that requires the admin to type the barbershop name.
+		deleteAppointment({
+			id
+		}, {
+			onSuccess: () => {
+				displayNotification('Barbershop deleted successfully.');
+				navigate('/dashboard');
+			},
+			onError: (error) => {
+				displayNotification(error.response.data.message);
+				console.error(error);
+			}
+		});
 	}
 
 	return (

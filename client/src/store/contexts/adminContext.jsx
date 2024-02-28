@@ -17,11 +17,6 @@ import {
 	CREATE_BARBERSHOP_REQUEST,
 	CREATE_BARBERSHOP_SUCCESS,
 	CREATE_BARBERSHOP_FAIL,
-	UPDATE_BARBERSHOP_REQUEST,
-	UPDATE_BARBERSHOP_FAIL,
-	DELETE_BARBERSHOP_REQUEST,
-	DELETE_BARBERSHOP_SUCCESS,
-	DELETE_BARBERSHOP_FAIL,
 	CREATE_APPOINTMENT_REQUEST,
 	CREATE_APPOINTMENT_SUCCESS,
 	CREATE_APPOINTMENT_FAIL,
@@ -154,36 +149,6 @@ export const AdminProvider = ({ children }) => {
 			console.error(error)
 			dispatch({
 				type: CREATE_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
-	const updateBarbershop = async (id, data, displayNotification) => {
-		try {
-			dispatch({ type: UPDATE_BARBERSHOP_REQUEST })
-			await fadeApi.put(`/barbershops/${id}`, data)
-			displayNotification('Barbershop updated successfully.')
-		} catch (error) {
-			console.error(error)
-			displayNotification(error.response.data.message)
-			dispatch({
-				type: UPDATE_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
-	const deleteBarbershop = async (id, navigate) => {
-		try {
-			dispatch({ type: DELETE_BARBERSHOP_REQUEST })
-			await fadeApi.delete(`/barbershops/${id}`)
-			dispatch({ type: DELETE_BARBERSHOP_SUCCESS, payload: id })
-			navigate('/dashboard')
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: DELETE_BARBERSHOP_FAIL,
 				payload: error.response.data.message,
 			})
 		}
@@ -335,8 +300,6 @@ export const AdminProvider = ({ children }) => {
 				updateUser,
 				getBarbers,
 				createBarbershop,
-				updateBarbershop,
-				deleteBarbershop,
 				createAppointment,
 				deleteAppointment,
 				getBarberAvailableAppointments,
