@@ -1,133 +1,103 @@
-import { useContext, useEffect, useState, Fragment } from 'react'
+import { useContext } from 'react'
 import { DashboardLayout } from '../components/DashboardLayout'
-import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
-import { Listbox, Transition } from '@headlessui/react'
-import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/24/solid'
-import { Link, useNavigate } from 'react-router-dom'
-
-//TODO: Change ids, values, names, labels
+import { useNavigate } from 'react-router-dom'
+import { days } from '../utils/days';
+import { hours } from '../utils/hours';
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useUsers } from '../queries/userQueries'
+import { useCreateBarbershop } from '../mutations/barbershopMutations'
+import { Label } from '../components/Form/Label'
+import { TextInput } from '../components/Form/TextInput'
+import { TextAreaInput } from '../components/Form/TextAreaInput'
+import { Checkbox } from '../components/Form/Checkbox';
+import { SelectInput } from '../components/Form/SelectInput';
+import { Link } from 'react-router-dom';
 
 export const NewBarbershop = () => {
 	const navigate = useNavigate()
-	const { loading, getUsers, users, createBarbershop } =
-		useContext(AdminContext)
 	const { displayNotification } = useContext(NotificationContext)
-	const [name, setName] = useState('')
-	const [about, setAbout] = useState('') //TODO: Add an about to the barbershop model.
-	const [address, setAddress] = useState('')
-	const [phoneNumber, setPhoneNumber] = useState('')
-	const [openTime, setOpenTime] = useState('')
-	const [closeTime, setCloseTime] = useState('')
-	const [barbershopOwner, setBarbershopOwner] = useState('')
 
-	const days = [
-		'Monday',
-		'Tuesday',
-		'Wednesday',
-		'Thursday',
-		'Friday',
-		'Saturday',
-		'Sunday',
-	]
+	const hoursOptions = hours.map(hour => ({ text: hour, value: hour }));
 
-	const [available, setAvailable] = useState([
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-	])
+	const createBarbershopValidationSchema = z.object({
+		name: z.string().min(1, { message: "Required" }),
+		about: z.string(),
+		address: z.string().min(1, { message: "Required " }),
+		phoneNumber: z.string().regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, { message: "Must be a valid phone number format." }),
+		// openTime: z.date(), // @@@ TODO: time validator in zod
+		// closeTime: z.date(), // @@@ TODO: Has to be greater than open time
+		// available: z.array() // @@@ TODO: Array validator in zod
+		openTime: z.string().min(1, { message: "Required" }),
+		closeTime: z.string().min(1, { message: "Required" }),
+		operationDays: z.string().array().nonempty({ message: "Must select at least one day" }),
+		barbershopOwner: z.string().min(1, { message: "Required" })
+	});
 
-	const hours = [
-		'12:00 AM',
-		'1:00 AM',
-		'2:00 AM',
-		'3:00 AM',
-		'4:00 AM',
-		'5:00 AM',
-		'6:00 AM',
-		'7:00 AM',
-		'8:00 AM',
-		'9:00 AM',
-		'10:00 AM',
-		'11:00 AM',
-		'12:00 PM',
-		'1:00 PM',
-		'2:00 PM',
-		'3:00 PM',
-		'4:00 PM',
-		'5:00 PM',
-		'6:00 PM',
-		'7:00 PM',
-		'8:00 PM',
-		'9:00 PM',
-		'10:00 PM',
-		'11:00 PM',
-	]
+	const { handleSubmit, formState: { errors }, register } = useForm({
+		defaultValues: {
+			name: "",
+			about: "",
+			address: "",
+			phoneNumber: "",
+			openTime: "",
+			closeTime: "",
+			operationDays: [],
+			barbershopOwner: ""
+		},
+		resolver: zodResolver(createBarbershopValidationSchema)
+	});
 
-	useEffect(() => {
-		getUsers()
-		// eslint-disable-next-line
-	}, [])
+	const { data: users, isLoading } =
+		useUsers((user) => ({ text: user.firstName + " " + user.lastName, value: user._id }));
 
-	const toggleCheckbox = (index) => {
-		setAvailable(
-			available.map((checked, i) => (i === index ? !checked : checked))
-		)
-	}
+	const { mutate: createBarbershop } = useCreateBarbershop();
 
-	function classNames(...classes) {
-		return classes.filter(Boolean).join(' ')
-	}
+	const submitHandler = (data) => {
+		const { name, about, address, phoneNumber, openTime, closeTime, barbershopOwner, operationDays } = data;
 
-	const submitHandler = (e) => {
-		e.preventDefault()
-		if (
-			name === '' ||
-			about === '' ||
-			address === '' ||
-			phoneNumber === '' ||
-			openTime === '' ||
-			closeTime === '' ||
-			barbershopOwner === ''
-		) {
-			displayNotification('Please completely fill the form.')
-		} else {
-			const selectedDays = days.filter((_, i) => available[i] === true)
-			createBarbershop(
-				{
-					name,
-					about,
-					location: {
-						address,
-					},
-					contact: {
-						phoneNumber,
-					},
-					barbershopOwner: barbershopOwner._id,
-					available: {
-						hours: {
-							open: openTime,
-							close: closeTime,
-						},
-						days: selectedDays,
-					},
+		const barbershop = {
+			name,
+			about,
+			location: {
+				address,
+			},
+			contact: {
+				phoneNumber,
+			},
+			barbershopOwner,
+			available: {
+				hours: {
+					open: openTime,
+					close: closeTime,
 				},
-				navigate
-			)
+				days: operationDays
+			},
 		}
+
+		createBarbershop({
+			barbershop
+		}, {
+			onSuccess: (data) => {
+				navigate(`/barbershops/${data.barbershop._id}`);
+				displayNotification("Barbershop created.");
+			},
+			onError: (error) => {
+				displayNotification(error.response.data.message);
+				console.error(error);
+			}
+		});
 	}
 
 	return (
 		<DashboardLayout>
-			{loading ? (
+			{isLoading ? (
 				<p>Loading...</p>
 			) : (
 				<form
-					onSubmit={submitHandler}
+					onSubmit={handleSubmit(submitHandler)}
 					className='space-y-8 divide-y divide-gray-200'
 				>
 					<div className='space-y-8 divide-y divide-gray-200 sm:space-y-5'>
@@ -144,133 +114,26 @@ export const NewBarbershop = () => {
 
 							<div className='mt-6 space-y-6 sm:mt-5 sm:space-y-5'>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<Listbox
-										value={barbershopOwner}
-										onChange={setBarbershopOwner}
-									>
-										{({ open }) => (
-											<>
-												<Listbox.Label className='block text-sm font-medium text-gray-700'>
-													Owner
-												</Listbox.Label>
-												<div className='relative mt-1'>
-													<Listbox.Button className='relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none focus:ring-1 focus:ring-blue-700 focus:border-blue-700 sm:text-sm'>
-														<span className='block truncate'>
-															{barbershopOwner === '' && 'Select an owner'}
-															{barbershopOwner !== '' &&
-																barbershopOwner.firstName +
-																' ' +
-																barbershopOwner.lastName}
-														</span>
-														<span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
-															<ChevronUpDownIcon
-																className='w-5 h-5 text-gray-400'
-																aria-hidden='true'
-															/>
-														</span>
-													</Listbox.Button>
-
-													<Transition
-														show={open}
-														as={Fragment}
-														leave='transition ease-in duration-100'
-														leaveFrom='opacity-100'
-														leaveTo='opacity-0'
-													>
-														<Listbox.Options
-															static
-															className='absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
-														>
-															{users.map((user) => (
-																<Listbox.Option
-																	key={user._id}
-																	className={({ active }) =>
-																		classNames(
-																			active
-																				? 'text-white bg-blue-700'
-																				: 'text-gray-900',
-																			'cursor-default select-none relative py-2 pl-3 pr-9'
-																		)
-																	}
-																	value={user}
-																>
-																	{({ barbershopOwner, active }) => (
-																		<>
-																			<span
-																				className={classNames(
-																					barbershopOwner
-																						? 'font-semibold'
-																						: 'font-normal',
-																					'block truncate'
-																				)}
-																			>
-																				{user.firstName} {user.lastName}
-																			</span>
-
-																			{barbershopOwner ? (
-																				<span
-																					className={classNames(
-																						active
-																							? 'text-white'
-																							: 'text-blue-700',
-																						'absolute inset-y-0 right-0 flex items-center pr-4'
-																					)}
-																				>
-																					<CheckIcon
-																						className='w-5 h-5'
-																						aria-hidden='true'
-																					/>
-																				</span>
-																			) : null}
-																		</>
-																	)}
-																</Listbox.Option>
-															))}
-														</Listbox.Options>
-													</Transition>
-												</div>
-											</>
-										)}
-									</Listbox>
+									<Label value="Owner" htmlFor="barbershopOwner" />
+									<div className='mt-1 sm:mt-0 sm:col-span-2'>
+										<div className='max-w-lg rounded-md shadow-sm'>
+											<SelectInput id="barbershopOwner" name="barbershopOwner" register={register} errors={errors} defaultOptionText="Select owner" defaultOptionValue="" options={users} />
+										</div>
+									</div>
 								</div>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='username'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Name
-									</label>
+									<Label value="Name" htmlFor="name" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<div className='flex max-w-lg rounded-md shadow-sm'>
-											<input
-												type='text'
-												name='name'
-												id='name'
-												value={name}
-												onChange={(e) => setName(e.target.value)}
-												autoComplete='name'
-												className='flex-1 block w-full min-w-0 border-gray-300 rounded-md focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-											/>
+										<div className='max-w-lg rounded-md shadow-sm'>
+											<TextInput name="name" register={register} errors={errors} />
 										</div>
 									</div>
 								</div>
 
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='about'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										About
-									</label>
+									<Label value="About" htmlFor="about" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<textarea
-											id='about'
-											name='about'
-											rows={3}
-											className='block w-full max-w-lg border border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-											value={about}
-											onChange={(e) => setAbout(e.target.value)}
-										/>
+										<TextAreaInput name="about" register={register} errors={errors} />
 										<p className='mt-2 text-sm text-gray-500'>
 											Write a few sentences about your business.
 										</p>
@@ -290,22 +153,9 @@ export const NewBarbershop = () => {
 							</div>
 							<div className='space-y-6 sm:space-y-5'>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='first_name'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Address
-									</label>
+									<Label value="Address" htmlFor="address" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<input
-											type='text'
-											name='address'
-											id='address'
-											value={address}
-											onChange={(e) => setAddress(e.target.value)}
-											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										/>
+										<TextInput name="address" register={register} errors={errors} />
 									</div>
 								</div>
 							</div>
@@ -319,22 +169,9 @@ export const NewBarbershop = () => {
 							</div>
 							<div className='space-y-6 sm:space-y-5'>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='first_name'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Phone Number
-									</label>
+									<Label value="Phone number" htmlFor="phoneNumber" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<input
-											type='text'
-											name='address'
-											id='address'
-											value={phoneNumber}
-											onChange={(e) => setPhoneNumber(e.target.value)}
-											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										/>
+										<TextInput name="phoneNumber" register={register} errors={errors} />
 									</div>
 								</div>
 							</div>
@@ -358,84 +195,37 @@ export const NewBarbershop = () => {
 													What days of the week will you the open to the public?
 												</div>
 											</div>
-											{/* //TODO: how to prefill the checkboxes? will the values be and array? */}
 											<div className='mt-4 space-y-3 sm:mt-0 sm:col-span-2'>
 												<div className='max-w-lg space-y-4'>
-													{days.map((day, index) => (
+													{days.map((day) => (
 														<div
 															key={day}
 															className='relative flex items-start'
 														>
 															<div className='flex items-center h-5'>
-																<input
-																	id={day}
-																	name={day}
-																	type='checkbox'
-																	value={day}
-																	className='w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700'
-																	checked={available[index]}
-																	onChange={() => toggleCheckbox(index)}
-																/>
+																<Checkbox id={day} name="operationDays" register={register} errors={errors} value={day} />
 															</div>
 															<div className='ml-3 text-sm'>
-																<label
-																	htmlFor={day}
-																	className='font-medium text-gray-700'
-																>
-																	{day}
-																</label>
+																<Label value={day} htmlFor={day} />
 															</div>
 														</div>
 													))}
+													{errors["operationDays"]?.message && <small className="text-red-500">{errors["operationDays"]?.message}</small>}
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='country'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Time that your barbershop will open to the public
-									</label>
+									<Label value="Time that your barbershop will open to the public" htmlFor="openTime" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<select
-											id='open-time'
-											name='open-time'
-											autoComplete='open-time'
-											value={openTime}
-											onChange={(e) => setOpenTime(e.target.value)}
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										>
-											{hours.map((hour) => (
-												<option key={hour} value={hour}>
-													{hour}
-												</option>
-											))}
-										</select>
+										<SelectInput id="openTime" name="openTime" register={register} errors={errors} defaultOptionText="Select open time" defaultOptionValue="" options={hoursOptions} />
 									</div>
 								</div>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='close-time'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Time that your barbershop will close to the public
-									</label>
+									<Label value="Time that your barbershop will close to the public" htmlFor="closeTime" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<select
-											id='close-time'
-											name='close-time'
-											autoComplete='close-time'
-											value={closeTime}
-											onChange={(e) => setCloseTime(e.target.value)}
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										>
-											{hours.map((hour) => (
-												<option value={hour}>{hour}</option>
-											))}
-										</select>
+										<SelectInput id="closeTime" name="closeTime" register={register} errors={errors} defaultOptionText="Select close time" defaultOptionValue="" options={hoursOptions} />
 									</div>
 								</div>
 							</div>

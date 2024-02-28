@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { DashboardLayout } from '../components/DashboardLayout'
-import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { useBarbershop } from '../queries/barbershopQueries'
 import { useForm } from "react-hook-form";
@@ -30,7 +29,7 @@ export const AdminBarbershop = () => {
 		name: z.string().min(1, { message: "Required" }),
 		about: z.string(),
 		address: z.string().min(1, { message: "Required " }),
-		phoneNumber: z.string().min(10, { message: "Required" }), // @@@TODO: Is there a phone number validation in zod?
+		phoneNumber: z.string().regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, { message: "Must be a valid phone number format." }),
 		// openTime: z.date(), // @@@ TODO: time validator in zod
 		// closeTime: z.date(), // @@@ TODO: Has to be greater than open time
 		// available: z.array() // @@@ TODO: Array validator in zod
@@ -240,7 +239,7 @@ export const AdminBarbershop = () => {
 														</div>
 													))}
 												</div>
-												{errors["available"]?.message && <small className="text-red-500">{errors["available"]?.message}</small>}
+												{errors["operationDays"]?.message && <small className="text-red-500">{errors["operationDays"]?.message}</small>}
 											</div>
 										</div>
 									</div>

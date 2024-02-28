@@ -2,9 +2,6 @@ import { fadeApi } from "../../utils/axiosInstance";
 import { createContext, useReducer } from 'react'
 import { adminReducer } from '../reducers/adminReducer'
 import {
-	GET_USERS_REQUEST,
-	GET_USERS_SUCCESS,
-	GET_USERS_FAIL,
 	GET_USER_REQUEST,
 	GET_USER_SUCCESS,
 	GET_USER_FAIL,
@@ -14,9 +11,6 @@ import {
 	GET_BARBERS_REQUEST,
 	GET_BARBERS_SUCCESS,
 	GET_BARBERS_FAIL,
-	CREATE_BARBERSHOP_REQUEST,
-	CREATE_BARBERSHOP_SUCCESS,
-	CREATE_BARBERSHOP_FAIL,
 	CREATE_APPOINTMENT_REQUEST,
 	CREATE_APPOINTMENT_SUCCESS,
 	CREATE_APPOINTMENT_FAIL,
@@ -75,23 +69,6 @@ export const AdminProvider = ({ children }) => {
 		errors,
 	} = state
 
-	const getUsers = async () => {
-		try {
-			dispatch({ type: GET_USERS_REQUEST })
-			const res = await fadeApi.get('/users')
-			dispatch({
-				type: GET_USERS_SUCCESS,
-				payload: {
-					count: res.data.count,
-					users: res.data.users,
-				},
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({ type: GET_USERS_FAIL, payload: error.response.data.message })
-		}
-	}
-
 	const getUser = async (id) => {
 		try {
 			dispatch({ type: GET_USER_REQUEST })
@@ -129,28 +106,6 @@ export const AdminProvider = ({ children }) => {
 		} catch (error) {
 			console.error(error)
 			dispatch({ type: GET_BARBERS_FAIL, payload: error.response.data.message })
-		}
-	}
-
-	const createBarbershop = async (data, token, navigate) => {
-		try {
-			dispatch({ type: CREATE_BARBERSHOP_REQUEST })
-			const res = await fadeApi.post('/barbershops', data, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
-			dispatch({
-				type: CREATE_BARBERSHOP_SUCCESS,
-				payload: res.data.barbershop,
-			})
-			navigate(`/barbershops/${res.data.barbershop._id}`)
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: CREATE_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
 		}
 	}
 
@@ -295,11 +250,9 @@ export const AdminProvider = ({ children }) => {
 				barberAppointments,
 				loading,
 				errors,
-				getUsers,
 				getUser,
 				updateUser,
 				getBarbers,
-				createBarbershop,
 				createAppointment,
 				deleteAppointment,
 				getBarberAvailableAppointments,
