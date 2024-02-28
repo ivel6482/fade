@@ -1,26 +1,13 @@
-import { useContext, useEffect } from 'react'
 import { Barbershop } from './Barbershop'
-import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 import { useUser } from "../store/authStore"
+import { useBarbershops } from '../queries/barbershopQueries'
 
 export const BarbershopList = () => {
 	const user = useUser();
-	const { barbershops, loading, getBarbershops } =
-		useContext(BarbershopsContext)
 
-	useEffect(() => {
-		getBarbershops()
-		// eslint-disable-next-line
-	}, [])
-
-	const stats = [
-		{
-			name: 'Total Barbershops',
-			stat: barbershops.length,
-		},
-	]
+	const { data, isLoading } = useBarbershops();
 
 	return (
 		<section className='h-4/5'>
@@ -28,7 +15,6 @@ export const BarbershopList = () => {
 				<h3 className='text-6xl font-bold text-gray-200 lg:text-7xl'>
 					Barbershops
 				</h3>
-				{/* {user?.role === 'admin' && <Stats stats={stats} />} */}
 				<div className='mt-6 sm:mt-0 sm:transform sm:translate-y-1/2'>
 					{user?.role === 'admin' && (
 						<Link
@@ -42,14 +28,14 @@ export const BarbershopList = () => {
 				</div>
 			</div>
 			<section className='grid grid-cols-1 mt-8 sm:grid-cols-2 2xl:grid-cols-3'>
-				{barbershops.length > 0 ? (
-					barbershops.map((barbershop) => (
+				{data?.barbershops?.length > 0 ? (
+					data.barbershops.map((barbershop) => (
 						<Barbershop key={barbershop._id} barbershop={barbershop} />
 					))
 				) : (
 					<section className='flex items-center justify-center h-full'>
 						<p className='text-2xl font-bold text-gray-300'>
-							{loading ? 'Loading barbershops...' : 'No barbershops available.'}
+							{isLoading ? 'Loading barbershops...' : 'No barbershops available.'}
 						</p>
 					</section>
 				)}

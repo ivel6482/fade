@@ -5,10 +5,11 @@ import { DashboardLayout } from '../components/DashboardLayout'
 import { useUser } from "../store/authStore"
 import { useForm } from "react-hook-form";
 import { useUserUpdate } from "../mutations/userMutations";
-import { Input } from "../components/Form/Input";
+import { TextInput } from "../components/Form/TextInput";
 import { Button } from "../components/Buttons/Button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Label } from '../components/Form/Label'
 
 export const BarberProfile = () => {
 	//TODO: Add some stats, otherwise it'll be the same as a regular user's profile.
@@ -69,10 +70,12 @@ export const BarberProfile = () => {
 							</div>
 							<div className='grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6'>
 								<div className='sm:col-span-3'>
-									<Input label="First name" name="firstName" register={register} errors={errors} />
+									<Label value="First name" htmlFor="firstName" />
+									<TextInput name="firstName" register={register} errors={errors} />
 								</div>
 								<div className='sm:col-span-3'>
-									<Input label="Last name" name="lastName" register={register} errors={errors} />
+									<Label value="Last name" htmlFor="lastName" />
+									<TextInput name="lastName" register={register} errors={errors} />
 								</div>
 								<div className='sm:col-span-3'>
 									<label

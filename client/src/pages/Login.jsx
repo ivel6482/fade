@@ -8,8 +8,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthActions, useIsAuthenticated, useUser } from "../store/authStore";
 import { Button } from "../components/Buttons/Button";
-import { Input } from "../components/Form/Input";
+import { TextInput } from "../components/Form/TextInput";
 import { useLogin } from "../mutations/authMutations";
+import { Label } from '../components/Form/Label'
 
 export const Login = () => {
 	const loginValidationSchema = z.object({
@@ -95,8 +96,16 @@ export const Login = () => {
 				<div className='mt-8'>
 					<div className='mt-6'>
 						<form onSubmit={handleSubmit(submitHandler)} className='space-y-6'>
-							<Input label="Email" name="email" register={register} errors={errors} />
-							<Input label="Password" name="password" type="password" register={register} errors={errors} />
+							<div>
+								<Label value="Email" htmlFor="email" />
+								<TextInput name="email" register={register} errors={errors} />
+							</div>
+
+							<div>
+								<Label value="Password" htmlFor="password" />
+								<TextInput name="password" type="password" register={register} errors={errors} />
+							</div>
+
 							<Button label="Log in" loading={isLoggingIn} loadingText="Logging in..." type="submit" />
 						</form>
 					</div>

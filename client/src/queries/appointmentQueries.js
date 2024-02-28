@@ -1,26 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query"
 import { fadeApi } from "../utils/axiosInstance";
 
-export const useUserActiveAppointments = (userId) => {
+export const useAppointments = () => {
   return useQuery({
-    queryKey: ["user-active-appointments", userId],
+    queryKey: ["appointments"],
     queryFn: async () => {
-      const response = await fadeApi.get(`/users/${userId}/appointments`);
-
-      return response.data.appointments;
-    },
-    enabled: !!userId
-  });
-}
-
-export const useUserCompletedAppointments = (userId) => {
-  return useQuery({
-    queryKey: ["user-completed-appointments", userId],
-    queryFn: async () => {
-      const response = await fadeApi.get(`/users/${userId}/appointments/complete`)
-
-      return response.data.appointments;
-    },
-    enabled: !!userId
+      const res = await fadeApi.get('/appointments');
+      return {
+        appointments: res.data.appointments,
+        count: res.data.count
+      };
+    }
   });
 }

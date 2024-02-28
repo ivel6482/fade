@@ -2,12 +2,6 @@ import { createContext, useReducer } from 'react'
 import { fadeApi } from "../../utils/axiosInstance"
 import { barbershopsReducer } from '../reducers/barbershopsReducer'
 import {
-	GET_BARBERSHOPS_REQUEST,
-	GET_BARBERSHOPS_SUCCESS,
-	GET_BARBERSHOPS_FAIL,
-	GET_BARBERSHOP_REQUEST,
-	GET_BARBERSHOP_SUCCESS,
-	GET_BARBERSHOP_FAIL,
 	GET_BARBERSHOP_BARBER_REQUEST,
 	GET_BARBERSHOP_BARBER_SUCCESS,
 	GET_BARBERSHOP_BARBER_FAIL,
@@ -20,15 +14,6 @@ import {
 	CANCEL_APPOINTMENT_REQUEST,
 	CANCEL_APPOINTMENT_SUCCESS,
 	CANCEL_APPOINTMENT_FAIL,
-	// GET_USER_BOOKED_APPOINTMENTS_REQUEST,
-	// GET_USER_BOOKED_APPOINTMENTS_SUCCESS,
-	// GET_USER_BOOKED_APPOINTMENTS_FAIL,
-	GET_ACTIVE_USER_APPOINTMENTS_REQUEST,
-	GET_ACTIVE_USER_APPOINTMENTS_SUCCESS,
-	GET_ACTIVE_USER_APPOINTMENTS_FAIL,
-	GET_COMPLETED_USER_APPOINTMENTS_REQUEST,
-	GET_COMPLETED_USER_APPOINTMENTS_SUCCESS,
-	GET_COMPLETED_USER_APPOINTMENTS_FAIL,
 } from '../actions/barbershopsActions'
 
 const initialState = {
@@ -54,42 +39,9 @@ export const BarbershopsProvider = ({ children }) => {
 		barbers,
 		appointments,
 		userAppointments,
-		activeUserAppointments,
-		completedUserAppointments,
 		loading,
 		errors,
 	} = state
-
-	const getBarbershops = async () => {
-		try {
-			dispatch({ type: GET_BARBERSHOPS_REQUEST })
-			const res = await fadeApi.get('/barbershops')
-			dispatch({ type: GET_BARBERSHOPS_SUCCESS, payload: res.data.barbershops })
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: GET_BARBERSHOPS_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
-	const getBarbershop = async (id) => {
-		try {
-			dispatch({ type: GET_BARBERSHOP_REQUEST })
-			const res = await fadeApi.get(`/barbershops/${id}`)
-			dispatch({
-				type: GET_BARBERSHOP_SUCCESS,
-				payload: res.data,
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: GET_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
 
 	const getBarbers = async (id) => {
 		try {
@@ -179,8 +131,6 @@ export const BarbershopsProvider = ({ children }) => {
 				barbers,
 				loading,
 				errors,
-				getBarbershops,
-				getBarbershop,
 				getBarbers,
 				getBarberAppointments,
 				bookAppointment,

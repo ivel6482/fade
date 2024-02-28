@@ -4,12 +4,13 @@ import { NotificationContext } from '../store/contexts/notificationsContext'
 import { Layout } from '../components/Layout'
 import { TicketIcon } from '@heroicons/react/24/outline'
 import { useForm } from "react-hook-form";
-import { Input } from "../components/Form/Input"
+import { TextInput } from "../components/Form/TextInput"
 import { Button } from "../components/Buttons/Button"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin, useRegisterUser } from "../mutations/authMutations"
-import { useAuthActions, useIsAuthenticated, useUser } from "../store/authStore"
+import { useAuthActions } from "../store/authStore"
+import { Label } from '../components/Form/Label';
 
 export const Signup = () => {
 	const { setUser, setIsAuthenticated, setToken } = useAuthActions();
@@ -95,11 +96,26 @@ export const Signup = () => {
 				<div className='mt-8'>
 					<div className='mt-6'>
 						<form onSubmit={handleSubmit(submitHandler)} className='space-y-6'>
-							<Input label="First name" name="firstName" register={register} errors={errors} />
-							<Input label="Last name" name="lastName" register={register} errors={errors} />
-							<Input label="Email" name="email" register={register} errors={errors} />
-							<Input type="password" label="Password" name="password" register={register} errors={errors} />
-							<Input type="password" label="Confirm password" name="confirmPassword" register={register} errors={errors} />
+							<div>
+								<Label value="First name" htmlFor="firstName" />
+								<TextInput name="firstName" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Last name" htmlFor="lastName" />
+								<TextInput name="lastName" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Email" htmlFor="email" />
+								<TextInput name="email" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Password" htmlFor="password" />
+								<TextInput type="password" name="password" register={register} errors={errors} />
+							</div>
+							<div>
+								<Label value="Confirm password" htmlFor="confirmPassword" />
+								<TextInput type="password" name="confirmPassword" register={register} errors={errors} />
+							</div>
 							<Button label="Sign up" loading={isLoggingIn || isRegistering} loadingText="Signing up..." type="submit" />
 						</form>
 					</div>

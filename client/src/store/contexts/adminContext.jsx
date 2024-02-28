@@ -2,29 +2,15 @@ import { fadeApi } from "../../utils/axiosInstance";
 import { createContext, useReducer } from 'react'
 import { adminReducer } from '../reducers/adminReducer'
 import {
-	GET_USERS_REQUEST,
-	GET_USERS_SUCCESS,
-	GET_USERS_FAIL,
 	GET_USER_REQUEST,
 	GET_USER_SUCCESS,
 	GET_USER_FAIL,
 	UPDATE_USER_REQUEST,
 	UPDATE_USER_SUCCESS,
 	UPDATE_USER_FAIL,
-	GET_APPOINTMENTS_REQUEST,
-	GET_APPOINTMENTS_SUCCESS,
-	GET_APPOINTMENTS_FAIL,
 	GET_BARBERS_REQUEST,
 	GET_BARBERS_SUCCESS,
 	GET_BARBERS_FAIL,
-	CREATE_BARBERSHOP_REQUEST,
-	CREATE_BARBERSHOP_SUCCESS,
-	CREATE_BARBERSHOP_FAIL,
-	UPDATE_BARBERSHOP_REQUEST,
-	UPDATE_BARBERSHOP_FAIL,
-	DELETE_BARBERSHOP_REQUEST,
-	DELETE_BARBERSHOP_SUCCESS,
-	DELETE_BARBERSHOP_FAIL,
 	CREATE_APPOINTMENT_REQUEST,
 	CREATE_APPOINTMENT_SUCCESS,
 	CREATE_APPOINTMENT_FAIL,
@@ -83,23 +69,6 @@ export const AdminProvider = ({ children }) => {
 		errors,
 	} = state
 
-	const getUsers = async () => {
-		try {
-			dispatch({ type: GET_USERS_REQUEST })
-			const res = await fadeApi.get('/users')
-			dispatch({
-				type: GET_USERS_SUCCESS,
-				payload: {
-					count: res.data.count,
-					users: res.data.users,
-				},
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({ type: GET_USERS_FAIL, payload: error.response.data.message })
-		}
-	}
-
 	const getUser = async (id) => {
 		try {
 			dispatch({ type: GET_USER_REQUEST })
@@ -122,26 +91,6 @@ export const AdminProvider = ({ children }) => {
 		}
 	}
 
-	const getAppointments = async () => {
-		try {
-			dispatch({ type: GET_APPOINTMENTS_REQUEST })
-			const res = await fadeApi.get('/appointments');
-			dispatch({
-				type: GET_APPOINTMENTS_SUCCESS,
-				payload: {
-					count: res.data.count,
-					appointments: res.data.appointments,
-				},
-			})
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: GET_APPOINTMENTS_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
 	const getBarbers = async () => {
 		try {
 			dispatch({ type: GET_BARBERS_REQUEST })
@@ -157,58 +106,6 @@ export const AdminProvider = ({ children }) => {
 		} catch (error) {
 			console.error(error)
 			dispatch({ type: GET_BARBERS_FAIL, payload: error.response.data.message })
-		}
-	}
-
-	const createBarbershop = async (data, token, navigate) => {
-		try {
-			dispatch({ type: CREATE_BARBERSHOP_REQUEST })
-			const res = await fadeApi.post('/barbershops', data, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
-			dispatch({
-				type: CREATE_BARBERSHOP_SUCCESS,
-				payload: res.data.barbershop,
-			})
-			navigate(`/barbershops/${res.data.barbershop._id}`)
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: CREATE_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
-	const updateBarbershop = async (id, data, displayNotification) => {
-		try {
-			dispatch({ type: UPDATE_BARBERSHOP_REQUEST })
-			await fadeApi.put(`/barbershops/${id}`, data)
-			displayNotification('Barbershop updated successfully.')
-		} catch (error) {
-			console.error(error)
-			displayNotification(error.response.data.message)
-			dispatch({
-				type: UPDATE_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
-		}
-	}
-
-	const deleteBarbershop = async (id, navigate) => {
-		try {
-			dispatch({ type: DELETE_BARBERSHOP_REQUEST })
-			await fadeApi.delete(`/barbershops/${id}`)
-			dispatch({ type: DELETE_BARBERSHOP_SUCCESS, payload: id })
-			navigate('/dashboard')
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: DELETE_BARBERSHOP_FAIL,
-				payload: error.response.data.message,
-			})
 		}
 	}
 
@@ -353,14 +250,9 @@ export const AdminProvider = ({ children }) => {
 				barberAppointments,
 				loading,
 				errors,
-				getUsers,
 				getUser,
 				updateUser,
-				getAppointments,
 				getBarbers,
-				createBarbershop,
-				updateBarbershop,
-				deleteBarbershop,
 				createAppointment,
 				deleteAppointment,
 				getBarberAvailableAppointments,

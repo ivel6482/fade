@@ -1,6 +1,6 @@
 import { AppointmentRow } from './AppointmentRow'
 
-export const UserAppointmentsList = ({ title, appointments = [] }) => {
+export const AppointmentsList = ({ title, appointments = [] }) => {
 	// TODO: Implement a button to cancel the appointment on the My Appointments page, this button will only appear for appointments that have the status of `booked` or `booked: true`. When the button is pressed a modal should show with a dialog to the user to confirm their choice.
 
 	return (
@@ -28,12 +28,6 @@ export const UserAppointmentsList = ({ title, appointments = [] }) => {
 											>
 												Barber Name
 											</th>
-											{/* <th
-											scope='col'
-											className='px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase'
-										>
-											Title
-										</th> */}
 											<th
 												scope='col'
 												className='px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase'

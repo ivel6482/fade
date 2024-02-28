@@ -1,34 +1,23 @@
 import { DashboardLayout } from '../components/DashboardLayout'
-import { UserAppointmentsList } from '../components/UserAppointmentsList'
+import { AppointmentsList } from '../components/AppointmentsList'
 import { PageHeaderWithButton } from '../components/PageHeaderWithButton'
-import { useState, useEffect, useContext } from 'react'
+import { useState } from 'react'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { NewAppointment } from '../components/NewAppointment'
-import { BarbersContext } from '../store/contexts/barberContext'
 import { useUser } from "../store/authStore"
+import { useBarberAvailableAppointments, useBarberBookedAppointments, useBarberCompletedAppointments } from "../queries/barberQueries"
 
 export const BarberAppointments = () => {
 	const [open, setOpen] = useState(false)
-	const {
-		getAvailableAppointments,
-		availableAppointments,
-		getBookedAppointments,
-		bookedAppointments,
-		getCompletedAppointments,
-		completedAppointments,
-	} = useContext(BarbersContext)
 	const user = useUser();
+
+	const { data: availableAppointments, isLoading: isLoadingAvailableAppointments } = useBarberAvailableAppointments(user._id);
+	const { data: bookedAppointments, isLoading: isLoadingBookedAppointments } = useBarberBookedAppointments(user._id);
+	const { data: completedAppointments, isLoading: isLoadingCompletedAppointments } = useBarberCompletedAppointments(user._id);
 
 	const newAppointmentHandler = () => {
 		setOpen(true)
 	}
-
-	useEffect(() => {
-		getAvailableAppointments(user._id)
-		getBookedAppointments(user._id)
-		getCompletedAppointments(user._id)
-		// eslint-disable-next-line
-	}, [])
 
 	return (
 		<DashboardLayout currentTab='appointments'>
@@ -42,18 +31,24 @@ export const BarberAppointments = () => {
 			{/* //TODO: Rename UserAppointmentsList to something more generic for reusability. */}
 			{/* //TODO: Implement a filter to filter appointments by today, this week, this month, last 6 months, last year */}
 			<section className='pb-5 mt-6 space-y-6'>
-				<UserAppointmentsList
-					title='Available Appointments'
-					appointments={availableAppointments}
-				/>
-				<UserAppointmentsList
-					title='Booked Appointments'
-					appointments={bookedAppointments}
-				/>
-				<UserAppointmentsList
-					title='Completed Appointments'
-					appointments={completedAppointments}
-				/>
+				{!isLoadingAvailableAppointments && (
+					<AppointmentsList
+						title='Available Appointments'
+						appointments={availableAppointments}
+					/>
+				)}
+				{!isLoadingBookedAppointments && (
+					<AppointmentsList
+						title='Booked Appointments'
+						appointments={bookedAppointments}
+					/>
+				)}
+				{!isLoadingCompletedAppointments && (
+					<AppointmentsList
+						title='Completed Appointments'
+						appointments={completedAppointments}
+					/>
+				)}
 			</section>
 		</DashboardLayout>
 	)

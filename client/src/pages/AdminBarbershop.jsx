@@ -1,162 +1,122 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { DashboardLayout } from '../components/DashboardLayout'
-import { AdminContext } from '../store/contexts/adminContext'
-import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
+import { useBarbershop } from '../queries/barbershopQueries'
+import { useForm } from "react-hook-form";
+import { Label } from "../components/Form/Label";
+import { TextInput } from "../components/Form/TextInput";
+import { TextAreaInput } from '../components/Form/TextAreaInput';
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Checkbox } from '../components/Form/Checkbox'
+import { SelectInput } from '../components/Form/SelectInput'
+import { useUpdateBarbershop, useDeleteBarbershop } from "../mutations/barbershopMutations";
+import { days } from '../utils/days';
+import { hours } from '../utils/hours';
 
-//TODO: Change ids, values, names, labels
+const hoursOptions = hours.map(hour => ({ text: hour, value: hour }));
 
 export const AdminBarbershop = () => {
 	const { id } = useParams()
 	const navigate = useNavigate()
 
+	const { data: barbershop, isLoading } = useBarbershop(id);
+
 	const { displayNotification } = useContext(NotificationContext)
-	const { updateBarbershop, deleteBarbershop } = useContext(AdminContext)
-	const { barbershop, getBarbershop, loading } = useContext(BarbershopsContext)
-	const [name, setName] = useState('')
-	const [about, setAbout] = useState('') //TODO: Add an about to the barbershop model.
-	const [address, setAddress] = useState('')
-	const [phoneNumber, setPhoneNumber] = useState('')
-	const [openTime, setOpenTime] = useState('')
-	const [closeTime, setCloseTime] = useState('')
 
-	const days = [
-		'Monday',
-		'Tuesday',
-		'Wednesday',
-		'Thursday',
-		'Friday',
-		'Saturday',
-		'Sunday',
-	]
+	const updateBarbershopValidationSchema = z.object({
+		name: z.string().min(1, { message: "Required" }),
+		about: z.string(),
+		address: z.string().min(1, { message: "Required " }),
+		phoneNumber: z.string().regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, { message: "Must be a valid phone number format." }),
+		// openTime: z.date(), // @@@ TODO: time validator in zod
+		// closeTime: z.date(), // @@@ TODO: Has to be greater than open time
+		// available: z.array() // @@@ TODO: Array validator in zod
+		openTime: z.string().min(1, { message: "Required" }),
+		closeTime: z.string().min(1, { message: "Required" }),
+		operationDays: z.string().array().nonempty({ message: "Must select at least one day" })
+	});
 
-	// const [available, setAvailable] = useState(new Array(days.length).fill(false)) // TODO:this can be checkboxes with each day of week, is this an array?
-	const [available, setAvailable] = useState([
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-		false,
-	])
+	const { handleSubmit, formState: { errors, isDirty }, register } = useForm({
+		values: {
+			name: barbershop?.name,
+			about: barbershop?.about ? barbershop.about : '',
+			address: barbershop?.location?.address,
+			phoneNumber: barbershop?.contact?.phoneNumber,
+			openTime: barbershop?.available?.hours?.open,
+			closeTime: barbershop?.available?.hours?.close,
+			operationDays: barbershop?.available?.days
+		},
+		resolver: zodResolver(updateBarbershopValidationSchema)
+	});
 
-	const hours = [
-		'12:00 AM',
-		'1:00 AM',
-		'2:00 AM',
-		'3:00 AM',
-		'4:00 AM',
-		'5:00 AM',
-		'6:00 AM',
-		'7:00 AM',
-		'8:00 AM',
-		'9:00 AM',
-		'10:00 AM',
-		'11:00 AM',
-		'12:00 PM',
-		'1:00 PM',
-		'2:00 PM',
-		'3:00 PM',
-		'4:00 PM',
-		'5:00 PM',
-		'6:00 PM',
-		'7:00 PM',
-		'8:00 PM',
-		'9:00 PM',
-		'10:00 PM',
-		'11:00 PM',
-	]
+	const { mutate: updateBarbershop } = useUpdateBarbershop();
+	const { mutate: deleteAppointment } = useDeleteBarbershop();
 
-	useEffect(() => {
-		getBarbershop(id)
+	const submitHandler = (data) => {
+		const { name, about, address, phoneNumber, openTime, closeTime, operationDays } = data;
 
-		return () => {
-			setName('')
-			setAbout('')
-			setAddress('')
-			setAvailable([false, false, false, false, false, false, false])
-			setCloseTime('')
-			setOpenTime('')
-			setPhoneNumber('')
-		}
-		// eslint-disable-next-line
-	}, [])
-
-	useEffect(() => {
-		setName(barbershop?.name)
-		setAbout(barbershop?.about ? barbershop.about : '')
-		setAddress(barbershop?.location?.address)
-		setPhoneNumber(barbershop?.contact?.phoneNumber)
-		setOpenTime(barbershop?.available?.hours?.open)
-		setCloseTime(barbershop?.available?.hours?.close)
-		setAvailable(
-			days.map((day) =>
-				barbershop?.available?.days.includes(day) ? true : false
-			)
-		)
-		// eslint-disable-next-line
-	}, [barbershop])
-
-	const toggleCheckbox = (index) => {
-		setAvailable(
-			available.map((checked, i) => (i === index ? !checked : checked))
-		)
-	}
-
-	const submitHandler = (e) => {
-		e.preventDefault()
-		const selectedDays = days.filter((_, i) => available[i] === true)
-		//TODO: Better error validation, ensure all the necessary information is provided.
-
-		if (
-			name === barbershop.name &&
-			about === barbershop.about &&
-			address === barbershop.location.address &&
-			phoneNumber === barbershop.contact.phoneNumber &&
-			openTime === barbershop.available.hours.open &&
-			closeTime === barbershop.available.hours.close &&
-			barbershop.available.days.toString() === selectedDays.toString()
-		) {
+		if (!isDirty) {
 			displayNotification('Please make changes before updating.')
 		} else {
-			updateBarbershop(
-				id,
-				{
-					name,
-					about,
-					location: {
-						address,
-					},
-					contact: {
-						phoneNumber,
-					},
-					available: {
-						hours: {
-							open: openTime,
-							close: closeTime,
-						},
-						days: selectedDays,
-					},
+			const updatedBarbershop = {
+				name,
+				about,
+				location: {
+					address,
 				},
-				displayNotification
-			)
+				contact: {
+					phoneNumber,
+				},
+				available: {
+					hours: {
+						open: openTime,
+						close: closeTime,
+					},
+					days: operationDays
+				},
+
+			}
+
+			updateBarbershop({
+				id,
+				barbershop: updatedBarbershop
+			}, {
+				onSuccess: () => {
+					displayNotification('Barbershop updated successfully.')
+				},
+				onError: (error) => {
+					displayNotification(error.response.data.message)
+					console.error(error);
+				}
+			});
 		}
 	}
 
 	const deleteHandler = () => {
-		deleteBarbershop(id, navigate)
-		displayNotification('Barbershop deleted successfully.')
+		// @@@ TODO: Add confirmation modal to delete barbershop that requires the admin to type the barbershop name.
+		deleteAppointment({
+			id
+		}, {
+			onSuccess: () => {
+				displayNotification('Barbershop deleted successfully.');
+				navigate('/dashboard');
+			},
+			onError: (error) => {
+				displayNotification(error.response.data.message);
+				console.error(error);
+			}
+		});
 	}
 
 	return (
 		<DashboardLayout>
-			{loading && barbershop === null ? (
+			{isLoading && barbershop === null ? (
 				<p>Loading barbershop...</p>
 			) : (
 				<form
-					onSubmit={submitHandler}
+					onSubmit={handleSubmit(submitHandler)}
 					className='space-y-8 divide-y divide-gray-200'
 				>
 					<div className='space-y-8 divide-y divide-gray-200 sm:space-y-5'>
@@ -184,46 +144,23 @@ export const AdminBarbershop = () => {
 
 							<div className='mt-6 space-y-6 sm:mt-5 sm:space-y-5'>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='username'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Name
-									</label>
+									<Label value="Name" htmlFor="name" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
 										<div className='flex max-w-lg rounded-md shadow-sm'>
-											<input
-												type='text'
-												name='name'
-												id='name'
-												value={name}
-												onChange={(e) => setName(e.target.value)}
-												autoComplete='name'
-												className='flex-1 block w-full min-w-0 border-gray-300 rounded-md focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-											/>
+											<TextInput name="name" register={register} errors={errors} />
 										</div>
 									</div>
 								</div>
 
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='about'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										About
-									</label>
+									<Label value="About" htmlFor="about" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<textarea
-											id='about'
-											name='about'
-											rows={3}
-											className='block w-full max-w-lg border border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-											value={about}
-											onChange={(e) => setAbout(e.target.value)}
-										/>
-										<p className='mt-2 text-sm text-gray-500'>
-											Write a few sentences about your business.
-										</p>
+										<div className="max-w-lg">
+											<TextAreaInput name="about" register={register} errors={errors} />
+											<small className='mt-2 text-sm text-gray-500'>
+												Write a few sentences about your business.
+											</small>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -240,22 +177,11 @@ export const AdminBarbershop = () => {
 							</div>
 							<div className='space-y-6 sm:space-y-5'>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='first_name'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Address
-									</label>
+									<Label value="Address" htmlFor="address" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<input
-											type='text'
-											name='address'
-											id='address'
-											value={address}
-											onChange={(e) => setAddress(e.target.value)}
-											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										/>
+										<div className='flex max-w-lg rounded-md shadow-sm'>
+											<TextInput name="address" register={register} errors={errors} />
+										</div>
 									</div>
 								</div>
 							</div>
@@ -269,22 +195,11 @@ export const AdminBarbershop = () => {
 							</div>
 							<div className='space-y-6 sm:space-y-5'>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='first_name'
-										className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Phone Number
-									</label>
+									<Label value="Phone number" htmlFor="phoneNumber" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<input
-											type='text'
-											name='address'
-											id='address'
-											value={phoneNumber}
-											onChange={(e) => setPhoneNumber(e.target.value)}
-											autoComplete='address'
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										/>
+										<div className='flex max-w-lg rounded-md shadow-sm'>
+											<TextInput name="phoneNumber" register={register} errors={errors} />
+										</div>
 									</div>
 								</div>
 							</div>
@@ -308,90 +223,37 @@ export const AdminBarbershop = () => {
 													What days of the week will you the open to the public?
 												</div>
 											</div>
-											{/* //TODO: how to prefill the checkboxes? will the values be and array? */}
 											<div className='mt-4 space-y-3 sm:mt-0 sm:col-span-2'>
 												<div className='max-w-lg space-y-4'>
-													{days.map((day, index) => (
+													{days.map((day) => (
 														<div
 															key={day}
 															className='relative flex items-start'
 														>
 															<div className='flex items-center h-5'>
-																<input
-																	id={day}
-																	name={day}
-																	type='checkbox'
-																	value={day}
-																	className='w-4 h-4 text-blue-700 border-gray-300 rounded focus:ring-blue-700'
-																	checked={available[index]}
-																	onChange={() => toggleCheckbox(index)}
-																/>
+																<Checkbox id={day} name="operationDays" register={register} errors={errors} value={day} />
 															</div>
 															<div className='ml-3 text-sm'>
-																<label
-																	htmlFor={day}
-																	className='font-medium text-gray-700'
-																>
-																	{day}
-																</label>
+																<Label value={day} htmlFor={day} />
 															</div>
 														</div>
 													))}
 												</div>
+												{errors["operationDays"]?.message && <small className="text-red-500">{errors["operationDays"]?.message}</small>}
 											</div>
 										</div>
 									</div>
 								</div>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='country'
-										className='block pt-6 text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Time that your barbershop will open to the public
-									</label>
+									<Label value="Time that your barbershop will open to the public" htmlFor="openTime" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<select
-											id='open-time'
-											name='open-time'
-											autoComplete='open-time'
-											value={openTime}
-											onChange={(e) => setOpenTime(e.target.value)}
-											required
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										>
-											<option value=''>Select open time</option>
-											{hours.map((hour) => (
-												<option key={hour} value={hour}>
-													{hour}
-												</option>
-											))}
-										</select>
+										<SelectInput id="openTime" name="openTime" register={register} errors={errors} defaultOptionText="Select open time" defaultOptionValue="" options={hoursOptions} />
 									</div>
 								</div>
 								<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-									<label
-										htmlFor='close-time'
-										className='block pt-6 text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-									>
-										Time that your barbershop will close to the public
-									</label>
+									<Label value="Time that your barbershop will close to the public" htmlFor="closeTime" />
 									<div className='mt-1 sm:mt-0 sm:col-span-2'>
-										<select
-											id='close-time'
-											name='close-time'
-											autoComplete='close-time'
-											value={closeTime}
-											onChange={(e) => setCloseTime(e.target.value)}
-											required
-											className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-										>
-											<option value=''>Select close time</option>
-											{hours.map((hour) => (
-												<option key={hour} value={hour}>
-													{hour}
-												</option>
-											))}
-										</select>
+										<SelectInput id="closeTime" name="closeTime" register={register} errors={errors} defaultOptionText="Select close time" defaultOptionValue="" options={hoursOptions} />
 									</div>
 								</div>
 							</div>
@@ -409,6 +271,7 @@ export const AdminBarbershop = () => {
 							<button
 								type='submit'
 								className='inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900'
+								disabled={!isDirty}
 							>
 								Save
 							</button>
