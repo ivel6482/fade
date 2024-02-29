@@ -12,6 +12,8 @@ export const useUsers = (transformFunction) => {
       if (transformFunction) {
         return data.map(transformFunction);
       }
+
+      return data;
     }
   });
 }

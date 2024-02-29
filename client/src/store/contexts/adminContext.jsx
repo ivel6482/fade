@@ -8,8 +8,6 @@ import {
 	UPDATE_USER_REQUEST,
 	UPDATE_USER_SUCCESS,
 	UPDATE_USER_FAIL,
-	BOOK_APPOINTMENT_FAIL,
-	BOOK_APPOINTMENT_CLEAR,
 	CREATE_USER_FAIL,
 	DELETE_USER_FAIL,
 	UPDATE_BARBERS_SUCCESS,
@@ -20,16 +18,6 @@ const inititalState = {
 	usersCount: 0,
 	users: [],
 	user: {},
-	barbersCount: 0,
-	barbers: [],
-	barber: null,
-	barbershopsCount: 0,
-	barbershops: [],
-	barbershop: null,
-	appointmentsCount: 0,
-	appointments: [],
-	appointment: null,
-	barberAppointments: [],
 	loading: false,
 	errors: [],
 }
@@ -43,16 +31,6 @@ export const AdminProvider = ({ children }) => {
 		usersCount,
 		users,
 		user,
-		barbersCount,
-		barbers,
-		barber,
-		barbershopsCount,
-		barbershops,
-		barbershop,
-		appointmentsCount,
-		appointments,
-		appointment,
-		barberAppointments,
 		loading,
 		errors,
 	} = state
@@ -76,32 +54,6 @@ export const AdminProvider = ({ children }) => {
 		} catch (error) {
 			console.error(error)
 			dispatch({ type: UPDATE_USER_FAIL, payload: error.response.data.message })
-		}
-	}
-
-	const bookAppointment = async (data, navigate, token) => {
-		try {
-			const { userId, appointmentId } = data
-			await fadeApi.put(
-				`/appointments/${appointmentId}/book`,
-				{
-					userId,
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			)
-			navigate('/appointments')
-			dispatch({ type: BOOK_APPOINTMENT_CLEAR })
-			//TODO: Add more clear state actions where it makes sense.
-		} catch (error) {
-			console.error(error)
-			dispatch({
-				type: BOOK_APPOINTMENT_FAIL,
-				payload: error.response.data.message,
-			})
 		}
 	}
 
@@ -141,21 +93,10 @@ export const AdminProvider = ({ children }) => {
 				usersCount,
 				users,
 				user,
-				barbersCount,
-				barbers,
-				barber,
-				barbershopsCount,
-				barbershops,
-				barbershop,
-				appointmentsCount,
-				appointments,
-				appointment,
-				barberAppointments,
 				loading,
 				errors,
 				getUser,
 				updateUser,
-				bookAppointment,
 				createUser,
 				deleteUser,
 				updateBarber,

@@ -14,7 +14,7 @@ export const useBarbers = () => {
 
 export const useBarberAvailableAppointments = (barberId) => {
   return useQuery({
-    queryKey: ["barber-available-appointments"],
+    queryKey: ["barber-available-appointments", barberId],
     queryFn: async () => {
       // TODO: We can move this endpoint to appointments controller and make a request like this /appointments?barberId=&available=true 
       const response = await fadeApi.get(`/barbers/${barberId}/appointments/available`);
