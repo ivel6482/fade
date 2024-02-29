@@ -1,66 +1,65 @@
-import { useContext, useEffect, useState } from 'react'
-import { AdminContext } from '../store/contexts/adminContext'
+import { useContext } from 'react'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { DashboardLayout } from './DashboardLayout'
 import { useNavigate } from "react-router-dom"
+import { hours } from '../utils/hours';
+import { useBarbers } from '../queries/barberQueries';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useCreateAppointment } from '../mutations/appointmentMutations';
+import { Label } from "../components/Form/Label";
+import { SelectInput } from "../components/Form/SelectInput";
 
 export const AdminNewAppointment = () => {
 	const navigate = useNavigate();
-	const { loading, barbers, getBarbers, createAppointment } =
-		useContext(AdminContext)
 	const { displayNotification } = useContext(NotificationContext)
-	const [barberId, setBarberId] = useState('')
-	const [time, setTime] = useState('')
 
-	const hours = [
-		'12:00 AM',
-		'1:00 AM',
-		'2:00 AM',
-		'3:00 AM',
-		'4:00 AM',
-		'5:00 AM',
-		'6:00 AM',
-		'7:00 AM',
-		'8:00 AM',
-		'9:00 AM',
-		'10:00 AM',
-		'11:00 AM',
-		'12:00 PM',
-		'1:00 PM',
-		'2:00 PM',
-		'3:00 PM',
-		'4:00 PM',
-		'5:00 PM',
-		'6:00 PM',
-		'7:00 PM',
-		'8:00 PM',
-		'9:00 PM',
-		'10:00 PM',
-		'11:00 PM',
-	]
+	const newAppointmentValidationSchema = z.object({
+		barberId: z.string().min(1),
+		time: z.string().min(1),
+	});
 
-	useEffect(() => {
-		getBarbers()
-		// eslint-disable-next-line
-	}, [])
+	const { handleSubmit, register, formState: { errors } } = useForm({
+		defaultValues: {
+			barberId: "",
+			time: ""
+		},
+		resolver: zodResolver(newAppointmentValidationSchema)
+	});
 
-	const submitHandler = (e) => {
-		e.preventDefault()
-		if (barberId === '' || time === '') {
-			displayNotification('Please enter all the required information')
-		} else {
-			createAppointment({ barberId, time }, navigate, displayNotification)
-		}
+	const { data: barbers, isLoading } = useBarbers();
+	const { mutate: createAppointment } = useCreateAppointment();
+
+	const submitHandler = (data) => {
+		const { barberId, time } = data;
+
+		const appointment = {
+			barberId,
+			time
+		};
+
+		createAppointment({
+			appointment
+		}, {
+			onSuccess: () => {
+				displayNotification('Appointment created successfully.');
+				navigate('/appointments');
+			},
+			onError: (error) => {
+				displayNotification(error.response.data.message);
+				console.error(error);
+			}
+		});
 	}
 
 	return (
 		<DashboardLayout currentTab='appointments'>
-			{loading ? (
+			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				//TODO: Indicate all the required fields with *required
 				<form
-					onSubmit={submitHandler}
+					onSubmit={handleSubmit(submitHandler)}
 					className='space-y-8 divide-y divide-gray-200'
 				>
 					<div className='space-y-8 sm:space-y-5'>
@@ -77,55 +76,34 @@ export const AdminNewAppointment = () => {
 
 						<div className='space-y-6 sm:space-y-5'>
 							<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-								<label
-									htmlFor='barber'
-									className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-								>
-									Barber
-								</label>
+								<Label value="Barber" htmlFor="barber" />
 								<div className='mt-1 sm:mt-0 sm:col-span-2'>
-									<select
-										id='barber'
-										name='barber'
-										autoComplete='barber'
-										value={barberId}
-										onChange={(e) => setBarberId(e.target.value)}
-										className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-									>
-										<option>Select a barber</option>
-										{barbers.map((barber) => (
-											<option key={barber._id} value={barber._id}>
-												{barber.firstName} {barber.lastName}
-											</option>
-										))}
-									</select>
+									<SelectInput
+										id="barber"
+										name="barberId"
+										defaultOptionText="Select a barber"
+										options={barbers.map(barber => ({
+											text: barber.firstName + " " + barber.lastName,
+											value: barber._id
+										}))}
+										register={register}
+										errors={errors}
+									/>
 								</div>
 							</div>
 						</div>
 						<div className='space-y-6 sm:space-y-5'>
 							<div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-								<label
-									htmlFor='time'
-									className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-								>
-									Time
-								</label>
+								<Label value="Time" htmlFor="time" />
 								<div className='mt-1 sm:mt-0 sm:col-span-2'>
-									<select
-										id='time'
-										name='time'
-										autoComplete='time'
-										value={time}
-										onChange={(e) => setTime(e.target.value)}
-										className='block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:max-w-xs sm:text-sm'
-									>
-										<option>Select a time</option>
-										{hours.map((hour) => (
-											<option key={hour} value={hour}>
-												{hour}
-											</option>
-										))}
-									</select>
+									<SelectInput
+										id="time"
+										name="time"
+										options={hours.map(hour => ({ text: hour, value: hour }))}
+										defaultOptionText="Select a time"
+										register={register}
+										errors={errors}
+									/>
 								</div>
 							</div>
 						</div>
@@ -134,7 +112,6 @@ export const AdminNewAppointment = () => {
 					<div className='pt-5'>
 						<div className='flex justify-end'>
 							<button
-								//TODO: Replace all cancel buttons to use the navigate(-1) method.
 								onClick={() => navigate(-1)}
 								type='button'
 								className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700'
