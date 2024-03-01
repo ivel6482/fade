@@ -18,6 +18,17 @@ export const useUsers = (transformFunction) => {
   });
 }
 
+export const useUser = (userId) => {
+  return useQuery({
+    queryKey: ["user", userId],
+    queryFn: async () => {
+      const res = await fadeApi.get(`/users/${userId}`);
+      return res.data;
+    },
+    enabled: !!userId
+  });
+}
+
 export const useUserActiveAppointments = (userId) => {
   return useQuery({
     queryKey: ["user-active-appointments", userId],
