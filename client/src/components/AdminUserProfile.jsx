@@ -32,13 +32,16 @@ export const AdminUserProfile = () => {
 		avatar: z.string().min(1),
 		role: z.string().min(1),
 		email: z.string().email(),
-		barbershop: z.string().min(1)
+		barbershop: z.string().or(z.null())
+		// FIXME: Separate barbers from users in order to have proper validations. At the moment a barber's barbershop property can be set to null which we don't want.
 	});
+
 
 	const { handleSubmit, register, formState: { errors } } = useForm({
 		values: user,
 		resolver: zodResolver(updateUserValidationSchema)
 	});
+	console.log(errors);
 
 	const deleteHandler = (id) => {
 		deleteUser({ userId: id }, {
