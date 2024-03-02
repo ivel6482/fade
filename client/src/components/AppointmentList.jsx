@@ -1,12 +1,16 @@
-import { useContext } from 'react'
-import { BarbershopsContext } from '../store/contexts/barbershopsContext'
 import { FaceFrownIcon } from '@heroicons/react/24/outline'
 import { Appointment } from './Appointment'
+import { useBarberAvailableAppointments } from '../queries/barberQueries'
 
-export const AppointmentList = () => {
-	const { appointments } = useContext(BarbershopsContext)
+export const AppointmentList = ({ barberId }) => {
+
+	const { data: appointments, isPending } = useBarberAvailableAppointments(barberId);
+
+	if (isPending) {
+		return <p>Loading...</p>
+	}
+
 	return (
-		//TODO: Add skeleton loader when loading data.
 		<div>
 			<h2 className='mb-6 text-xl text-center text-gray-600'>
 				These are my current appointments

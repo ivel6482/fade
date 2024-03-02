@@ -3,8 +3,7 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { AppointmentList } from './AppointmentList'
 
-export const Modal = ({ open, setOpen }) => {
-	// const [open, setOpen] = useState(true)
+export const Modal = ({ open, setOpen, barberId }) => {
 
 	return (
 		<Transition.Root show={open} as={Fragment}>
@@ -46,7 +45,7 @@ export const Modal = ({ open, setOpen }) => {
 					>
 						<div className='inline-block w-full px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6'>
 							{/* Main content */}
-							<AppointmentList />
+							<AppointmentList barberId={barberId} />
 							<div className='mt-5 sm:mt-6'>
 								<button
 									type='button'
