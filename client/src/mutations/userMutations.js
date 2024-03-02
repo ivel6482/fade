@@ -11,3 +11,13 @@ export const useUserUpdate = () => {
     }
   })
 }
+
+export const useUserDelete = () => {
+  return useMutation({
+    mutationKey: ["delete-user"],
+    mutationFn: async ({ userId }) => {
+      const res = await fadeApi.delete(`/users/${userId}`);
+      return res.data;
+    }
+  })
+}

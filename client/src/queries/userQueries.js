@@ -12,7 +12,20 @@ export const useUsers = (transformFunction) => {
       if (transformFunction) {
         return data.map(transformFunction);
       }
+
+      return data;
     }
+  });
+}
+
+export const useUser = (userId) => {
+  return useQuery({
+    queryKey: ["user", userId],
+    queryFn: async () => {
+      const res = await fadeApi.get(`/users/${userId}`);
+      return res.data;
+    },
+    enabled: !!userId
   });
 }
 

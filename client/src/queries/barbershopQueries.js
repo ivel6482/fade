@@ -6,7 +6,7 @@ export const useBarbershops = () => {
     queryKey: ["barbershops"],
     queryFn: async () => {
       const res = await fadeApi.get('/barbershops');
-      return res.data;
+      return res.data.barbershops;
     }
   });
 }

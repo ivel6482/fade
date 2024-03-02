@@ -1,29 +1,17 @@
 import { useContext, useEffect } from 'react'
 import { DashboardLayout } from '../components/DashboardLayout'
 import { User } from '../components/User'
-import { Stats } from '../components/Stats'
-import { AdminContext } from '../store/contexts/adminContext'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { Link } from 'react-router-dom'
+import { useUsers } from '../queries/userQueries'
 
 export const AdminUsers = () => {
-	const { loading, users, getUsers, usersCount } = useContext(AdminContext)
 
-	useEffect(() => {
-		getUsers()
-		// eslint-disable-next-line
-	}, [])
-
-	const stats = [
-		{
-			name: 'Total Users',
-			stat: usersCount,
-		},
-	]
+	const { data: users, isPending } = useUsers();
 
 	return (
 		<DashboardLayout currentTab='users'>
-			{loading ? (
+			{isPending ? (
 				<p>Loading users...</p>
 			) : (
 				<>

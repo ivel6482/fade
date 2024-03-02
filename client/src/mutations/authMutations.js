@@ -1,6 +1,29 @@
 import { useMutation } from "@tanstack/react-query"
 import { fadeApi } from "../utils/axiosInstance"
 
+export const useCreateUser = () => {
+  // For admin use to create a user.
+  return useMutation({
+    mutationKey: ["create-user"],
+    mutationFn: async ({
+      firstName,
+      lastName,
+      email,
+      password,
+      role
+    }) => {
+      const res = await fadeApi.post("/auth/signup", {
+        firstName,
+        lastName,
+        email,
+        password,
+        role
+      });
+      return res.data;
+    }
+  })
+}
+
 export const useRegisterUser = () => {
   return useMutation({
     mutationKey: ["register-user"],

@@ -1,42 +1,60 @@
 import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { AdminContext } from '../store/contexts/adminContext'
 import { NotificationContext } from '../store/contexts/notificationsContext'
 import { DashboardLayout } from './DashboardLayout'
+import { useCreateUser } from '../mutations/authMutations'
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Label } from "../components/Form/Label";
+import { TextInput } from "../components/Form/TextInput";
+import { SelectInput } from "../components/Form/SelectInput";
+import { roles } from "../utils/roles";
 
 export const AdminNewUser = () => {
 	const navigate = useNavigate()
 
-	const { createUser } = useContext(AdminContext)
-
 	const { displayNotification } = useContext(NotificationContext)
+	const { mutate: createUser } = useCreateUser();
 
-	const [firstName, setFirstName] = useState('')
-	const [lastName, setLastName] = useState('')
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [role, setRole] = useState('')
+	const createUserValidationSchema = z.object({
+		firstName: z.string().min(1),
+		lastName: z.string().min(1),
+		email: z.string().email(),
+		password: z.string().min(1),
+		role: z.string().min(1)
+	});
 
-	const onSubmitHandler = (e) => {
-		e.preventDefault()
-		if (
-			firstName === '' ||
-			lastName === '' ||
-			email === '' ||
-			password === '' ||
-			role === ''
-		) {
-			displayNotification('Please fill all the required information.')
-		} else {
-			createUser({ firstName, lastName, email, password, role }, navigate)
-			displayNotification('User created successfully.')
-		}
+	const { handleSubmit, register, formState: { errors } } = useForm({
+		defaultValues: {
+			firstName: "",
+			lastName: "",
+			email: "",
+			password: "",
+			role: ""
+		},
+		resolver: zodResolver(createUserValidationSchema)
+	});
+
+	const onSubmitHandler = (data) => {
+		const { firstName, lastName, email, password, role } = data;
+
+		createUser({ firstName, lastName, email, password, role }, {
+			onSuccess: () => {
+				displayNotification('User created successfully.')
+				navigate("/users");
+			},
+			onError: (error) => {
+				displayNotification('User created successfully.')
+				console.error(error.response.data.message);
+			}
+		})
 	}
 
 	return (
 		<DashboardLayout currentTab='users'>
 			<form
-				onSubmit={onSubmitHandler}
+				onSubmit={handleSubmit(onSubmitHandler)}
 				className='pb-4 space-y-8 divide-y divide-gray-200'
 			>
 				<div className='space-y-8 divide-y divide-gray-200'>
@@ -48,108 +66,36 @@ export const AdminNewUser = () => {
 						</div>
 						<div className='grid grid-cols-1 mt-6 gap-y-6 gap-x-4 sm:grid-cols-6'>
 							<div className='sm:col-span-3'>
-								<label
-									htmlFor='first_name'
-									className='block text-sm font-medium text-gray-700'
-								>
-									First name
-								</label>
+								<Label value="First name" htmlFor="firstName" />
 								<div className='mt-1'>
-									<input
-										type='text'
-										name='first_name'
-										id='first_name'
-										value={firstName}
-										onChange={(e) => setFirstName(e.target.value)}
-										autoComplete='given-name'
-										placeholder='John'
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-									/>
+									<TextInput register={register} errors={errors} name="firstName" id="firstName" />
 								</div>
 							</div>
 							<div className='sm:col-span-3'>
-								<label
-									htmlFor='last_name'
-									className='block text-sm font-medium text-gray-700'
-								>
-									Last name
-								</label>
+								<Label value="Last name" htmlFor="lastName" />
 								<div className='mt-1'>
-									<input
-										type='text'
-										name='last_name'
-										id='last_name'
-										value={lastName}
-										onChange={(e) => setLastName(e.target.value)}
-										autoComplete='family-name'
-										placeholder='Doe'
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-									/>
+									<TextInput register={register} errors={errors} name="lastName" id="lastName" />
 								</div>
 							</div>
 
 							<div className='sm:col-span-3'>
-								<label
-									htmlFor='email'
-									className='block text-sm font-medium text-gray-700'
-								>
-									Email address
-								</label>
+								<Label value="Email address" htmlFor="email" />
 								<div className='mt-1'>
-									<input
-										id='email'
-										name='email'
-										type='email'
-										value={email}
-										onChange={(e) => setEmail(e.target.value)}
-										autoComplete='email'
-										placeholder='johndoe@example.com'
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-									/>
+									<TextInput register={register} errors={errors} name="email" id="email" type="email" />
 								</div>
 							</div>
 
 							<div className='sm:col-span-3'>
-								<label
-									htmlFor='password'
-									className='block text-sm font-medium text-gray-700'
-								>
-									Password
-								</label>
+								<Label value="Password" htmlFor="password" />
 								<div className='mt-1'>
-									<input
-										id='password'
-										name='password'
-										type='password'
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-										placeholder='****************'
-									/>
+									<TextInput register={register} errors={errors} name="password" type="password" id="password" />
 								</div>
 							</div>
 
 							<div className='sm:col-span-3'>
-								<label
-									htmlFor='role'
-									className='block text-sm font-medium text-gray-700'
-								>
-									Role
-								</label>
+								<Label value="Role" htmlFor="role" />
 								<div className='mt-1'>
-									<select
-										id='role'
-										name='role'
-										autoComplete='role'
-										value={role}
-										onChange={(e) => setRole(e.target.value)}
-										className='block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-700 focus:border-blue-700 sm:text-sm'
-									>
-										<option>Select a role</option>
-										<option value='costumer'>Costumer</option>
-										<option value='barber'>Barber</option>
-										<option value='admin'>Admin</option>
-									</select>
+									<SelectInput register={register} errors={errors} name="role" id="role" defaultOptionText="Select a role" options={roles.map(role => ({ text: role, value: role.toLocaleLowerCase() }))} />
 								</div>
 							</div>
 						</div>

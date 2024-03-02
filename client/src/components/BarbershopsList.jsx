@@ -7,7 +7,7 @@ import { useBarbershops } from '../queries/barbershopQueries'
 export const BarbershopList = () => {
 	const user = useUser();
 
-	const { data, isLoading } = useBarbershops();
+	const { data: barbershops, isLoading } = useBarbershops();
 
 	return (
 		<section className='h-4/5'>
@@ -28,8 +28,8 @@ export const BarbershopList = () => {
 				</div>
 			</div>
 			<section className='grid grid-cols-1 mt-8 sm:grid-cols-2 2xl:grid-cols-3'>
-				{data?.barbershops?.length > 0 ? (
-					data.barbershops.map((barbershop) => (
+				{barbershops?.length > 0 ? (
+					barbershops.map((barbershop) => (
 						<Barbershop key={barbershop._id} barbershop={barbershop} />
 					))
 				) : (
