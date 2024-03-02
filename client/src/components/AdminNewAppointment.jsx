@@ -10,10 +10,13 @@ import { z } from "zod";
 import { useCreateAppointment } from '../mutations/appointmentMutations';
 import { Label } from "../components/Form/Label";
 import { SelectInput } from "../components/Form/SelectInput";
+import { useQueryClient } from '@tanstack/react-query';
 
 export const AdminNewAppointment = () => {
 	const navigate = useNavigate();
 	const { displayNotification } = useContext(NotificationContext)
+
+	const queryClient = useQueryClient();
 
 	const newAppointmentValidationSchema = z.object({
 		barberId: z.string().min(1),
@@ -44,6 +47,7 @@ export const AdminNewAppointment = () => {
 		}, {
 			onSuccess: () => {
 				displayNotification('Appointment created successfully.');
+				queryClient.invalidateQueries(["appointments"]);
 				navigate('/appointments');
 			},
 			onError: (error) => {
