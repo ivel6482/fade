@@ -41,7 +41,6 @@ export const AdminUserProfile = () => {
 		values: user,
 		resolver: zodResolver(updateUserValidationSchema)
 	});
-	console.log(errors);
 
 	const deleteHandler = (id) => {
 		deleteUser({ userId: id }, {
