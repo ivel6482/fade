@@ -19,11 +19,6 @@ export const BarbershopDetails = () => {
 	const { data: barbershop, isPending: isPendingBarbershop } = useBarbershop(id);
 	const { data: barbershopBarbers, isPending: isPendingBarbershopBarbers } = useBarbershopBarbers(id);
 
-	console.log({
-		isPendingBarbershop,
-		isPendingBarbershopBarbers
-	});
-
 	if (isPendingBarbershop || isPendingBarbershopBarbers) {
 		return <p>"Loading barbershop..."</p>
 	}
