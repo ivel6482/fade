@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { NotificationContext } from '../store/contexts/notificationsContext'
-import { BarbersContext } from '../store/contexts/barberContext'
 import { useUser } from "../store/authStore"
 import { useCancelAppointment, useCompleteAppointment, useDeleteAppointment } from "../mutations/appointmentMutations"
 import { useQueryClient } from "@tanstack/react-query"
