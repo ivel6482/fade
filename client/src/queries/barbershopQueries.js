@@ -21,3 +21,14 @@ export const useBarbershop = (id) => {
     enabled: !!id
   });
 }
+
+export const useBarbershopBarbers = (barbershopId) => {
+  return useQuery({
+    queryKey: ["barbershop-barbers", barbershopId],
+    queryFn: async () => {
+      const res = await fadeApi.get(`/barbershops/${barbershopId}/barbers`);
+      return res.data.barbers;
+    },
+    enabled: !!barbershopId
+  });
+}

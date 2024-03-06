@@ -43,3 +43,13 @@ export const useDeleteAppointment = () => {
     }
   });
 }
+
+export const useCompleteAppointment = () => {
+  return useMutation({
+    mutationKey: ["complete-appointments"],
+    mutationFn: async ({ appointmentId }) => {
+      const res = await fadeApi.put(`/appointments/${appointmentId}/complete`);
+      return res.data;
+    }
+  });
+}

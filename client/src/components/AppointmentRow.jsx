@@ -1,20 +1,16 @@
 import { useContext } from 'react'
 import { NotificationContext } from '../store/contexts/notificationsContext'
-import { BarbersContext } from '../store/contexts/barberContext'
 import { useUser } from "../store/authStore"
-import { useCancelAppointment, useDeleteAppointment } from "../mutations/appointmentMutations"
+import { useCancelAppointment, useCompleteAppointment, useDeleteAppointment } from "../mutations/appointmentMutations"
 import { useQueryClient } from "@tanstack/react-query"
 
 export const AppointmentRow = ({ appointment }) => {
 	const user = useUser();
 	const queryClient = useQueryClient();
 
-	const {
-		completeAppointment,
-	} = useContext(BarbersContext)
-
 	const { mutate: cancelAppointment } = useCancelAppointment();
 	const { mutate: deleteAppointment } = useDeleteAppointment();
+	const { mutate: completeAppointment } = useCompleteAppointment();
 
 	const { displayNotification } = useContext(NotificationContext)
 
@@ -50,8 +46,17 @@ export const AppointmentRow = ({ appointment }) => {
 	}
 
 	const completeHandler = (id) => {
-		completeAppointment(id)
-		displayNotification('Appointment marked as completed successfully.')
+		completeAppointment({
+			appointmentId: id
+		}, {
+			onSuccess: () => {
+				displayNotification('Appointment marked as completed successfully.')
+				queryClient.invalidateQueries(["barber-booked-appointments", "barber-completed-appointments"]);
+			},
+			onError: (error) => {
+				displayNotification(error.response.data.message);
+			}
+		})
 	}
 
 	return (
