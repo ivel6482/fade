@@ -9,21 +9,39 @@ import {
 import { useUser } from "../store/authStore"
 import { useCreateAppointment } from "../mutations/barberMutations"
 import { useQueryClient } from "@tanstack/react-query"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Label } from "../components/Form/Label";
+import { SelectInput } from "../components/Form/SelectInput";
+import { TextInput } from "../components/Form/TextInput";
 
 export const NewAppointment = ({ open, setOpen }) => {
-	const [hour, setHour] = useState('')
-	const [time, setTime] = useState('AM')
-	const [valid, setValid] = useState()
 	const user = useUser();
 	const queryClient = useQueryClient();
 	const { displayNotification } = useContext(NotificationContext)
 
 	const { mutate: createAppointment, isPending: isCreatingAppointment } = useCreateAppointment();
 
+	const createAppointmentValidationSchema = z.object({
+		hour: z.string().min(1).regex(/^(1[012]|[1-9]):([0-5]{1}[0-9]{1})$/),
+		time: z.string().min(1)
+	});
+
+	const { handleSubmit, register, formState: { errors } } = useForm({
+		defaultValues: {
+			hour: "",
+			time: "AM",
+		},
+		resolver: zodResolver(createAppointmentValidationSchema)
+	});
+
 	// * FIXME: Barbers are not currently accounts that can log in, add a barbershop field to the user model and set it to null by default, check if the role is barber then we can modify barbershop field.
 	//   TODO: Make a route to get barbers, this has to be changed from getting barbers collection to use the user collection and filter by role: 'barber' instead.
-	const newAppointmentHandler = () => {
-		if (user.role === 'barber' && valid) {
+	const newAppointmentHandler = (data) => {
+		const { hour, time } = data;
+
+		if (user.role === 'barber') {
 			const newAppointment = `${hour} ${time}`
 
 			createAppointment({ time: newAppointment, barberId: user._id }, {
@@ -39,12 +57,6 @@ export const NewAppointment = ({ open, setOpen }) => {
 				}
 			});
 		}
-	}
-
-	const onKeyUp = () => {
-		const regex = /^(1[012]|[1-9]):([0-5]{1}[0-9]{1})$/
-		const isValidTimeString = regex.test(hour)
-		setValid(isValidTimeString)
 	}
 
 	//TODO: Maybe change time input from text to select with options from 1,2,3,... and another PM or AM
@@ -108,36 +120,16 @@ export const NewAppointment = ({ open, setOpen }) => {
 									<div className='mt-2'>
 										{/* Content */}
 										<div>
-											<label
-												htmlFor='Hour'
-												className='block text-sm font-medium text-gray-700'
-											>
-												Hour
-											</label>
+											<Label value="Hour" htmlFor="hour" />
 											<div className='relative mt-1 rounded-md shadow-sm'>
-												<input
-													type='text'
-													name='hour'
-													id='hour'
-													value={hour}
-													onChange={(e) => setHour(e.target.value)}
-													onKeyUp={() => onKeyUp()}
-													//TODO: Change border color depending if input is valid or not
-													className={`${valid
-														? 'focus:border-green-400 focus:ring-green-400'
-														: 'focus:border-red-500 focus:ring-red-500'
-														} block w-full pr-12 border-gray-300 rounded-md  pl-7 sm:text-sm`}
-													placeholder='1:00'
-												/>
+												<TextInput register={register} name="hour" />
 												<div className='absolute inset-y-0 right-0 flex items-center'>
 													<label htmlFor='time' className='sr-only'>
 														Time
 													</label>
 													<select
-														id='time'
 														name='time'
-														value={time}
-														onChange={(e) => setTime(e.target.value)}
+														{...register}
 														className='h-full py-0 pl-2 text-gray-500 bg-transparent border-transparent rounded-md focus:ring-indigo-500 focus:border-indigo-500 pr-7 sm:text-sm'
 													>
 														<option value='AM'>AM</option>
@@ -146,19 +138,14 @@ export const NewAppointment = ({ open, setOpen }) => {
 												</div>
 											</div>
 
-											<small>
-												{valid ? (
-													<div className='flex items-center my-2 font-semibold text-green-600'>
-														<CheckCircleIcon className='w-4 h-4 mr-1' />
-														<span>Time is valid</span>
-													</div>
-												) : (
+											{(errors.hour || errors.time) && (
+												<small>
 													<div className='flex items-center my-2 font-semibold text-red-600'>
 														<ExclamationTriangleIcon className='w-4 h-4 mr-1' />
 														<span>Time is invalid</span>
 													</div>
-												)}
-											</small>
+												</small>
+											)}
 
 											<small className='block text-sm text-gray-400 sm:w-3/4'>
 												Time must be in 12-Hour format. Example: 1:00 PM
@@ -170,9 +157,8 @@ export const NewAppointment = ({ open, setOpen }) => {
 							<div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
 								<button
 									type='button'
-									disabled={!valid}
 									className='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-gray-200 bg-blue-900 border border-transparent rounded-md shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900 sm:ml-3 sm:w-auto sm:text-sm'
-									onClick={() => newAppointmentHandler()}
+									onClick={handleSubmit((data) => newAppointmentHandler(data))}
 								>
 									{isCreatingAppointment ? "Creating..." : "Create"}
 								</button>
