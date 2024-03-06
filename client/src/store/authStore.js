@@ -5,7 +5,10 @@ export const useAuthStore = create((set) => ({
   isAuthenticated: JSON.parse(sessionStorage.getItem("isAuthenticated")) ?? false,
   token: JSON.parse(sessionStorage.getItem("token")) ?? null,
   actions: {
-    setUser: (user) => set(() => ({ user })),
+    setUser: (user) => set(() => {
+      sessionStorage.setItem("user", JSON.stringify(user));
+      return { user }
+    }),
     setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
     setToken: (token) => set(() => ({ token }))
   }
