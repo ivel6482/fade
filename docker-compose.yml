@@ -6,9 +6,6 @@ services:
     user: node
     working_dir: /home/node/app/fade
     env_file: ./.env
-    # environment:
-    #   - MONGO_URI=mongodb://root:example@db:27017
-    #   - JWT_SECRET=test
     volumes:
       - ./:/home/node/app/fade
     ports:
