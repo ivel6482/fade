@@ -10,11 +10,7 @@ exports.getAllBarbershops = async (req, res) => {
 		const barbershops = await Barbershop.find()
 		const barbershopsCount = await Barbershop.countDocuments()
 
-		if (barbershops && barbershops.length > 0) {
-			res.status(200).json({ count: barbershopsCount, barbershops })
-		} else {
-			res.status(404).json({ success: false, message: 'No barbershops found.' })
-		}
+		res.status(200).json({ count: barbershopsCount, barbershops })
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({
