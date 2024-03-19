@@ -2,5 +2,3 @@
 .env
 /client/.gitignore
 /client/.env
-node_modules
-/client/node_modules

@@ -1,16 +1,19 @@
-const mongoose = require('mongoose')
+const { drizzle } = require("drizzle-orm/node-postgres");
+const { Client } = require("pg");
 
 const connectDB = async () => {
-	const connectionString = process.env.MONGO_URI
-
 	try {
-		const conn = await mongoose.connect(connectionString);
+		const connectionString = process.env.POSTGRES_CONNECTION_STRING;
 
-		console.log(`Database connected: ${conn.connection.host}`)
+		const client = new Client({ connectionString });
+
+		await client.connect();
+		const db = drizzle(client);
+		console.log("Database connected");
 	} catch (error) {
-		console.log(error)
-		process.exit(1)
+		console.error(error);
+		process.exit(1);
 	}
 }
 
-module.exports = connectDB
+module.exports = connectDB;
